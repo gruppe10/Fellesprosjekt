@@ -1,0 +1,5 @@
+#Ignorere eclipse shite
+.classpath
+.project
+.settings
+db-derby/lib/*/*
