@@ -66,37 +66,38 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 				{
 					jLabel1 = new JLabel();
 					jLabel1.setText("Er du sikker ?");
+					jLabel1.setFont(new java.awt.Font("Tahoma",0,12));
 				}
 				{
 					SlettButton = new JButton();
 					SlettButton.setText("Slett");
+					SlettButton.setFont(new java.awt.Font("Tahoma",0,12));
 					SlettButton.addActionListener(this);
 				}
 				{
 					avbrytButton = new JButton();
 					avbrytButton.setText("Avbryt");
+					avbrytButton.setFont(new java.awt.Font("Tahoma",0,12));
 					avbrytButton.addActionListener(this);
 				}
 				jPanel1Layout.setHorizontalGroup(jPanel1Layout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(jPanel1Layout.createParallelGroup()
 					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					        .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-					        .addGap(0, 49, Short.MAX_VALUE))
+					        .addComponent(SlettButton, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+					        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					        .addComponent(avbrytButton, 0, 79, Short.MAX_VALUE))
 					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					        .addComponent(SlettButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-					        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-					        .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-					        .addGap(0, 0, Short.MAX_VALUE)))
-					.addContainerGap());
+					        .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+					        .addGap(0, 72, Short.MAX_VALUE))));
 				jPanel1Layout.setVerticalGroup(jPanel1Layout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(17)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(SlettButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(19, 19));
+					    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap());
 			}
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap()
@@ -104,8 +105,8 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 				.addContainerGap(34, Short.MAX_VALUE));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap()
-				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(96, Short.MAX_VALUE));
+				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap(17, Short.MAX_VALUE));
 			pack();
 			this.setSize(209, 163);
 		} catch (Exception e) {
