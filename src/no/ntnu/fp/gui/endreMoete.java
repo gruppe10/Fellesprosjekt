@@ -1,4 +1,8 @@
 package no.ntnu.fp.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -31,13 +35,14 @@ import javax.swing.SwingUtilities;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class endreMoete extends javax.swing.JFrame {
+public class endreMoete extends javax.swing.JFrame implements ActionListener{
+	
 	private JButton fjenDeltakerButton;
 	private JTextField datoField;
 	private JTextField headerTextField;
 	private JScrollPane jScrollPane1;
 	private JMenuItem jMenuItem1;
-	private JComboBox Møterom;
+	private JComboBox Moeterom;
 	private JToggleButton viskalenderButton;
 	private JButton avlysButton;
 	private JLabel leggTilDeltakerLabel;
@@ -83,18 +88,19 @@ public class endreMoete extends javax.swing.JFrame {
 				fjenDeltakerButton = new JButton();
 				fjenDeltakerButton.setText("Fjern deltaker");
 				fjenDeltakerButton.setFont(new java.awt.Font("Tahoma",0,12));
+				fjenDeltakerButton.addActionListener(this);
 			}
 			{
 				ComboBoxModel MøteromModel = 
 					new DefaultComboBoxModel(
 							new String[] { "Item One", "Item Two" });
-				Møterom = new JComboBox();
-				Møterom.setModel(MøteromModel);
-				Møterom.setFont(new java.awt.Font("Tahoma",2,11));
-				Møterom.setToolTipText("møterom");
+				Moeterom = new JComboBox();
+				Moeterom.setModel(MøteromModel);
+				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
+				Moeterom.setToolTipText("møterom");
 				{
 					jMenuItem1 = new JMenuItem();
-					Møterom.add(jMenuItem1);
+					Moeterom.add(jMenuItem1);
 					jMenuItem1.setText("jMenuItem1");
 				}
 			}
@@ -102,11 +108,13 @@ public class endreMoete extends javax.swing.JFrame {
 				viskalenderButton = new JToggleButton();
 				viskalenderButton.setText("Vis deltakeres kalendere");
 				viskalenderButton.setFont(new java.awt.Font("Tahoma",0,12));
+				viskalenderButton.addActionListener(this);
 			}
 			{
 				avlysButton = new JButton();
 				avlysButton.setText("Avlys");
 				avlysButton.setFont(new java.awt.Font("Tahoma",0,12));
+				avlysButton.addActionListener(this);
 			}
 			{
 				datoField = new JTextField();
@@ -191,11 +199,13 @@ public class endreMoete extends javax.swing.JFrame {
 				avbrytButton = new JButton();
 				avbrytButton.setText("Avbryt");
 				avbrytButton.setFont(new java.awt.Font("Tahoma",0,12));
+				avbrytButton.addActionListener(this);
 			}
 			{
 				lagreButton = new JButton();
 				lagreButton.setText("Send ny innkallelse og lagre");
 				lagreButton.setFont(new java.awt.Font("Tahoma",0,12));
+				lagreButton.addActionListener(this);
 			}
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap()
@@ -230,7 +240,7 @@ public class endreMoete extends javax.swing.JFrame {
 				    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-				    .addComponent(Møterom, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(Moeterom, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(moeteromLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 				.addGroup(thisLayout.createParallelGroup()
@@ -289,7 +299,7 @@ public class endreMoete extends javax.swing.JFrame {
 				                    .addComponent(datoField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 				                    .addComponent(jScrollPane3, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 				                    .addComponent(deltakerTextField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-				                    .addComponent(Møterom, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				                    .addComponent(Moeterom, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				                .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 				                .addGap(0, 30, Short.MAX_VALUE)
 				                .addComponent(avlysButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
@@ -299,6 +309,38 @@ public class endreMoete extends javax.swing.JFrame {
 		} catch (Exception e) {
 		    //add your error handling code here
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if(evt.getSource() == fjenDeltakerButton){
+			//fjern deltaker fra listen av deltakere
+		}
+		else if(evt.getSource() == viskalenderButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+			//vise når de andre deltakere ikke har tid
+		}
+		else if(evt.getSource() == lagreButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+			//legge til i kalenderer
+			//sende beskjed om endring til deltakere
+		}
+		else if(evt.getSource() == avbrytButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+		}
+		else if(evt.getSource() == avlysButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+			//fjerne fra kalenderene
+			//gi beskjed til deltakrne
 		}
 	}
 

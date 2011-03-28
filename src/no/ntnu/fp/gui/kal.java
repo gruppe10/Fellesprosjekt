@@ -1,4 +1,8 @@
 package no.ntnu.fp.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -29,7 +33,7 @@ import javax.swing.SwingUtilities;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class kal extends javax.swing.JFrame {
+public class kal extends javax.swing.JFrame implements ActionListener {
 	private JLabel minKalenderLAbel;
 	private JButton endreMoeteButton;
 	private JLabel jLabel1;
@@ -122,43 +126,48 @@ public class kal extends javax.swing.JFrame {
 					nyttMoeteButton = new JButton();
 					nyttMoeteButton.setText("Nytt Møte");
 					nyttMoeteButton.setFont(new java.awt.Font("Tahoma",0,12));
+					nyttMoeteButton.addActionListener(this);
 				}
 				{
 					endreMoeteButton = new JButton();
 					endreMoeteButton.setText("Endre møte");
 					endreMoeteButton.setFont(new java.awt.Font("Tahoma",0,12));
+					endreMoeteButton.addActionListener(this);
 				}
 				{
 					avlysMoeteButton = new JButton();
 					avlysMoeteButton.setText("Avlys møte");
 					avlysMoeteButton.setFont(new java.awt.Font("Tahoma",0,12));
+					avlysMoeteButton.addActionListener(this);
 				}
 				{
 					endreAvtaleButton = new JButton();
 					endreAvtaleButton.setText("Endre avtale");
 					endreAvtaleButton.setFont(new java.awt.Font("Tahoma",0,12));
+					endreAvtaleButton.addActionListener(this);
 				}
 				{
 					sletteAvtaleButton = new JButton();
 					sletteAvtaleButton.setText("Slette avtale");
 					sletteAvtaleButton.setFont(new java.awt.Font("Tahoma",0,12));
+					sletteAvtaleButton.addActionListener(this);
 				}
 				{
 					nyAvtaleButton = new JButton();
 					nyAvtaleButton.setText("Ny avtale");
 					nyAvtaleButton.setFont(new java.awt.Font("Tahoma",0,12));
+					nyAvtaleButton.addActionListener(this);
 				}
 				jPanel1Layout.setHorizontalGroup(jPanel1Layout.createSequentialGroup()
 					.addGroup(jPanel1Layout.createParallelGroup()
-					    .addComponent(endreAvtaleButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(sletteAvtaleButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(nyAvtaleButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+					    .addComponent(endreAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE)
+					    .addComponent(sletteAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE)
+					    .addComponent(nyAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup()
-					    .addComponent(nyttMoeteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(endreMoeteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(avlysMoeteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap());
+					    .addComponent(nyttMoeteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(endreMoeteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(avlysMoeteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)));
 				jPanel1Layout.setVerticalGroup(jPanel1Layout.createSequentialGroup()
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(nyAvtaleButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
@@ -171,7 +180,7 @@ public class kal extends javax.swing.JFrame {
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(avlysMoeteButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(sletteAvtaleButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap());
+					.addContainerGap(56, 56));
 			}
 			{
 				ulestLAbel = new JLabel();
@@ -680,37 +689,77 @@ public class kal extends javax.swing.JFrame {
 					jList1.setPreferredSize(new java.awt.Dimension(155, 91));
 				}
 			}
-			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
-				.addContainerGap(12, 12)
-				.addGroup(thisLayout.createParallelGroup()
-				    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 197, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(ulestLAbel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
-				.addGap(27)
-				.addGroup(thisLayout.createParallelGroup()
-				    .addComponent(jPanel2, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 512, GroupLayout.PREFERRED_SIZE)
-				    .addGroup(thisLayout.createSequentialGroup()
-				        .addGap(62)
-				        .addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap(72, 72));
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
-				.addContainerGap(12, 12)
-				.addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap()
+				.addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 				.addGroup(thisLayout.createParallelGroup()
-				    .addComponent(jPanel2, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE)
 				    .addGroup(thisLayout.createSequentialGroup()
+				        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE))
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGap(12)
 				        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
 				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap(63, 63));
+				.addContainerGap(63, Short.MAX_VALUE));
+			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
+				.addContainerGap()
+				.addGroup(thisLayout.createParallelGroup()
+				    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+				        .addGap(97))
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+				        .addGap(32)))
+				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				.addGroup(thisLayout.createParallelGroup()
+				    .addGroup(thisLayout.createSequentialGroup()
+				        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 512, GroupLayout.PREFERRED_SIZE)
+				        .addGap(0, 0, Short.MAX_VALUE))
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				        .addGap(62)
+				        .addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
+				        .addGap(0, 170, Short.MAX_VALUE)))
+				.addContainerGap(72, 72));
 			pack();
 			this.setSize(828, 392);
 		} catch (Exception e) {
 		    //add your error handling code here
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if(evt.getSource() == nyAvtaleButton){
+			nyAvtale nyAvtale = new nyAvtale();
+			nyAvtale.show();
+			hide();
+		}
+		else if(evt.getSource() == nyttMoeteButton){
+			nyttMoete nyttMoete = new nyttMoete();
+			nyttMoete.show();
+			hide();
+		}
+		else if(evt.getSource() == endreAvtaleButton){
+			endreAvtale endreAvtale = new endreAvtale();
+			endreAvtale.show();
+			hide();
+		}
+		else if(evt.getSource() == endreMoeteButton){
+			endreMoete endreMoete = new endreMoete();
+			endreMoete.show();
+			hide();
+		}
+		else if(evt.getSource() == sletteAvtaleButton){
+			
+		}
+		else if(evt.getSource() == avlysMoeteButton){
+			avlysMoete avlysMoete = new avlysMoete();
+			avlysMoete.show();
+			hide();
 		}
 	}
 

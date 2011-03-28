@@ -1,7 +1,15 @@
 package no.ntnu.fp.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentListener;
+import java.awt.event.ContainerListener;
+
 import javax.swing.GroupLayout;
+
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -11,7 +19,7 @@ import javax.swing.LayoutStyle;
 
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
-
+import javax.swing.event.AncestorListener;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -25,7 +33,7 @@ import javax.swing.SwingUtilities;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class innlogging extends javax.swing.JFrame {
+public class innlogging extends javax.swing.JFrame implements ActionListener{
 
 	{
 		//Set Look & Feel
@@ -57,6 +65,7 @@ public class innlogging extends javax.swing.JFrame {
 		});
 	}
 	
+
 	public innlogging() {
 		super();
 		initGUI();
@@ -84,6 +93,7 @@ public class innlogging extends javax.swing.JFrame {
 					loggInnButton = new JButton();
 					loggInnButton.setText("Logg inn");
 					loggInnButton.setFont(new java.awt.Font("Tahoma",0,12));
+					loggInnButton.addActionListener(this);
 				}
 				{
 					brukernavnLabel = new JLabel();
@@ -123,23 +133,23 @@ public class innlogging extends javax.swing.JFrame {
 				kalendersystemLabel.setText("Kalendersystem");
 				kalendersystemLabel.setFont(new java.awt.Font("Tahoma",1,16));
 			}
-			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
-				.addContainerGap(41, 41)
-				.addGroup(thisLayout.createParallelGroup()
-				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
-				        .addGap(0, 138, Short.MAX_VALUE))
-				    .addGroup(thisLayout.createSequentialGroup()
-				        .addGap(68)
-				        .addComponent(kalendersystemLabel, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
-				        .addGap(0, 120, Short.MAX_VALUE)))
-				.addContainerGap());
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap(27, 27)
 				.addComponent(kalendersystemLabel, GroupLayout.PREFERRED_SIZE, 18, GroupLayout.PREFERRED_SIZE)
-				.addGap(31)
+				.addGap(35)
 				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(91, Short.MAX_VALUE));
+				.addContainerGap(101, Short.MAX_VALUE));
+			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
+				.addContainerGap(43, 43)
+				.addGroup(thisLayout.createParallelGroup()
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)
+				        .addGap(0, 16, Short.MAX_VALUE))
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				        .addGap(66)
+				        .addComponent(kalendersystemLabel, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+				        .addGap(0, 0, Short.MAX_VALUE)))
+				.addContainerGap(132, 132));
 			pack();
 			setSize(400, 300);
 		} catch (Exception e) {
@@ -148,4 +158,15 @@ public class innlogging extends javax.swing.JFrame {
 		}
 	}
 
+
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if(evt.getSource() == loggInnButton){
+			kal kal = new kal();
+			kal.show();
+			dispose();
+		}
+		
+	}
+	
 }

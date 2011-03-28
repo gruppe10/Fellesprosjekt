@@ -1,4 +1,8 @@
 package no.ntnu.fp.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -24,7 +28,8 @@ import javax.swing.SwingUtilities;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class avlysMoete extends javax.swing.JFrame {
+public class avlysMoete extends javax.swing.JFrame implements ActionListener{
+	
 	private JLabel avlysMoete;
 	private JPanel jPanel1;
 	private JButton avbrytButton;
@@ -89,11 +94,13 @@ public class avlysMoete extends javax.swing.JFrame {
 					meldAvbudButton = new JButton();
 					meldAvbudButton.setText("Meld avbud");
 					meldAvbudButton.setFont(new java.awt.Font("Tahoma",0,12));
+					meldAvbudButton.addActionListener(this);
 				}
 				{
 					avbrytButton = new JButton();
 					avbrytButton.setText("Avbryt");
 					avbrytButton.setFont(new java.awt.Font("Tahoma",0,12));
+					avbrytButton.addActionListener(this);
 				}
 				jPanel1Layout.setVerticalGroup(jPanel1Layout.createSequentialGroup()
 						.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -147,6 +154,22 @@ public class avlysMoete extends javax.swing.JFrame {
 		    //add your error handling code here
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if(evt.getSource() == meldAvbudButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+			//gi beskjed til møteleder om at man ikke kan delta
+		}
+		else if(evt.getSource() == avbrytButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+		}
+		
 	}
 
 }

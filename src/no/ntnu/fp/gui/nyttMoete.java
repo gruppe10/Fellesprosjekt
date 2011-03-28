@@ -1,4 +1,8 @@
 package no.ntnu.fp.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -33,7 +37,8 @@ import javax.swing.SwingUtilities;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class nyttMoete extends javax.swing.JFrame {
+public class nyttMoete extends javax.swing.JFrame implements ActionListener{
+	
 	private JLabel nyttMoeteLabel;
 	private JLabel datoLabel;
 	private JTextField headerTextField;
@@ -112,6 +117,7 @@ public class nyttMoete extends javax.swing.JFrame {
 				fjenDeltakerButton = new JButton();
 				fjenDeltakerButton.setText("Fjern deltaker");
 				fjenDeltakerButton.setFont(new java.awt.Font("Tahoma",0,12));
+				fjenDeltakerButton.addActionListener(this);
 			}
 			{
 				ListModel deltakereListModel = 
@@ -125,6 +131,7 @@ public class nyttMoete extends javax.swing.JFrame {
 				deltakerButton = new JToggleButton();
 				deltakerButton.setText("Vis deltakeres kalendere");
 				deltakerButton.setFont(new java.awt.Font("Tahoma",0,12));
+				deltakerButton.addActionListener(this);
 			}
 			{
 				ComboBoxModel MøteromModel = 
@@ -174,11 +181,13 @@ public class nyttMoete extends javax.swing.JFrame {
 				lagreButton = new JButton();
 				lagreButton.setText("Send innkallelse og lagre");
 				lagreButton.setFont(new java.awt.Font("Tahoma",0,12));
+				lagreButton.addActionListener(this);
 			}
 			{
 				avbrytButton = new JButton();
 				avbrytButton.setText("Avbryt");
 				avbrytButton.setFont(new java.awt.Font("Tahoma",0,12));
+				avbrytButton.addActionListener(this);
 			}
 			{
 				datoField = new JTextField();
@@ -231,43 +240,37 @@ public class nyttMoete extends javax.swing.JFrame {
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(lagreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
 				.addContainerGap());
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap()
 				.addGroup(thisLayout.createParallelGroup()
-				    .addGroup(thisLayout.createSequentialGroup()
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGroup(thisLayout.createParallelGroup()
-				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addGroup(thisLayout.createParallelGroup()
-				                    .addComponent(deltakereLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-				                    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                        .addComponent(moeteromLabel, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-				                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))
-				                    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                        .addComponent(tidLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				                        .addGap(51))
-				                    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                        .addComponent(headerLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-				                        .addGap(38))
-				                    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                        .addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				                        .addGap(51)))
-				                .addComponent(fjenDeltakerButton, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE))
-				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(lagreButton, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
-				                .addGap(25))
+				            .addComponent(lagreButton, GroupLayout.Alignment.LEADING, 0, 169, Short.MAX_VALUE)
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(nyttMoeteLabel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-				                .addGap(65)))
+				                .addGap(0, 54, Short.MAX_VALUE)))
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				        .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+				        .addGap(122))
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGroup(thisLayout.createParallelGroup()
+				            .addComponent(deltakereLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-				                .addGap(0, 137, Short.MAX_VALUE))
+				                .addComponent(moeteromLabel, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+				                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addPreferredGap(avbrytButton, deltakerButton, LayoutStyle.ComponentPlacement.INDENT)
-				                .addComponent(deltakerButton, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
-				                .addGap(0, 0, Short.MAX_VALUE))))
+				                .addComponent(tidLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				                .addGap(51))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(headerLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+				                .addGap(38))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				                .addGap(51)))
+				        .addComponent(fjenDeltakerButton, 0, 107, Short.MAX_VALUE)
+				        .addComponent(deltakerButton, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE))
 				    .addGroup(thisLayout.createSequentialGroup()
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addComponent(leggTilDeltakerLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
@@ -275,9 +278,6 @@ public class nyttMoete extends javax.swing.JFrame {
 				                .addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 				                .addGap(9)))
 				        .addGroup(thisLayout.createParallelGroup()
-				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(deltakerTextField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-				                .addGap(0, 38, Short.MAX_VALUE))
 				            .addGroup(thisLayout.createSequentialGroup()
 				                .addComponent(beskrivelseTextArea, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
 				                .addGap(0, 0, Short.MAX_VALUE))
@@ -294,6 +294,9 @@ public class nyttMoete extends javax.swing.JFrame {
 				                .addComponent(datoField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 				                .addGap(0, 38, Short.MAX_VALUE))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(deltakerTextField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+				                .addGap(0, 38, Short.MAX_VALUE))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(deltakereList, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
 				                .addGap(0, 56, Short.MAX_VALUE)))
 				        .addGap(167)))
@@ -304,6 +307,32 @@ public class nyttMoete extends javax.swing.JFrame {
 		    //add your error handling code here
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		if(evt.getSource() == fjenDeltakerButton){
+			//fjerne deltaker
+		}
+		else if(evt.getSource() == deltakerButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+			//vis deltakrens kalendere i din egen
+		}
+		else if(evt.getSource() == lagreButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+			//legg til i kalenderen
+			//send møteinnkallelse
+		}
+		else if(evt.getSource() == avbrytButton){
+			kal kal = new kal();
+			kal.show();
+			hide();
+		}
+		
 	}
 
 }
