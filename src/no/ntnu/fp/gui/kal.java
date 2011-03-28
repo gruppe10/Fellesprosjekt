@@ -160,9 +160,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				}
 				jPanel1Layout.setHorizontalGroup(jPanel1Layout.createSequentialGroup()
 					.addGroup(jPanel1Layout.createParallelGroup()
-					    .addComponent(endreAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE)
-					    .addComponent(sletteAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE)
-					    .addComponent(nyAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE))
+					    .addComponent(sletteAvtaleButton, GroupLayout.Alignment.LEADING, 0, 110, Short.MAX_VALUE)
+					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup()
+					        .addComponent(endreAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE)
+					        .addComponent(nyAvtaleButton, GroupLayout.Alignment.LEADING, 0, 101, Short.MAX_VALUE)))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup()
 					    .addComponent(nyttMoeteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE)
@@ -179,7 +180,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(avlysMoeteButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(sletteAvtaleButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					    .addComponent(sletteAvtaleButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(56, 56));
 			}
 			{
@@ -704,16 +705,17 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap(63, Short.MAX_VALUE));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
-				.addContainerGap()
 				.addGroup(thisLayout.createParallelGroup()
-				    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
-				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-				        .addGap(97))
-				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
+				    .addGroup(thisLayout.createSequentialGroup()
+				        .addPreferredGap(jPanel1, ulestLAbel, LayoutStyle.ComponentPlacement.INDENT)
+				        .addGroup(thisLayout.createParallelGroup()
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+				                .addGap(65))
+				            .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
 				        .addGap(32)))
-				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(thisLayout.createSequentialGroup()
 				        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 512, GroupLayout.PREFERRED_SIZE)
@@ -722,9 +724,9 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				        .addGap(62)
 				        .addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 170, Short.MAX_VALUE)))
-				.addContainerGap(72, 72));
+				.addContainerGap(104, 104));
 			pack();
-			this.setSize(828, 392);
+			this.setSize(855, 392);
 		} catch (Exception e) {
 		    //add your error handling code here
 			e.printStackTrace();
