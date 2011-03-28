@@ -40,10 +40,7 @@ public class Mote extends Avtale {
 	}
 	
 	public void setStatus(Person deltaker, Boolean status){
-		if(deltakere.containsKey(deltaker)){
-			deltakere.remove(deltaker);
-			deltakere.put(deltaker, status);
-		}
+		deltakere.put(deltaker, status);
 		
 	}
 }
