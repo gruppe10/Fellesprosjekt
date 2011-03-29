@@ -25,9 +25,11 @@ public class Person {
 	
 	private String passord;
 	
-	private ArrayList<Avtale> Avtaler; //Forel¿big public for test-Œrsaker
+	private ArrayList<Avtale> avtaler;
 	
-	public 
+	public void setAvtaler(ArrayList<Avtale> nAvtaler) {
+		avtaler=nAvtaler;
+	}
 	
 	public String getBrukerNavn() {
 		return brukerNavn;

@@ -9,6 +9,7 @@ public  class Avtale {
 	private String tittel;
 	private String beskrivelse;
 	private Person initiativtaker;
+	private String navn;
 
 	public Avtale(){
 		starttid = sluttid = 0;
@@ -70,6 +71,14 @@ public  class Avtale {
 	public void setInitiativtaker(Person initiativtaker) {
 		this.initiativtaker = initiativtaker;
 		//Oppdater database!
+	}
+
+	public String getNavn() {
+		return navn;
+	}
+
+	public void setNavn(String navn) {
+		this.navn = navn;
 	}
 	
 	
