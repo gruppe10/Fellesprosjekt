@@ -1,6 +1,9 @@
 #Ignorere eclipse shite
+*.log
 .classpath
 .project
 .settings
-db-derby/lib/*/*
-bin
+db-derby*
+bin*
+Kal
+

@@ -6,7 +6,7 @@ package no.ntnu.fp.model.record;
  *   
  * 	 CreateAvtale(Avtale avtale)
  * 	 SelectPerson(int ansattnummer)
- * 	 UpdatePerson(Person person)
+ * 	 UpdatePerson(Avtale Avtale)
  * 	 DeletePerson(int ansattnummer)	
  * 
  */
@@ -23,23 +23,37 @@ public class ActiveAvtale {
 	private static String admin_pwd = "";
 	protected static Connection connection ;
 	
+	
+	@SuppressWarnings("deprecation")
+	private static Date formatDateFrom(Avtale avtale){
+		int dd = avtale.getDatoDag();
+		int mm = avtale.getDatoMnd();
+		int yyyy = avtale.getDatoAar();
+		
+		Date date = new Date(dd, mm, yyyy);
+		return date;
+	}
+	
 	public static void createAvtale(Avtale avtale){
 		PreparedStatement ps = null;
 		try{
 			connect();
 			
 			ps = connection.prepareStatement(
-				"INSERT INTO Person(avtaleid, tittel, starttid, sluttid)" +
-				"VALUES ( ?, ?, ? ,? )" 
+				"INSERT INTO Person(avtaleid, tittel, beskrivelse, dato, starttid, sluttid)" +
+				"VALUES ( ?, ?, ? ,? ,? ,? )" 
 			);
 			ps.setInt(1, avtale.getAvtaleId());
 			ps.setString(2, avtale.getTittel());
-			ps.setInt(3, avtale.getStarttid());
-			ps.setInt(4, avtale.getSluttid());
+			ps.setString(3, avtale.getBeskrivelse());
+			ps.setDate(4, formatDateFrom(avtale));
+			ps.setInt(5, avtale.getStarttid());
+			ps.setInt(6, avtale.getSluttid());
 			
 			
-			boolean det_gikk_bra = ps.execute();
-			if (det_gikk_bra){
+			
+			boolean success = ps.execute();
+			if (success){
 				System.out.println("Det gikk bra!");
 			}
 		}
