@@ -97,6 +97,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 					jScrollPane1.setViewportView(tidTextField);
 					tidTextField.setText("Velg tid");
 					tidTextField.setFont(new java.awt.Font("Tahoma",2,11));
+					tidTextField.getText();
 				}
 			}
 			{
