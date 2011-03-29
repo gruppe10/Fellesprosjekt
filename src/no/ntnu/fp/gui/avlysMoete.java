@@ -84,6 +84,7 @@ public class avlysMoete extends javax.swing.JFrame implements ActionListener{
 					grunnTextArea = new JTextArea();
 					grunnTextArea.setText("Din grunn");
 					grunnTextArea.setFont(new java.awt.Font("Tahoma",2,12));
+					grunnTextArea.getText();
 				}
 				{
 					grunnLabel = new JLabel();

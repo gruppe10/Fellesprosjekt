@@ -30,7 +30,7 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
  * of the functionality, leaving message passing and error handling to this
  * implementation.
  * 
- * @author Sebj¿rn Birkeland and Stein Jakob Nordb¿
+ * @author Sebjørn Birkeland and Stein Jakob Nordbø
  * @see no.ntnu.fp.net.co.Connection
  * @see no.ntnu.fp.net.cl.ClSocket
  */
@@ -73,11 +73,10 @@ public class ConnectionImpl extends AbstractConnection {
      *             If there's an I/O error.
      * @throws java.net.SocketTimeoutException
      *             If timeout expires before connection is completed.
-     * @throws ClException 
      * @see Connection#connect(InetAddress, int)
      */
     public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
-            SocketTimeoutException, ClException {
+            SocketTimeoutException{
         
     	this.remoteAddress = remoteAddress.getHostAddress();
     	this.remotePort = remotePort;
@@ -88,9 +87,19 @@ public class ConnectionImpl extends AbstractConnection {
     	
     	KtnDatagram synRequest = constructInternalPacket(Flag.SYN);
     	
-    	simplySendPacket(synRequest);
+    	try {
+			simplySendPacket(synRequest);
+		} catch (ClException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	this.state = State.SYN_SENT;
-		KtnDatagram recieved = receiveAck();
+		
+    	KtnDatagram recieved = null;
+    	while(recieved == null){
+    		recieved = receiveAck();
+    	}
+    
 		if (recieved.getFlag() == Flag.SYN_ACK){
 			sendAck(recieved, false);
 			state = State.ESTABLISHED;
@@ -111,32 +120,33 @@ public class ConnectionImpl extends AbstractConnection {
         if (this.state != State.CLOSED){
         	throw new IllegalStateException("Cannot accept SYN without being in state CLOSED");
         }
+        
+//       Lytte etter innkommende syn-pakke, og opprett port for denne tilkoblingen
         this.state = State.LISTEN;
         
         KtnDatagram syn = null;
-        try{
-        	syn = receivePacket(true);
-        	
-        }catch (Exception e) {
-			// TODO: handle exception
-		}
+       
+        while(syn == null || syn.getFlag()!=Flag.SYN){
+        	syn = receivePacket(false);
+        }
+     
        
         int newPort = (int)(Math.random() * 10000 + 1);
         ConnectionImpl connection = new ConnectionImpl(newPort);
         usedPorts.put(newPort, true);
         connection.remoteAddress = syn.getSrc_addr();
         connection.remotePort = syn.getSrc_port();
+        connection.state = State.SYN_RCVD;
         
+//      Send synack tilbake til klient. sendAck(true) angir at flagget skal være SYN_ACK
         
-//      Send synack tilbake
-        if (syn.getFlag() != null && syn.getFlag() == Flag.SYN){
-        	connection.state = State.SYN_RCVD;
-        	sendAck(syn, true);
+        sendAck(syn, true);
+        KtnDatagram ack = null;
+        
+        while(ack == null || ack.getFlag() != Flag.ACK){
+        	ack = receiveAck();
         }
-        
-        KtnDatagram ack = receiveAck();
         connection.state = State.ESTABLISHED;
-        
 		return connection;
         
     }
@@ -154,13 +164,16 @@ public class ConnectionImpl extends AbstractConnection {
      * @see no.ntnu.fp.net.co.Connection#send(String)
      */
     public void send(String msg) throws ConnectException, IOException {
-           
+        if(msg==null) return; 
+        
     	KtnDatagram toSend = constructDataPacket(msg);
         KtnDatagram ack = null;
         
-        while (!isValid(ack)){
+        while (ack == null || !isValid(ack)){
         	ack = sendDataPacketWithRetransmit(toSend);
-        }    
+        }
+        lastDataPacketSent = toSend;
+        lastValidPacketReceived = ack;
     }
 
     /**
@@ -177,15 +190,17 @@ public class ConnectionImpl extends AbstractConnection {
         }
         
         KtnDatagram received = null;
-        try {
-        	received = receivePacket(true);
-        }catch (Exception e) {
+        while (received == null || !isValid(received)){
+        	try {
+        		received = receivePacket(false);
+        	}catch (Exception e) {
 			// TODO: handle exception
-		}
-        if (received.getPayload() != null){
-        	return (String) received.getPayload();
+        	}
         }
-        return null;
+        
+        lastValidPacketReceived = received;
+        return ( (received.getPayload() != null) ? (String)received.getPayload() : null);
+       
     }
 
     /**
@@ -193,45 +208,51 @@ public class ConnectionImpl extends AbstractConnection {
      * 
      * @see Connection#close()
      */
+    
     public void close() throws IOException {
         if(this.state != State.ESTABLISHED){
-        	throw new IllegalStateException("Cannot close a connection withouth being connected");
+        	throw new IllegalStateException("Cannot close a connection if not in ESTABLISHED state");
         }
 //        initialisere disconnect
         if(disconnectRequest == null){
         	  KtnDatagram closeRequest = constructInternalPacket(Flag.FIN), ack = null, fin = null;
-        	  while(ack==null) {
+        	  while(ack==null || !isValid(ack)) {
         		  ack = sendDataPacketWithRetransmit(closeRequest);
+        		  this.state = State.FIN_WAIT_1;
         	  }
+        	  
+        	  lastValidPacketReceived = ack;
         	  
         	  this.state = State.FIN_WAIT_2;
         	  
-        	  while(fin == null){
+        	  while(fin == null || !isValid(fin)){
         		  try{
         			  fin = receivePacket(true);
         		  }catch (Exception e) {
-					// TODO: handle exception
 				}
         	  }
+        	  
+        	  lastValidPacketReceived = fin;
         	  
         	  sendAck(fin, false);
         	  this.state = State.TIME_WAIT;
         	  this.state = State.CLOSED;
         }
-//        svare på disconnect
+//        svare på disconnect-request
         else{
         	sendAck(disconnectRequest, false);
-        	this.state = State.CLOSE_WAIT;
+        	state = State.CLOSE_WAIT;
         	
         	KtnDatagram fin = constructInternalPacket(Flag.FIN), finack=null;
         	
-        	while(finack==null){
+        	while(finack==null || !isValid(finack)){
         		finack = sendDataPacketWithRetransmit(fin);
+        		state = State.LAST_ACK;
         	}
         	
-        	this.state = State.CLOSED;
-        	
-        	
+        	lastValidPacketReceived = finack;
+        	state = State.CLOSED;
+        	disconnectRequest = null;        	
         }
         
       
@@ -248,7 +269,10 @@ public class ConnectionImpl extends AbstractConnection {
      * @return true if packet is free of errors, false otherwise.
      */
     protected boolean isValid(KtnDatagram packet) {
-//        Sjekk checksum
-    	
+    	if (packet==null) return false;
+    	long recievedSum = packet.calculateChecksum();
+    	long sentSum = packet.getChecksum();
+//    	Tester om checsummen som ble beregnet før sending er lik den vi beregner nå
+    	return (recievedSum == sentSum) ; 	
     }
 }
