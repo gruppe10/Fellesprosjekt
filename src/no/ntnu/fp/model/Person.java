@@ -5,6 +5,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Date;
 
+import java.util.List;
+
 /**
  * The <code>Person</code> class stores information about a single person.
  * 
@@ -13,7 +15,42 @@ import java.util.Date;
  * @version $Revision: 1.5 $ - $Date: 2005/02/20 14:52:29 $
  */
 public class Person {
+	/**
+	 * VŒr kode
+	 */
 	
+	private String brukerNavn;
+	
+	private int ansattNummer;
+	
+	private String passord;
+	
+	public List<Avtale> Avtaler; //Forel¿big public for test-Œrsaker
+	
+	public String getBrukerNavn() {
+		return brukerNavn;
+	}
+
+	public void setBrukerNavn(String brukerNavn) {
+		this.brukerNavn = brukerNavn;
+	}
+
+	public int getAnsattNummer() {
+		return ansattNummer;
+	}
+
+	public void setAnsattNummer(int ansattNummer) {
+		this.ansattNummer = ansattNummer;
+	}
+
+	public String getPassord() {
+		return passord;
+	}
+
+	public void setPassord(String passord) {
+		this.passord = passord;
+	}
+
 	/**
 	 * This member variable holds the person's name.
 	 */
@@ -39,6 +76,7 @@ public class Person {
 	 * the <code>Group</code> class.
 	 */
 	private PropertyChangeSupport propChangeSupp;
+	
 	
 	/**
 	 * Constant used when calling 
