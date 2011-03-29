@@ -76,6 +76,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	
 	public nyttMoete() {
 		super();
+		
 		initGUI();
 	}
 	
@@ -96,6 +97,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 					jScrollPane1.setViewportView(tidTextField);
 					tidTextField.setText("Velg tid");
 					tidTextField.setFont(new java.awt.Font("Tahoma",2,11));
+					tidTextField.getText();
 				}
 			}
 			{
@@ -312,13 +314,14 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == fjenDeltakerButton){
+//			Kalle på this.slettDeltaker(deltaker)
 			//fjerne deltaker
 		}
 		else if(evt.getSource() == deltakerButton){
 			kal kal = new kal();
 			kal.show();
 			hide();
-			//vis deltakrens kalendere i din egen
+			//vis deltakerens kalendere i din egen
 		}
 		else if(evt.getSource() == lagreButton){
 			kal kal = new kal();
