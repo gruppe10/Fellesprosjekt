@@ -23,7 +23,6 @@ public class ActiveAvtale {
 	private static String admin_pwd = "";
 	protected static Connection connection ;
 	
-	
 	@SuppressWarnings("deprecation")
 	private static Date formatDateFrom(Avtale avtale){
 		int dd = avtale.getDatoDag();
@@ -50,15 +49,14 @@ public class ActiveAvtale {
 			ps.setInt(5, avtale.getStarttid());
 			ps.setInt(6, avtale.getSluttid());
 			
-			
-			
 			boolean success = ps.execute();
 			if (success){
-				System.out.println("Det gikk bra!");
+				System.out.println("Created Avtale!\n");
 			}
 		}
 		catch(SQLException e){
-			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
+			System.out.println("Kan ikke lagre avtalen. Feilmelding:" + e.getMessage());
+			System.out.println(e.getStackTrace());
 		}
 		finally{
 			//if(ps != null) ps.close();
@@ -66,14 +64,8 @@ public class ActiveAvtale {
 	}
 	
 
-	public static void updatePerson(Person person){
-		PreparedStatement ps = null;
-		
-		String navn = person.getName();
-		String brukernavn = person.getBrukerNavn();
-		String passord = person.getPassord();
-		int ansattnr = person.getAnsattNummer();
-		
+	public static void updatePerson(Avtale avtale){
+		PreparedStatement ps = null;		
 		try {
         	connect();
         	if( connection != null){
@@ -82,59 +74,69 @@ public class ActiveAvtale {
 	            		"SET navn= ? , brukernavn = ?, passord = ?" +
 	                    "WHERE ansattnr = ? "
 	            );
-	            ps.setString(1, navn);
-	            ps.setString(2, brukernavn);
-	            ps.setString(3, passord);
-	            ps.setInt(4, ansattnr);
+	            ps.setInt(1, avtale.getAvtaleId());
+				ps.setString(2, avtale.getTittel());
+				ps.setString(3, avtale.getBeskrivelse());
+				ps.setDate(4, formatDateFrom(avtale));
+				ps.setInt(5, avtale.getStarttid());
+				ps.setInt(6, avtale.getSluttid());
         	}
-        	
-            ps.executeUpdate();    
-        }
-		catch (SQLException e){
-        	System.out.println("Kan ikke oppdatere!");
-        	System.out.println("Detaljer:" + e.getMessage());
-        }
-        finally {
-            //if (ps != null) ps.close();
-        }
+        	boolean success = ps.execute();
+			if (success){
+				System.out.println("Updated Avtale!\n");
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Kan ikke oppdatere avtalen. Feilmelding:" + e.getMessage());
+			System.out.println(e.getStackTrace());
+		}
 	}
 	
 	
 	
-	private static Person selectPerson(int ansattnr){
-		Person person = new Person();
-		String navn  = "";
-		String brukernavn = "";
-		String passord = "";
+	private static Avtale selectAvtale(int avtaleid){
+		Avtale avtale = new Avtale();
+		String tittel = "";
+		String beskrivelse = "";
+		int dd = 00;
+		int mm = 00;
+		int yyyy = 0000;
+		int starttid = 0;
+		int sluttid = 0;
 		
 		try{
 			connect();
-			
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT * FROM Person WHERE ansattnr = ? "
+					"SELECT * FROM Avtale WHERE avtaleid = ? "
 			);
-			ps.setInt(1, ansattnr);
+			ps.setInt(1, avtaleid);
 			
 			ResultSet rs = ps.executeQuery(); 
 			if (rs != null){
 				while(rs.next()){
-					navn = rs.getString("navn");
-					brukernavn = rs.getString("brukernavn");
-					passord = rs.getString("passord");
+					tittel = rs.getString("tittel");
+					beskrivelse = rs.getString("beskrivelse");
+					
+					dd = 00;
+					mm = 00;
+					yyyy = 00;
+					
+					starttid = rs.getInt("starttid");
+					sluttid = rs.getInt("Sluttid");
 				}
 			}
 		}
 		catch( SQLException e){
-			System.out.println("Kan ikke finner person med id = " + ansattnr);
+			System.out.println("Kan ikke finner person med id = " + avtaleid);
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
 		
-		person.setAnsattNummer(ansattnr);
-		person.setName(navn);
-		person.setBrukerNavn(brukernavn);
-		person.setPassord(passord);
+		avtale.setBeskrivelse(beskrivelse);
+		avtale.setDato(dd, mm, yyyy);
+		avtale.setSluttid(sluttid);
+		avtale.setStarttid(starttid);
 		
-		return person;
+		return avtale;
 	}
 		
 	private static void deletePerson(int ansattNr) {
@@ -164,56 +166,50 @@ public class ActiveAvtale {
 	}
 	
 	public static void main(String args[]){
-		int ansattnr = 10001;
-		Person person = new Person();
-		person.setAnsattNummer(ansattnr);
-		
-		deletePerson(person.getAnsattNummer());
-		
-		selectPerson(person.getAnsattNummer());
-
+	
+		//test-iciles
 	}
 	
 	
 	
-
-
-	private void testUpdatePerson(){
-		int ansattnr = 10001;
-		String navn = "Martin";
-		String nyttNavn = "Per-Donald";
-		Person person = new Person();
-		person.setAnsattNummer(ansattnr);
-		
-		//Hente ut person 10001 som allerede ligger inne
-		Person orginalPerson = selectPerson(person.getAnsattNummer());
-		System.out.println("Orginalt navn: " + orginalPerson.getName());
-		
-		//oppdatere ny person
-		orginalPerson.setName(nyttNavn);
-		updatePerson(orginalPerson);
-		Person oppdatertPerson = selectPerson(orginalPerson.getAnsattNummer());
-		System.out.println("Nytt navn:" + oppdatertPerson.getName());
-	}
-	
-	
-	private void testCreatePerson(){
-		Person person = new Person();
-		person.setAnsattNummer(10004);
-		person.setName("Martin");
-		person.setBrukerNavn("martin");
-		person.setPassord("1234");
-		
-		createPerson(person);
-		
-		Person nyeperson = selectPerson(person.getAnsattNummer());
-		System.out.println(nyeperson.getName());
-	}
-	
-	
-	private void testSelectPerson(){
-		int ansattnr = 10001;
-		Person testPerson  = selectPerson(ansattnr);
-		System.out.println(testPerson.getName());
-	}
+//  Uncompleted test
+//
+//	private void testUpdatePerson(){
+//		int ansattnr = 10001;
+//		String navn = "Martin";
+//		String nyttNavn = "Per-Donald";
+//		Person person = new Person();
+//		person.setAnsattNummer(ansattnr);
+//		
+//		//Hente ut person 10001 som allerede ligger inne
+//		Person orginalPerson = selectPerson(person.getAnsattNummer());
+//		System.out.println("Orginalt navn: " + orginalPerson.getName());
+//		
+//		//oppdatere ny person
+//		orginalPerson.setName(nyttNavn);
+//		updatePerson(orginalPerson);
+//		Person oppdatertPerson = selectPerson(orginalPerson.getAnsattNummer());
+//		System.out.println("Nytt navn:" + oppdatertPerson.getName());
+//	}
+//	
+//	
+//	private void testCreatePerson(){
+//		Person person = new Person();
+//		person.setAnsattNummer(10004);
+//		person.setName("Martin");
+//		person.setBrukerNavn("martin");
+//		person.setPassord("1234");
+//		
+//		createPerson(person);
+//		
+//		Person nyeperson = selectPerson(person.getAnsattNummer());
+//		System.out.println(nyeperson.getName());
+//	}
+//	
+//	
+//	private void testSelectPerson(){
+//		int ansattnr = 10001;
+//		Person testPerson  = selectPerson(ansattnr);
+//		System.out.println(testPerson.getName());
+//	}
 }
