@@ -124,8 +124,6 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 		// fjerne fra kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){
-			kal kal = new kal();
-			kal.show();
 			hide();
 		}
 	}
