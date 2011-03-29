@@ -2,18 +2,17 @@
  *  @author = Martin  /flex
  */ 
  
- $ cd <path to db derby>/lib 
- $ java -jar derbyrun.jar ij
+ $ cd db-derby
+ $ java -jar lib/derbyrun.jar ij
  > connect 'jdbc:derby:<DatabaseNavn>;create=<true eller false>;';
- >> run <scriptnavn>.sql
+ >> run '<scriptnavn>.sql';
  >> <queries>
  >> exit;
  > exit;
  
  eksempel:
- $ java -jar derbyrun.jar ij;
- > connect 'jdbc:derby:kalender;create=true;';
- >> create table personer(name varchar(20), aler int(3));
- >> select * from personer;
+ $ java -jar lib/derbyrun.jar ij;
+ > connect 'jdbc:derby:kalender;create=true';
+ >> run 'create_db.sql';
  >> exit;
  > exit;
