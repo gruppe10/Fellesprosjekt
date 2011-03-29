@@ -10,6 +10,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import no.ntnu.fp.net.admin.Log;
+import no.ntnu.fp.net.cl.ClException;
 import no.ntnu.fp.net.co.Connection;
 
 /**
@@ -27,8 +28,9 @@ public class TestCoClient {
 
   /**
    * Program Entry Point.
+ * @throws ClException 
    */
-  public static void main (String args[]){
+  public static void main (String args[]) throws ClException{
 
     // Set up log
     Log log = new Log();
