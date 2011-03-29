@@ -3,3 +3,4 @@
 .project
 .settings
 db-derby/lib/*/*
+bin
