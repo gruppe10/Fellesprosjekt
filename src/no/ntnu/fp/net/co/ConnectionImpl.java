@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.cl.ClException;
@@ -30,7 +30,7 @@ import no.ntnu.fp.net.cl.KtnDatagram.Flag;
  * of the functionality, leaving message passing and error handling to this
  * implementation.
  * 
- * @author Sebj¿rn Birkeland and Stein Jakob Nordb¿
+ * @author Sebjørn Birkeland and Stein Jakob Nordbø
  * @see no.ntnu.fp.net.co.Connection
  * @see no.ntnu.fp.net.cl.ClSocket
  */
@@ -73,11 +73,10 @@ public class ConnectionImpl extends AbstractConnection {
      *             If there's an I/O error.
      * @throws java.net.SocketTimeoutException
      *             If timeout expires before connection is completed.
-     * @throws ClException 
      * @see Connection#connect(InetAddress, int)
      */
     public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
-            SocketTimeoutException, ClException {
+            SocketTimeoutException{
         
     	this.remoteAddress = remoteAddress.getHostAddress();
     	this.remotePort = remotePort;
@@ -88,7 +87,12 @@ public class ConnectionImpl extends AbstractConnection {
     	
     	KtnDatagram synRequest = constructInternalPacket(Flag.SYN);
     	
-    	simplySendPacket(synRequest);
+    	try {
+			simplySendPacket(synRequest);
+		} catch (ClException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	this.state = State.SYN_SENT;
 		
     	KtnDatagram recieved = null;
