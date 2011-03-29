@@ -347,9 +347,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			hide();
 		}
 		else if(evt.getSource() == avlysButton){
-			kal kal = new kal();
-			kal.show();
-			hide();
+			slett slett = new slett();
+			slett.show();
 			//fjerne fra kalenderene
 			//gi beskjed til deltakrne
 		}
