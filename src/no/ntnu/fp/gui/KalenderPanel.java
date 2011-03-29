@@ -1,21 +1,24 @@
+
 package no.ntnu.fp.gui;
+
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.util.Calendar;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.JTableHeader;
-import javax.swing.JComponent;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.Avtale;
+import java.util.List;
+import java.util.ArrayList;
 
 
 /** 
@@ -26,10 +29,36 @@ public class KalenderPanel extends JPanel {
     
 	
 	public KalenderPanel() {
-        super(new GridLayout(1,0));
+		
+		super(new GridLayout(1,0));
+		
+		Calendar inDate = Calendar.getInstance();
+				
+		int ukedagint=inDate.get(Calendar.DAY_OF_WEEK)-2;
+		
+		
+		System.out.println(ukedagint);
+        
+      
 
         final String[] dayNames = 
-        {"Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag","Søndag"};
+        {
+        		"Mandag ",
+        		"Tirsdag ",
+        		"Onsdag ",
+        		"Torsdag ",
+        		"Fredag ",
+        		"L¿rdag ",
+        		"S¿ndag "};
+        
+        inDate.add(Calendar.DAY_OF_MONTH, -ukedagint);
+        dayNames[0]=dayNames[0]+inDate.get(Calendar.DAY_OF_MONTH);
+        
+        for (int i=1; i<7; i++) {
+        	inDate.add(Calendar.DAY_OF_MONTH, 1);
+            dayNames[i]=dayNames[i]+inDate.get(Calendar.DAY_OF_MONTH);
+        }
+        
 
         final Object[][] data = {
 	    {"","","","","","",""}, //8
@@ -116,11 +145,19 @@ public class KalenderPanel extends JPanel {
      * event-dispatching thread.
      */
     private static void createAndShowGUI() {
+    	
         //Create and set up the window.
         JFrame frame = new JFrame("KalenderPanelTestWindow");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
+        Person p= new Person();
+        ArrayList<Avtale> Avtaler = new ArrayList<Avtale>();
+        Avtale avtale1 = new Avtale();
+        p.setAvtaler(Avtaler);
+        
+        
+        
         KalenderPanel newContentPane = new KalenderPanel();
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
