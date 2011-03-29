@@ -31,6 +31,11 @@ public class Person {
 		avtaler=nAvtaler;
 	}
 	
+
+	public ArrayList<Avtale> getAvtaler() {
+		return avtaler;
+	}
+	
 	public String getBrukerNavn() {
 		return brukerNavn;
 	}

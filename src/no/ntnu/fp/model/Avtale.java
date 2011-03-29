@@ -1,11 +1,13 @@
 package no.ntnu.fp.model;
 
-import java.util.Date;
+import java.util.Calendar;
 
 public  class Avtale {
 
 	private int starttid, sluttid;
-	private Date dato;
+	private int datoDag;
+	private int datoMnd;
+	private int datoAar;
 	private String tittel;
 	private String beskrivelse;
 	private Person initiativtaker;
@@ -13,7 +15,7 @@ public  class Avtale {
 
 	public Avtale(){
 		starttid = sluttid = 0;
-		dato = null;
+		
 		tittel = beskrivelse = null;
 		initiativtaker = null;
 		//Oppdater database!
@@ -37,12 +39,20 @@ public  class Avtale {
 		//Oppdater database!
 	}
 
-	public Date getDato() {
-		return dato;
+	public int getDatoDag() {
+		return datoDag;
 	}
-
-	public void setDato(Date dato) {
-		this.dato = dato;
+	public int getDatoMnd() {
+		return datoMnd;
+	}
+	public int getDatoAar() {
+		return datoAar;
+	}
+	
+	public void setDato(int dag, int mnd, int aar) {
+		datoDag=dag;
+		datoMnd=mnd;
+		datoAar=aar;
 		//Oppdater database!
 	}
 
@@ -81,6 +91,9 @@ public  class Avtale {
 		this.navn = navn;
 	}
 	
+	public String toString() {
+		return navn;
+	}
 	
 	
 	
