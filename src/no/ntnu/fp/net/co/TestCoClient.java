@@ -57,11 +57,11 @@ public class TestCoClient {
       e.printStackTrace();
     }
     catch (UnknownHostException e){
-      Log.writeToLog(e.getMessage(),"TestApplication");
+      Log.writeToLog(e.getMessage(),"TestApplication2");
       e.printStackTrace();
     }
     catch (IOException e){
-      Log.writeToLog(e.getMessage(),"TestApplication");
+      Log.writeToLog(e.getMessage(),"TestApplication3");
       e.printStackTrace();
     }
 

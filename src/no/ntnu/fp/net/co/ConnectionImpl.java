@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.cl.ClException;
@@ -85,7 +84,8 @@ public class ConnectionImpl extends AbstractConnection {
     		throw new IllegalStateException("Object cannot initialize contact with another when not in CLOSED state");
     	}
     	
-    	KtnDatagram synRequest = constructInternalPacket(Flag.SYN);
+    	KtnDatagram synRequest = null;
+    	synRequest = constructInternalPacket(Flag.SYN);
     	
     	try {
 			simplySendPacket(synRequest);
@@ -99,7 +99,8 @@ public class ConnectionImpl extends AbstractConnection {
     	while(recieved == null){
     		recieved = receiveAck();
     	}
-    
+    	this.remotePort = receiveAck().getSrc_port();
+    	
 		if (recieved.getFlag() == Flag.SYN_ACK){
 			sendAck(recieved, false);
 			state = State.ESTABLISHED;
@@ -125,15 +126,17 @@ public class ConnectionImpl extends AbstractConnection {
         this.state = State.LISTEN;
         
         KtnDatagram syn = null;
-       
-        while(syn == null || syn.getFlag()!=Flag.SYN){
+        System.out.println("22ergergergerge");
+
+        while(syn == null || syn.getFlag()!=Flag.SYN || !isValid(syn)){
+        	System.out.println("fewfew");
+
         	syn = receivePacket(false);
+        	
         }
-     
-       
-        int newPort = (int)(Math.random() * 10000 + 1);
-        ConnectionImpl connection = new ConnectionImpl(newPort);
-        usedPorts.put(newPort, true);
+        System.out.println("1ergergergerge");
+        ConnectionImpl connection = new ConnectionImpl(myPort);
+        usedPorts.put(myPort, true);
         connection.remoteAddress = syn.getSrc_addr();
         connection.remotePort = syn.getSrc_port();
         connection.state = State.SYN_RCVD;
@@ -141,6 +144,8 @@ public class ConnectionImpl extends AbstractConnection {
 //      Send synack tilbake til klient. sendAck(true) angir at flagget skal være SYN_ACK
         
         sendAck(syn, true);
+      
+        
         KtnDatagram ack = null;
         
         while(ack == null || ack.getFlag() != Flag.ACK){
