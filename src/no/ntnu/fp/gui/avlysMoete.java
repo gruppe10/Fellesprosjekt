@@ -172,8 +172,8 @@ public class avlysMoete extends javax.swing.JFrame implements ActionListener{
 		else if(evt.getSource() == avbrytButton){
 			kal kal = new kal();
 			kal.show();
-		}
-		
-	}
 
+		}
+		hide();
+	}	
 }
