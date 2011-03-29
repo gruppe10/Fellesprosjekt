@@ -48,7 +48,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JList jList1;
 	private JButton nyAvtaleButton;
 	private JLabel ulestLAbel;
-	private JPanel jPanel1;
+	private KalenderPanel kalPan;
 	private JButton avlysMoeteButton;
 	private JButton nyttMoeteButton;
 	private JButton sletteAvtaleButton;
@@ -83,9 +83,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				minKalenderLAbel.setFont(new java.awt.Font("Tahoma",1,16));
 			}
 			{
-				jPanel1 = new JPanel();
-				GroupLayout jPanel1Layout = new GroupLayout((JComponent)jPanel1);
-				jPanel1.setLayout(jPanel1Layout);
+				kalPan = new KalenderPanel();
+				GroupLayout jPanel1Layout = new GroupLayout((JComponent)kalPan);
+				kalPan.setLayout(jPanel1Layout);
+				kalPan.setVisible(true);
 				{
 					nyttMoeteButton = new JButton();
 					nyttMoeteButton.setText("Nytt Møte");
@@ -223,16 +224,16 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGap(12)
-				        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(kalPan, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
 				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap(63, Short.MAX_VALUE));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addGroup(thisLayout.createParallelGroup()
-				    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(kalPan, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
 				    .addGroup(thisLayout.createSequentialGroup()
-				        .addPreferredGap(jPanel1, ulestLAbel, LayoutStyle.ComponentPlacement.INDENT)
+				        .addPreferredGap(kalPan, ulestLAbel, LayoutStyle.ComponentPlacement.INDENT)
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
