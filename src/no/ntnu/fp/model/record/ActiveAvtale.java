@@ -4,7 +4,7 @@ package no.ntnu.fp.model.record;
  *   Methods:
 
  *   
- * 	 CreatePerson(Person person)
+ * 	 CreateAvtale(Avtale avtale)
  * 	 SelectPerson(int ansattnummer)
  * 	 UpdatePerson(Person person)
  * 	 DeletePerson(int ansattnummer)	
@@ -13,29 +13,30 @@ package no.ntnu.fp.model.record;
 
 import java.sql.*;
 
-import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.Avtale;
 
 import org.apache.derby.tools.sysinfo;
 
-public class ActivePerson {
+public class ActiveAvtale {
 	private static String db_url = "Kal";
 	private static String admin_name = "";
 	private static String admin_pwd = "";
 	protected static Connection connection ;
 	
-	public static void createPerson(Person person){
+	public static void createAvtale(Avtale avtale){
 		PreparedStatement ps = null;
 		try{
 			connect();
 			
 			ps = connection.prepareStatement(
-				"INSERT INTO Person(ansattnr, navn, brukernavn, passord)" +
+				"INSERT INTO Person(avtaleid, tittel, starttid, sluttid)" +
 				"VALUES ( ?, ?, ? ,? )" 
 			);
-			ps.setInt(1, person.getAnsattNummer());
-			ps.setString(2, person.getName());
-			ps.setString(3, person.getBrukerNavn());
-			ps.setString(4, person.getPassord());
+			ps.setInt(1, avtale.getAvtaleId());
+			ps.setString(2, avtale.getTittel());
+			ps.setInt(3, avtale.getStarttid());
+			ps.setInt(4, avtale.getSluttid());
+			
 			
 			boolean det_gikk_bra = ps.execute();
 			if (det_gikk_bra){
