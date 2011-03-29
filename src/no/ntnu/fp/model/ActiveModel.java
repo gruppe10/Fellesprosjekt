@@ -9,10 +9,8 @@ public class ActiveModel {
 	private static String admin_name = "";
 	private static String admin_pwd = "";
 	protected static Connection connection ;
-
-
 	
-	public static void createPerson(int ansattnr, String navn, String brukernavn, String passord) throws SQLException{
+	public static void createPerson(Person person){
 		PreparedStatement ps = null;
 		try{
 			connect();
@@ -21,10 +19,10 @@ public class ActiveModel {
 				"INSERT INTO Person(ansattnr, navn, brukernavn, passord)" +
 				"VALUES ( ?, ?, ? ,?)" 
 			);
-			ps.setInt(1, ansattnr);
-			ps.setString(2, navn);
-			ps.setString(3, brukernavn);
-			ps.setString(4, passord);
+			ps.setInt(1, person.getAnsattNummer());
+			ps.setString(2, person.getName());
+			ps.setString(3, person.getBrukerNavn());
+			ps.setString(4, person.getPassord());
 			
 			boolean det_gikk_bra = ps.execute();
 			if (det_gikk_bra){
@@ -35,17 +33,16 @@ public class ActiveModel {
 			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
 		}
 		finally{
-			if(ps != null) ps.close();
+			//if(ps != null) ps.close();
 		}
 	}
 	
-	
-	
-	public static void updatePerson(Person person) throws SQLException{
+
+	public static void updatePerson(Person person){
 		PreparedStatement ps = null;
 		
 		String navn = person.getName();
-		String brukernavn = person.getBrukernavn();
+		String brukernavn = person.getBrukerNavn();
 		String passord = person.getPassord();
 		int ansattnr = person.getAnsattNummer();
 		
@@ -54,7 +51,7 @@ public class ActiveModel {
         	if( connection != null){
 	            ps = connection.prepareStatement(
 	            		"UPDATE Person " + 
-	            		"SET navn = ? , brukernavn = ?, passord = ?" +
+	            		"SET navn= ? , brukernavn = ?, passord = ?" +
 	                    "WHERE ansattnr = ? "
 	            );
 	            ps.setString(1, navn);
@@ -62,6 +59,7 @@ public class ActiveModel {
 	            ps.setString(3, passord);
 	            ps.setInt(4, ansattnr);
         	}
+        	
             ps.executeUpdate();    
         }
 		catch (SQLException e){
@@ -69,7 +67,7 @@ public class ActiveModel {
         	System.out.println("Detaljer:" + e.getMessage());
         }
         finally {
-            if (ps != null) ps.close();
+            //if (ps != null) ps.close();
         }
 	}
 	
@@ -103,13 +101,28 @@ public class ActiveModel {
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
 		
+		person.setAnsattNummer(ansattnr);
 		person.setName(navn);
-		// person.setUsername(brukernavn);
-		// person.setPassword(passord);
+		person.setBrukerNavn(brukernavn);
+		person.setPassord(passord);
 		
 		return person;
 	}
 		
+	private static void deletePerson(int ansattNr) {
+		try {
+			connect();
+			PreparedStatement ps = connection.prepareStatement(
+					"DELETE FROM Person WHERE ansattNR = ?"
+			);
+			ps.setInt(1, ansattNr);
+			ps.execute();	
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static void connect() throws SQLException{
 		try{
 			connection =  DriverManager.getConnection("jdbc:derby:" + db_url, admin_name, admin_pwd );
@@ -123,35 +136,52 @@ public class ActiveModel {
 	}
 	
 	public static void main(String args[]){
+		int ansattnr = 10001;
+		Person person = new Person();
+		person.setAnsattNummer(ansattnr);
+		
+		deletePerson(person.getAnsattNummer());
+		
+		selectPerson(person.getAnsattNummer());
 
+	}
+	
+	
+	
+
+
+	private void testUpdatePerson(){
 		int ansattnr = 10001;
 		String navn = "Martin";
-		String brukernavn = "martin";
-		String passord = "passordfaen";
-		String nyttNavn = "Bob-Kåre";
-		
+		String nyttNavn = "Per-Donald";
 		Person person = new Person();
-		person.setName(nyttNavn);
+		person.setAnsattNummer(ansattnr);
 		
-		updatePerson(person);
+		//Hente ut person 10001 som allerede ligger inne
+		Person orginalPerson = selectPerson(person.getAnsattNummer());
+		System.out.println("Orginalt navn: " + orginalPerson.getName());
 		
-		
+		//oppdatere ny person
+		orginalPerson.setName(nyttNavn);
+		updatePerson(orginalPerson);
+		Person oppdatertPerson = selectPerson(orginalPerson.getAnsattNummer());
+		System.out.println("Nytt navn:" + oppdatertPerson.getName());
 	}
 	
 	
 	private void testCreatePerson(){
-		int ansattnr = 10001;
-		String navn = "Martin";
-		String brukernavn = "martin";
-		String passord = "passordfaen";
+		Person person = new Person();
+		person.setAnsattNummer(10004);
+		person.setName("Martin");
+		person.setBrukerNavn("martin");
+		person.setPassord("1234");
 		
-		try{
-			createPerson(ansattnr, navn, brukernavn, passord);
-		}
-		catch(SQLException e ){
-			System.out.println("Det har skjedd en feil!");
-		}    
+		createPerson(person);
+		
+		Person nyeperson = selectPerson(person.getAnsattNummer());
+		System.out.println(nyeperson.getName());
 	}
+	
 	
 	private void testSelectPerson(){
 		int ansattnr = 10001;
