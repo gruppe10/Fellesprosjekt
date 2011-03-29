@@ -5,7 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Date;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The <code>Person</code> class stores information about a single person.
@@ -25,7 +25,9 @@ public class Person {
 	
 	private String passord;
 	
-	public List<Avtale> Avtaler; //Forel¿big public for test-Œrsaker
+	private ArrayList<Avtale> Avtaler; //Forel¿big public for test-Œrsaker
+	
+	public 
 	
 	public String getBrukerNavn() {
 		return brukerNavn;
