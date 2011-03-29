@@ -36,6 +36,11 @@ import javax.swing.SwingUtilities;
 public class kal extends javax.swing.JFrame implements ActionListener {
 	private JLabel minKalenderLAbel;
 	private JButton endreMoeteButton;
+	private JLabel aarLabel;
+	private JLabel mndLabel;
+	private JLabel ukeLabel;
+	private JButton hoeyreButton;
+	private JButton vensteButton;
 	private KalenderPanel kalenderPanel1;
 	private JScrollPane jScrollPane1;
 	private JList jList1;
@@ -74,6 +79,29 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				minKalenderLAbel = new JLabel();
 				minKalenderLAbel.setText("Min kalender");
 				minKalenderLAbel.setFont(new java.awt.Font("Tahoma",1,16));
+			}
+			{
+				ukeLabel = new JLabel();
+				ukeLabel.setText("Uke");
+				ukeLabel.setFont(new java.awt.Font("Tahoma",0,12));
+			}
+			{
+				mndLabel = new JLabel();
+				mndLabel.setText("Måned");
+				mndLabel.setFont(new java.awt.Font("Tahoma",0,12));
+			}
+			{
+				aarLabel = new JLabel();
+				aarLabel.setText("År");
+				aarLabel.setFont(new java.awt.Font("Tahoma",0,12));
+			}
+			{
+				vensteButton = new JButton();
+				vensteButton.setText("<-");
+			}
+			{
+				hoeyreButton = new JButton();
+				hoeyreButton.setText("->");
 			}
 			{
 				kalenderPanel1 = new KalenderPanel();
@@ -171,11 +199,24 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 0, Short.MAX_VALUE)
-				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE))
+				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+				        .addGap(15))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addComponent(kalenderPanel1, 0, 168, Short.MAX_VALUE)
-				        .addGap(77)))
-				.addContainerGap(69, 69));
+				        .addGroup(thisLayout.createParallelGroup()
+				            .addComponent(vensteButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(hoeyreButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(ukeLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(mndLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(aarLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				        .addComponent(kalenderPanel1, 0, 228, Short.MAX_VALUE)))
+				.addContainerGap(54, 54));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addGroup(thisLayout.createParallelGroup()
 				    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
@@ -187,16 +228,29 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				                .addGap(65))
 				            .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
 				        .addGap(32)))
-				.addGap(56)
+				.addGap(58)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(thisLayout.createSequentialGroup()
 				        .addComponent(kalenderPanel1, GroupLayout.PREFERRED_SIZE, 509, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 0, Short.MAX_VALUE))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addPreferredGap(kalenderPanel1, minKalenderLAbel, LayoutStyle.ComponentPlacement.INDENT)
-				        .addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
-				        .addGap(0, 217, Short.MAX_VALUE)))
-				.addContainerGap(63, 63));
+				        .addGroup(thisLayout.createParallelGroup()
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addPreferredGap(mndLabel, minKalenderLAbel, LayoutStyle.ComponentPlacement.INDENT)
+				                .addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
+				                .addGap(0, 0, Short.MAX_VALUE))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(mndLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+				                .addGap(26)
+				                .addComponent(aarLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				                .addGap(38)
+				                .addComponent(vensteButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+				                .addGap(0, 25, Short.MAX_VALUE)
+				                .addComponent(ukeLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+				                .addGap(18)))
+				        .addComponent(hoeyreButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+				        .addGap(162)))
+				.addContainerGap(61, 61));
 			pack();
 			this.setSize(855, 392);
 		} catch (Exception e) {
@@ -228,7 +282,8 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			hide();
 		}
 		else if(evt.getSource() == sletteAvtaleButton){
-			
+			slett slett = new slett();
+			slett.show();
 		}
 		else if(evt.getSource() == avlysMoeteButton){
 			avlysMoete avlysMoete = new avlysMoete();

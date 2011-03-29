@@ -164,15 +164,14 @@ public class avlysMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == meldAvbudButton){
-			kal kal = new kal();
-			kal.show();
+			slett slett = new slett();
+			slett.show();
 			hide();
 			//gi beskjed til møteleder om at man ikke kan delta
 		}
 		else if(evt.getSource() == avbrytButton){
 			kal kal = new kal();
 			kal.show();
-			hide();
 		}
 		
 	}

@@ -29,7 +29,7 @@ public class KalenderPanel extends JPanel {
         super(new GridLayout(1,0));
 
         final String[] dayNames = 
-        {"Mandag","Tirsdag","Onsdag","Torsdag","Fredag","L¿rdag","S¿ndag"};
+        {"Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag","Søndag"};
 
         final Object[][] data = {
 	    {"","","","","","",""}, //8
