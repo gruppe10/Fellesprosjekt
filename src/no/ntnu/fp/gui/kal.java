@@ -36,19 +36,12 @@ import javax.swing.SwingUtilities;
 public class kal extends javax.swing.JFrame implements ActionListener {
 	private JLabel minKalenderLAbel;
 	private JButton endreMoeteButton;
-	private JLabel jLabel1;
-	private JPanel jPanel2;
-	private JLabel jLabel6;
-	private JLabel jLabel5;
-	private JLabel jLabel4;
-	private JLabel jLabel3;
-	private JLabel jLabel2;
-	private JLabel datoMandagLabel;
+	private KalenderPanel kalenderPanel1;
 	private JScrollPane jScrollPane1;
 	private JList jList1;
 	private JButton nyAvtaleButton;
 	private JLabel ulestLAbel;
-	private KalenderPanel kalPan;
+	private JPanel jPanel1;
 	private JButton avlysMoeteButton;
 	private JButton nyttMoeteButton;
 	private JButton sletteAvtaleButton;
@@ -83,10 +76,13 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				minKalenderLAbel.setFont(new java.awt.Font("Tahoma",1,16));
 			}
 			{
-				kalPan = new KalenderPanel();
-				GroupLayout jPanel1Layout = new GroupLayout((JComponent)kalPan);
-				kalPan.setLayout(jPanel1Layout);
-				kalPan.setVisible(true);
+				kalenderPanel1 = new KalenderPanel();
+			}
+			{
+				jPanel1 = new KalenderPanel();
+				GroupLayout jPanel1Layout = new GroupLayout((JComponent)jPanel1);
+				jPanel1.setLayout(jPanel1Layout);
+				jPanel1.setVisible(true);
 				{
 					nyttMoeteButton = new JButton();
 					nyttMoeteButton.setText("Nytt Møte");
@@ -154,56 +150,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				ulestLAbel.setFont(new java.awt.Font("Tahoma",0,14));
 			}
 			{
-				jPanel2 = new JPanel();
-				GroupLayout jPanel2Layout = new GroupLayout((JComponent)jPanel2);
-				jPanel2.setLayout(jPanel2Layout);
-				{
-					datoMandagLabel = new JLabel();
-				}
-				{
-					jLabel1 = new JLabel();
-				}
-				{
-					jLabel2 = new JLabel();
-				}
-				{
-					jLabel3 = new JLabel();
-				}
-				{
-					jLabel4 = new JLabel();
-				}
-				{
-					jLabel5 = new JLabel();
-				}
-				{
-					jLabel6 = new JLabel();
-				}
-				jPanel2Layout.setVerticalGroup(jPanel2Layout.createSequentialGroup()
-					.addGap(12)
-					.addGroup(jPanel2Layout.createParallelGroup()
-					    .addComponent(datoMandagLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabel2, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabel3, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabel4, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabel5, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabel6, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 198, 198));
-				jPanel2Layout.setHorizontalGroup(jPanel2Layout.createSequentialGroup()
-					.addGap(62, 62, 62)
-					.addComponent(datoMandagLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-					.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addComponent(jLabel3, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-					.addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addComponent(jLabel5, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE));
-			}
-			{
 				jScrollPane1 = new JScrollPane();
 				{
 					ListModel jList1Model = 
@@ -218,38 +164,39 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap()
 				.addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				.addGap(12)
 				.addGroup(thisLayout.createParallelGroup()
-				    .addGroup(thisLayout.createSequentialGroup()
-				        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 257, GroupLayout.PREFERRED_SIZE))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addGap(12)
-				        .addComponent(kalPan, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
 				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap(63, Short.MAX_VALUE));
+				        .addGap(0, 0, Short.MAX_VALUE)
+				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE))
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				        .addComponent(kalenderPanel1, 0, 168, Short.MAX_VALUE)
+				        .addGap(77)))
+				.addContainerGap(69, 69));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addGroup(thisLayout.createParallelGroup()
-				    .addComponent(kalPan, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(jPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
 				    .addGroup(thisLayout.createSequentialGroup()
-				        .addPreferredGap(kalPan, ulestLAbel, LayoutStyle.ComponentPlacement.INDENT)
+				        .addPreferredGap(jPanel1, ulestLAbel, LayoutStyle.ComponentPlacement.INDENT)
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
 				                .addGap(65))
 				            .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))
 				        .addGap(32)))
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				.addGap(56)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(thisLayout.createSequentialGroup()
-				        .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, 512, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(kalenderPanel1, GroupLayout.PREFERRED_SIZE, 509, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 0, Short.MAX_VALUE))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addGap(62)
+				        .addPreferredGap(kalenderPanel1, minKalenderLAbel, LayoutStyle.ComponentPlacement.INDENT)
 				        .addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE)
-				        .addGap(0, 170, Short.MAX_VALUE)))
-				.addContainerGap(104, 104));
+				        .addGap(0, 217, Short.MAX_VALUE)))
+				.addContainerGap(63, 63));
 			pack();
 			this.setSize(855, 392);
 		} catch (Exception e) {
