@@ -49,7 +49,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JComboBox sutComboBox1;
 	private JComboBox stComboBox1;
 	private JMenuItem jMenuItem1;
-	private JComboBox Møterom;
+	private JComboBox Moeterom;
 	private JButton avbrytButton;
 	private JButton lagreButton;
 	private JLabel beskrivelseLabel;
@@ -88,7 +88,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			{
 				nyttMoeteLabel = new JLabel();
-				nyttMoeteLabel.setText("Nytt møte");
+				nyttMoeteLabel.setText("Nytt moete");
 				nyttMoeteLabel.setFont(new java.awt.Font("Tahoma",1,16));
 			}
 			{
@@ -98,7 +98,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			{
 				beskrivelseTextArea = new JTextArea();
-				beskrivelseTextArea.setText("Beskrivelse av møte");
+				beskrivelseTextArea.setText("Beskrivelse av moete");
 				beskrivelseTextArea.setFont(new java.awt.Font("Tahoma",2,11));
 				beskrivelseTextArea.getText();
 			}
@@ -153,17 +153,17 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				//skal fylles inn med de deltaker som blir valgt til dette moete
 			}
 			{
-				ComboBoxModel MøteromModel = 
+				ComboBoxModel MoeteromModel = 
 					new DefaultComboBoxModel(
 							new String[] { "Item One", "Item Two" });
-				Møterom = new JComboBox();
-				Møterom.setModel(MøteromModel);
-				Møterom.setFont(new java.awt.Font("Tahoma",2,11));
-				Møterom.setToolTipText("møterom");
-				//liste over alle tilgjengelige møterom i det gitte tidspunktet
+				Moeterom = new JComboBox();
+				Moeterom.setModel(MoeteromModel);
+				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
+				Moeterom.setToolTipText("moeterom");
+				//liste over alle tilgjengelige moeterom i det gitte tidspunktet
 				{
 					jMenuItem1 = new JMenuItem();
-					Møterom.add(jMenuItem1);
+					Moeterom.add(jMenuItem1);
 					jMenuItem1.setText("jMenuItem1");
 				}
 			}
@@ -184,7 +184,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			{
 				moeteromLabel = new JLabel();
-				moeteromLabel.setText("Møterom:");
+				moeteromLabel.setText("Moeterom:");
 				moeteromLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
@@ -253,7 +253,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				    .addComponent(sluttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-				    .addComponent(Møterom, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(Moeterom, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(moeteromLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(thisLayout.createParallelGroup()
@@ -308,7 +308,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addComponent(beskrivelseTextArea, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 108, GroupLayout.PREFERRED_SIZE)
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(Møterom, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				                .addComponent(Moeterom, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				                .addGap(40))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(sutComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -356,7 +356,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			kal.show();
 			hide();
 			//legg til i kalenderen
-			//send møteinnkallelse
+			//send moeteinnkallelse
 		}
 		else if(evt.getSource() == avbrytButton){
 			kal kal = new kal();
