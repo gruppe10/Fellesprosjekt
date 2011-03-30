@@ -2,6 +2,7 @@ package no.ntnu.fp.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
@@ -41,7 +42,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JLabel ukeLabel;
 	private JButton hoeyreButton;
 	private JButton vensteButton;
-	private KalenderPanel kalenderPanel1;
 	private JScrollPane jScrollPane1;
 	private JList jList1;
 	private JButton nyAvtaleButton;
@@ -82,7 +82,9 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			}
 			{
 				ukeLabel = new JLabel();
-				ukeLabel.setText("Uke");
+				 Calendar d = Calendar.getInstance();
+			       d.get(Calendar.WEEK_OF_YEAR);
+				ukeLabel.setText("Uke ");
 				ukeLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
@@ -104,10 +106,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				hoeyreButton.setText("->");
 			}
 			{
-				kalenderPanel1 = new KalenderPanel();
-			}
-			{
-				jPanel1 = new KalenderPanel();
+				jPanel1 = new KalenderPanel(null, null);
 				GroupLayout jPanel1Layout = new GroupLayout((JComponent)jPanel1);
 				jPanel1.setLayout(jPanel1Layout);
 				jPanel1.setVisible(true);
@@ -214,8 +213,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(aarLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
-				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				        .addComponent(kalenderPanel1, 0, 228, Short.MAX_VALUE)))
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)))
 				.addContainerGap(54, 54));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addGroup(thisLayout.createParallelGroup()
@@ -231,7 +229,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				.addGap(58)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(thisLayout.createSequentialGroup()
-				        .addComponent(kalenderPanel1, GroupLayout.PREFERRED_SIZE, 509, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 0, Short.MAX_VALUE))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGroup(thisLayout.createParallelGroup()
