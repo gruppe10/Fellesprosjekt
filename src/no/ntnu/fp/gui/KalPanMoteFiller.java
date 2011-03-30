@@ -1,8 +1,8 @@
 package no.ntnu.fp.gui;
 
 import no.ntnu.fp.model.Avtale;
-
-public class KalPanMoteFiller {
+import no.ntnu.fp.model.Mote;
+public class KalPanMoteFiller extends Mote{
 
 
 	private Avtale avtale;

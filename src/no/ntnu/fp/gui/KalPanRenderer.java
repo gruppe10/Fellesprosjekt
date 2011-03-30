@@ -12,13 +12,13 @@ public class KalPanRenderer extends DefaultTableCellRenderer{
 	{
 		Component cell = super.getTableCellRendererComponent
         (table, value, isSelected, hasFocus, row, column);
-		if( value instanceof Mote || value instanceof KalPanMoteFiller) {
+		if( value instanceof Mote) {// || value instanceof KalPanMoteFiller) {
 			
 			Color lyseblaa = new Color(110,150,250);
 			
 			cell.setBackground(lyseblaa);
 		}
-		else if( value instanceof Avtale || value instanceof KalPanAvtaleFiller) {
+		else if( value instanceof Avtale ) {//|| value instanceof KalPanAvtaleFiller) {
 			
 			Color lysegronn = new Color(120,250,130);
 			
