@@ -127,7 +127,7 @@ public class ActiveAvtale extends ActiveModel{
 		return avtale;
 	}
 		
-	private static void deleteAvtale(int avtaleId) {
+	public static void deleteAvtale(int avtaleId) {
 		try {
 			connect();
 			if( connection != null){

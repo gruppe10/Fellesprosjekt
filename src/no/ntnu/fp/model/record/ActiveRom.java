@@ -86,7 +86,7 @@ public class ActiveRom extends ActiveModel{
 	
 	
 	
-	private static Rom selectRom(int romID){
+	public static Rom selectRom(int romID){
 		Rom rom = new Rom("");
 		String navn  = "";
 		
@@ -118,7 +118,7 @@ public class ActiveRom extends ActiveModel{
 		return rom;
 	}
 		
-	private static void deleteRom(int romID) {
+	public static void deleteRom(int romID) {
 		try {
 			connect();
 			if( connection != null){
@@ -135,6 +135,8 @@ public class ActiveRom extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
+	
+	
 	
 	public static void main(String args[]){
 //		int romID = 112;
