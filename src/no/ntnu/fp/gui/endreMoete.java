@@ -329,8 +329,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			//fjern deltaker fra listen av deltakere
 		}
 		else if(evt.getSource() == viskalenderButton){
-			kal kal = new kal();
-			kal.show();
+			deltkal deltkal = new deltkal();
+			deltkal.show();
 			hide();
 			//vise når de andre deltakere ikke har tid
 		}
