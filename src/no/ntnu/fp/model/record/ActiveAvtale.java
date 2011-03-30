@@ -2,6 +2,7 @@ package no.ntnu.fp.model.record;
 
 /*
  *   Methods:
+
  *   
  * 	 CreateAvtale(Avtale avtale)
  * 	 SelectPerson(int ansattnummer)
@@ -11,15 +12,12 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
-
-
-import no.ntnu.fp.model.Avtale;
-import no.ntnu.fp.model.Rom;
+import java.util.ArrayList;
+import no.ntnu.fp.model.*;
 
 import org.apache.derby.tools.sysinfo;
 
 public class ActiveAvtale extends ActiveModel{
-	
 	
 	public static void createAvtale(Avtale avtale){
 		PreparedStatement ps = null;
@@ -36,6 +34,7 @@ public class ActiveAvtale extends ActiveModel{
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
+				ps.setInt(7, avtale.getLederId());
 				
 				ps.execute();
 				connection.close();
@@ -143,6 +142,34 @@ public class ActiveAvtale extends ActiveModel{
 			System.out.println("Failed to delete Avtale \n Details:" + e.getMessage());
 		}
 	}
+	
+	public static ArrayList<Person> selectDeltagere(int avtaleId) {
+		ArrayList<Person> deltagere = new ArrayList<Person>();
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT ansattnr FROM Deltakere WHERE avtaleID = ?"
+				);
+				ps.setInt(1, avtaleId);
+				ResultSet rs = ps.executeQuery();
+				
+				while(rs.next()){
+					int deltagerNr = rs.getInt("ansattnr");
+					Person nyDeltager = ActivePerson.selectPerson(deltagerNr);
+					deltagere.add(nyDeltager);
+				};
+			}
+			connection.close();	
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Participants for Meeting with id:" + avtaleId);
+			System.out.println("Details:" + e.getMessage());
+		}
+		return deltagere;
+	}
+	
+	
 	
 	public static void main(String args[]){
 		testAll();

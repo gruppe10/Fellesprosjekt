@@ -137,7 +137,6 @@ public class ActiveRom extends ActiveModel{
 	}
 	
 	
-	
 	public static void main(String args[]){
 //		int romID = 112;
 //		Rom rom = new Rom("");
@@ -183,7 +182,9 @@ public class ActiveRom extends ActiveModel{
 		Rom oppdatertPerson = selectRom(orginalRom.getRomId());
 		System.out.println("Nytt navn:" + oppdatertPerson.getNavn());
 	}
-	
+
+
+		
 //	private void testSelectPerson(){
 //		int romID = 113;
 //		Rom testRom  = selectRom(romID);
