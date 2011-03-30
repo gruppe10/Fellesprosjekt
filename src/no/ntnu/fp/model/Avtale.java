@@ -8,7 +8,6 @@ public  class Avtale {
 	private int datoDag;
 	private int datoMnd;
 	private int datoAar;
-	private String tittel;
 	private String beskrivelse;
 	private Person initiativtaker;
 	private String navn;
@@ -16,7 +15,7 @@ public  class Avtale {
 	public Avtale(){
 		starttid = sluttid = 0;
 		
-		tittel = beskrivelse = null;
+		navn = beskrivelse = null;
 		initiativtaker = null;
 		//Oppdater database!
 	}
@@ -53,15 +52,6 @@ public  class Avtale {
 		datoDag=dag;
 		datoMnd=mnd;
 		datoAar=aar;
-		//Oppdater database!
-	}
-
-	public String getTittel() {
-		return tittel;
-	}
-
-	public void setTittel(String tittel) {
-		this.tittel = tittel;
 		//Oppdater database!
 	}
 

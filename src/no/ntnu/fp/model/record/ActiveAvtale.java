@@ -2,7 +2,6 @@ package no.ntnu.fp.model.record;
 
 /*
  *   Methods:
-
  *   
  * 	 CreateAvtale(Avtale avtale)
  * 	 SelectPerson(int ansattnummer)
@@ -14,6 +13,7 @@ package no.ntnu.fp.model.record;
 import java.sql.*;
 
 import no.ntnu.fp.model.Avtale;
+import no.ntnu.fp.model.Rom;
 
 import org.apache.derby.tools.sysinfo;
 
@@ -39,11 +39,11 @@ public class ActiveAvtale {
 			connect();
 			
 			ps = connection.prepareStatement(
-				"INSERT INTO Person(avtaleid, tittel, beskrivelse, dato, starttid, sluttid)" +
+				"INSERT INTO Person(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
 				"VALUES ( ?, ?, ? ,? ,? ,? )" 
 			);
-			ps.setInt(1, avtale.getAvtaleId());
-			ps.setString(2, avtale.getTittel());
+			ps.setInt(1, avtale.getAvtaleID());
+			ps.setString(2, avtale.getNavn());
 			ps.setString(3, avtale.getBeskrivelse());
 			ps.setDate(4, formatDateFrom(avtale));
 			ps.setInt(5, avtale.getStarttid());
@@ -64,24 +64,25 @@ public class ActiveAvtale {
 	}
 	
 
-	public static void updatePerson(Avtale avtale){
+	public static void updateAvtale(Avtale avtale){
 		PreparedStatement ps = null;		
 		try {
         	connect();
-        	if( connection != null){
+        	if( connection != null ){
 	            ps = connection.prepareStatement(
-	            		"UPDATE Person " + 
-	            		"SET navn= ? , brukernavn = ?, passord = ?" +
+	            		"UPDATE Avtale " + 
+	            		"SET avtaleID= ? , navn = ?, beskrivelse = ?, " +
+	            		"dato = ?, starttid = ?, sluttid = ? " +
 	                    "WHERE ansattnr = ? "
 	            );
 	            ps.setInt(1, avtale.getAvtaleId());
-				ps.setString(2, avtale.getTittel());
+				ps.setString(2, avtale.getNavn());
 				ps.setString(3, avtale.getBeskrivelse());
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setInt(5, avtale.getStarttid());
 				ps.setInt(6, avtale.getSluttid());
         	}
-        	boolean success = ps.execute());
+        	boolean success = ps.execute();
 			if (success){
 				System.out.println("Updated Avtale!\n");
 			}
@@ -94,9 +95,9 @@ public class ActiveAvtale {
 	
 	
 	
-	private static Avtale selectAvtale(int avtaleid){
+	private static Avtale selectAvtale(int avtaleID){
 		Avtale avtale = new Avtale();
-		String tittel = "";
+		String navn = "";
 		String beskrivelse = "";
 		int dd = 00;
 		int mm = 00;
@@ -107,14 +108,14 @@ public class ActiveAvtale {
 		try{
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT * FROM Avtale WHERE avtaleid = ? "
+					"SELECT * FROM Avtale WHERE avtaleID = ? "
 			);
-			ps.setInt(1, avtaleid);
+			ps.setInt(1, avtaleID);
 			
 			ResultSet rs = ps.executeQuery(); 
 			if (rs != null){
 				while(rs.next()){
-					tittel = rs.getString("tittel");
+					navn = rs.getString("navn");
 					beskrivelse = rs.getString("beskrivelse");
 					
 					dd = 00;
@@ -127,7 +128,7 @@ public class ActiveAvtale {
 			}
 		}
 		catch( SQLException e){
-			System.out.println("Kan ikke finner person med id = " + avtaleid);
+			System.out.println("Kan ikke finner person med id = " + avtaleID);
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
 		
@@ -139,19 +140,24 @@ public class ActiveAvtale {
 		return avtale;
 	}
 		
-	private static void deletePerson(int ansattNr) {
+	private static void deleteAvtale(int avtaleId) {
 		try {
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"DELETE FROM Person WHERE ansattnr = ?"
+					"DELETE FROM Avtale WHERE avtaleID = ?"
 			);
-			ps.setInt(1, ansattNr);
-			ps.execute();	
+			ps.setInt(1, avtaleId);
+			
+			boolean success = ps.execute();
+			if (success){
+				System.out.println("Slettet Avtale!");
+			}	
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	private static void connect() throws SQLException{
 		try{
@@ -166,7 +172,15 @@ public class ActiveAvtale {
 	}
 	
 	public static void main(String args[]){
-	
+		Avtale avtale = new Avtale();
+		avtale.setAvtaleId(100001);
+		avtale.setNavn("Julaften mothafokka!");
+		avtale.setDato(01, 22, 2011);
+		avtale.setStarttid(12);
+		avtale.setSluttid(12);
+		
+		createAvtale(avtale);
+		
 		//test-iciles
 	}
 	
