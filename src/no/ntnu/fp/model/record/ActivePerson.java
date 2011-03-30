@@ -178,13 +178,9 @@ public class ActivePerson {
 		deletePerson(person.getAnsattNummer());
 		
 		selectPerson(person.getAnsattNummer());
-
 	}
 	
 	
-	
-
-
 	private void testUpdatePerson(){
 		int ansattnr = 10001;
 		String navn = "Martin";

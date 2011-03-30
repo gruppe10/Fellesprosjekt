@@ -33,21 +33,27 @@ public class ActiveAvtale {
 		return date;
 	}
 	
+	@SuppressWarnings("deprecation")
+	public static Time formatTimeFrom(int tid){ 
+		Time time = new Time(tid, 00, 00);
+		return time;
+	}
+	
 	public static void createAvtale(Avtale avtale){
 		PreparedStatement ps = null;
 		try{
 			connect();
 			
 			ps = connection.prepareStatement(
-				"INSERT INTO Person(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
+				"INSERT INTO Avtale(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
 				"VALUES ( ?, ?, ? ,? ,? ,? )" 
 			);
 			ps.setInt(1, avtale.getAvtaleId());
 			ps.setString(2, avtale.getNavn());
 			ps.setString(3, avtale.getBeskrivelse());
 			ps.setDate(4, formatDateFrom(avtale));
-			ps.setInt(5, avtale.getStarttid());
-			ps.setInt(6, avtale.getSluttid());
+			ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
+			ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 			
 			boolean success = ps.execute();
 			if (success){
@@ -172,18 +178,19 @@ public class ActiveAvtale {
 	}
 	
 	public static void main(String args[]){
+		
+	}
+	
+	private void testCreatePerson(){
 		Avtale avtale = new Avtale();
-		avtale.setAvtaleId(100001);
+		avtale.setAvtaleId(10002);
 		avtale.setNavn("Julaften mothafokka!");
 		avtale.setDato(01, 22, 2011);
 		avtale.setStarttid(12);
 		avtale.setSluttid(12);
-		
+
 		createAvtale(avtale);
-		
-		//test-iciles
-	}
-	
+	}	
 	
 	
 //  Uncompleted test
@@ -207,18 +214,7 @@ public class ActiveAvtale {
 //	}
 //	
 //	
-//	private void testCreatePerson(){
-//		Person person = new Person();
-//		person.setAnsattNummer(10004);
-//		person.setName("Martin");
-//		person.setBrukerNavn("martin");
-//		person.setPassord("1234");
-//		
-//		createPerson(person);
-//		
-//		Person nyeperson = selectPerson(person.getAnsattNummer());
-//		System.out.println(nyeperson.getName());
-//	}
+
 //	
 //	
 //	private void testSelectPerson(){
