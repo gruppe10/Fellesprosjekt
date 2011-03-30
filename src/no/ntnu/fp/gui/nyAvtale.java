@@ -128,6 +128,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				}
 				{
 					headerTextField = new JTextField();
+					headerTextField.getText();
 				}
 				{
 					datoField = new JTextField();

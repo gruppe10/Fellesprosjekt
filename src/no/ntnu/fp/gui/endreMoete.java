@@ -40,10 +40,13 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JButton fjenDeltakerButton;
 	private JTextField datoField;
 	private JTextField headerTextField;
-	private JScrollPane jScrollPane1;
 	private JMenuItem jMenuItem1;
 	private JComboBox Moeterom;
 	private JToggleButton viskalenderButton;
+	private JList deljList1;
+	private JLabel sutLabel1;
+	private JComboBox sutjComboBox1;
+	private JComboBox stjComboBox1;
 	private JButton avlysButton;
 	private JLabel leggTilDeltakerLabel;
 	private JButton lagreButton;
@@ -57,9 +60,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JLabel nyttMoeteLabel;
 	private JList deltakereList;
 	private JScrollPane jScrollPane3;
-	private JTextField deltakerTextField;
 	private JTextArea beskrivelseTextArea;
-	private JTextField tidTextField;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -91,6 +92,34 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				fjenDeltakerButton.addActionListener(this);
 			}
 			{
+				ListModel deljList1Model = 
+					new DefaultComboBoxModel(
+							new String[] { "Item One", "Item Two" });
+				deljList1 = new JList();
+				deljList1.setModel(deljList1Model);
+			}
+			{
+				ComboBoxModel stjComboBox1Model = 
+					new DefaultComboBoxModel(
+							new String[] { "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" });
+				stjComboBox1 = new JComboBox();
+				stjComboBox1.setModel(stjComboBox1Model);
+				stjComboBox1.getSelectedItem();
+			}
+			{
+				ComboBoxModel sutjComboBox1Model = 
+					new DefaultComboBoxModel(
+							new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" });
+				sutjComboBox1 = new JComboBox();
+				sutjComboBox1.setModel(sutjComboBox1Model);
+				sutjComboBox1.getSelectedItem();
+			}
+			{
+				sutLabel1 = new JLabel();
+				sutLabel1.setText("Sluttid:");
+				sutLabel1.setFont(new java.awt.Font("Tahoma",0,12));
+			}
+			{
 				ComboBoxModel MøteromModel = 
 					new DefaultComboBoxModel(
 							new String[] { "Item One", "Item Two" });
@@ -98,6 +127,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				Moeterom.setModel(MøteromModel);
 				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
 				Moeterom.setToolTipText("møterom");
+				Moeterom.getSelectedItem();
 				{
 					jMenuItem1 = new JMenuItem();
 					Moeterom.add(jMenuItem1);
@@ -123,25 +153,13 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			{
 				headerTextField = new JTextField();
-			}
-			{
-				jScrollPane1 = new JScrollPane();
-				{
-					tidTextField = new JTextField();
-					jScrollPane1.setViewportView(tidTextField);
-					tidTextField.setText("Velg tid");
-					tidTextField.setFont(new java.awt.Font("Tahoma",2,11));
-				}
+				headerTextField.getText();
 			}
 			{
 				beskrivelseTextArea = new JTextArea();
 				beskrivelseTextArea.setText("Beskrivelse av møte");
 				beskrivelseTextArea.setFont(new java.awt.Font("Tahoma",2,11));
-			}
-			{
-				deltakerTextField = new JTextField();
-				deltakerTextField.setText("Deltaker");
-				deltakerTextField.setFont(new java.awt.Font("Tahoma",2,11));
+				beskrivelseTextArea.getText();
 			}
 			{
 				jScrollPane3 = new JScrollPane();
@@ -172,7 +190,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			{
 				tidLabel = new JLabel();
-				tidLabel.setText("Tid:");
+				tidLabel.setText("Starttid:");
 				tidLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
@@ -210,37 +228,45 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap()
 				.addComponent(nyttMoeteLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-				    .addComponent(deltakerTextField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(leggTilDeltakerLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGap(16)
 				.addGroup(thisLayout.createParallelGroup()
-				    .addGroup(thisLayout.createSequentialGroup()
+				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGap(0, 0, Short.MAX_VALUE)
-				        .addComponent(viskalenderButton, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-				    .addGroup(thisLayout.createSequentialGroup()
-				        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				        .addComponent(deljList1, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+				        .addGap(12)
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				                .addGap(19))
-				            .addComponent(jScrollPane3, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))))
-				.addComponent(fjenDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(jScrollPane3, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)))
+				    .addGroup(thisLayout.createSequentialGroup()
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				        .addGroup(thisLayout.createParallelGroup()
+				            .addGroup(thisLayout.createSequentialGroup()
+				                .addComponent(viskalenderButton, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+				                .addGap(0, 0, Short.MAX_VALUE))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				                .addGap(0, 25, Short.MAX_VALUE)))
+				        .addGap(33)))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
+				.addComponent(fjenDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(datoField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(datoLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(headerTextField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(headerLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-				.addGroup(thisLayout.createParallelGroup()
-				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addComponent(tidLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				        .addGap(6))
-				    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
+				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				    .addComponent(stjComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(tidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				    .addComponent(sutjComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(sutLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 1, GroupLayout.PREFERRED_SIZE)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(Moeterom, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(moeteromLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -250,22 +276,22 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				        .addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				        .addGap(29))
 				    .addComponent(beskrivelseTextArea, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
-				.addGap(0, 27, GroupLayout.PREFERRED_SIZE)
+				.addGap(0, 24, GroupLayout.PREFERRED_SIZE)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(lagreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(avlysButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addContainerGap(37, 37));
+				.addContainerGap(16, 16));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
-				.addContainerGap(21, 21)
+				.addContainerGap()
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addComponent(lagreButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				        .addComponent(avbrytButton, 0, 81, Short.MAX_VALUE)
-				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				        .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+				        .addGap(0, 22, Short.MAX_VALUE)
 				        .addComponent(avlysButton, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-				        .addGap(56))
+				        .addGap(54))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addComponent(nyttMoeteLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
@@ -276,14 +302,17 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				                .addComponent(moeteromLabel, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 				                .addGap(41))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(tidLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				                .addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 				                .addGap(76))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(headerLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
 				                .addGap(63))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-				                .addGap(76))
+				                .addComponent(tidLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+				                .addGap(63))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(sutLabel1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				                .addGap(71))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
 				                .addGap(37))
@@ -297,26 +326,30 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(Moeterom, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				                .addGap(46))
+				            .addComponent(fjenDeltakerButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+				                .addComponent(datoField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 				                .addGap(44))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 				                .addGap(44))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(datoField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-				                .addGap(44))
+				                .addComponent(stjComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				                .addGap(63))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 				                .addGap(45))
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				                .addComponent(deltakerTextField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-				                .addGap(44))
-				            .addComponent(fjenDeltakerButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE))
-				        .addComponent(viskalenderButton, 0, 201, Short.MAX_VALUE)))
+				                .addComponent(deljList1, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+				                .addGap(67))
+				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+				                .addComponent(sutjComboBox1, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+				                .addGap(50)))
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 1, Short.MAX_VALUE)
+				        .addComponent(viskalenderButton, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap());
 			pack();
-			this.setSize(465, 392);
+			this.setSize(465, 427);
 		} catch (Exception e) {
 		    //add your error handling code here
 			e.printStackTrace();
@@ -347,8 +380,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			hide();
 		}
 		else if(evt.getSource() == avlysButton){
-			slett slett = new slett();
-			slett.show();
+			avlys avlys = new avlys();
+			avlys.show();
 			//fjerne fra kalenderene
 			//gi beskjed til deltakrne
 		}
