@@ -90,18 +90,15 @@ public class ConnectionImpl extends AbstractConnection {
     	try {
 			simplySendPacket(synRequest);
 		} catch (ClException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-    	this.state = State.SYN_SENT;
-		
-    	KtnDatagram recieved = null;
-    	while(recieved == null){
-    		recieved = receiveAck();
-    	}
-    	this.remotePort = receiveAck().getSrc_port();
     	
-		if (recieved.getFlag() == Flag.SYN_ACK){
+		this.state = State.SYN_SENT;
+		
+    	KtnDatagram recieved = receiveAck();
+
+		if (isValid(recieved)){
+			this.remotePort = recieved.getSrc_port();
+			lastValidPacketReceived = recieved;
 			sendAck(recieved, false);
 			state = State.ESTABLISHED;
 			return;
@@ -126,15 +123,12 @@ public class ConnectionImpl extends AbstractConnection {
         this.state = State.LISTEN;
         
         KtnDatagram syn = null;
-        System.out.println("22ergergergerge");
 
-        while(syn == null || syn.getFlag()!=Flag.SYN || !isValid(syn)){
-        	System.out.println("fewfew");
-
-        	syn = receivePacket(false);
-        	
+        while(!isValid(syn)){
+        	syn = receivePacket(true);	
         }
-        System.out.println("1ergergergerge");
+       
+        lastValidPacketReceived = syn;
         ConnectionImpl connection = new ConnectionImpl(myPort);
         usedPorts.put(myPort, true);
         connection.remoteAddress = syn.getSrc_addr();
@@ -144,13 +138,12 @@ public class ConnectionImpl extends AbstractConnection {
 //      Send synack tilbake til klient. sendAck(true) angir at flagget skal være SYN_ACK
         
         sendAck(syn, true);
-      
-        
         KtnDatagram ack = null;
         
-        while(ack == null || ack.getFlag() != Flag.ACK){
+        while(!isValid(ack)){
         	ack = receiveAck();
         }
+        lastValidPacketReceived = ack;
         connection.state = State.ESTABLISHED;
 		return connection;
         
@@ -174,9 +167,10 @@ public class ConnectionImpl extends AbstractConnection {
     	KtnDatagram toSend = constructDataPacket(msg);
         KtnDatagram ack = null;
         
-        while (ack == null || !isValid(ack)){
+        while (!isValid(ack)){
         	ack = sendDataPacketWithRetransmit(toSend);
         }
+        
         lastDataPacketSent = toSend;
         lastValidPacketReceived = ack;
     }
@@ -275,9 +269,28 @@ public class ConnectionImpl extends AbstractConnection {
      */
     protected boolean isValid(KtnDatagram packet) {
     	if (packet==null) return false;
-    	long recievedSum = packet.calculateChecksum();
-    	long sentSum = packet.getChecksum();
-//    	Tester om checsummen som ble beregnet før sending er lik den vi beregner nå
-    	return (recievedSum == sentSum) ; 	
+    	if (packet.calculateChecksum() != packet.getChecksum()) return false;
+    	
+    	switch (state) {
+    	case CLOSED: break;
+    	case SYN_SENT: return (packet.getFlag() == Flag.SYN_ACK 
+    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    	case LISTEN: return (packet.getFlag() == Flag.SYN);
+    	case SYN_RCVD: return (packet.getFlag() == Flag.ACK 
+    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    	case ESTABLISHED: return ((packet.getFlag()==Flag.NONE || packet.getFlag()==Flag.ACK || packet.getFlag()==Flag.FIN) &&
+    			packet.getSeq_nr() == this.nextSequenceNo && packet.getSrc_addr() == remoteAddress 
+    			&& packet.getSrc_port() == remotePort);
+    	case FIN_WAIT_1: return (packet.getFlag() == Flag.ACK
+    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    	case FIN_WAIT_2: return (packet.getFlag() == Flag.FIN
+    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    	case TIME_WAIT: break;
+    	case CLOSE_WAIT: break;
+    	case LAST_ACK: return (packet.getFlag() == Flag.ACK 
+    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    	}
+    	return false;
+	
     }
 }
