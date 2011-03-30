@@ -94,6 +94,11 @@ public  class Avtale {
 	public String toString() {
 		return navn;
 	}
+
+	public int getAvtaleId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	
