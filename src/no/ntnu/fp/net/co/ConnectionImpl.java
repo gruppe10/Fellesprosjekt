@@ -78,7 +78,7 @@ public class ConnectionImpl extends AbstractConnection {
      */
     public void connect(InetAddress remoteAddress, int remotePort) throws IOException,
             SocketTimeoutException{
-        
+    	
     	this.remoteAddress = remoteAddress.getHostAddress();
     	this.remotePort = remotePort;
     	
@@ -122,33 +122,37 @@ public class ConnectionImpl extends AbstractConnection {
         	throw new IllegalStateException("Cannot accept SYN without being in state CLOSED");
         }
         
-        ConnectionImpl connection = new ConnectionImpl(myPort);
 //       Lytte etter innkommende syn-pakke, og opprett port for denne tilkoblingen
         this.state = State.LISTEN;
         
         KtnDatagram syn = null;
-
         while(!isValid(syn)){
         	syn = receivePacket(true);	
         }
+        ConnectionImpl connection = new ConnectionImpl(myPort);
         usedPorts.put(myPort, true);
         connection.remoteAddress = syn.getSrc_addr();
         connection.remotePort = syn.getSrc_port();
-        connection.state = State.SYN_RCVD;
-        connection.lastValidPacketReceived = syn;
-        
+        connection.state = State.SYN_RCVD;        
 //      Send synack tilbake til klient. sendAck(true) angir at flagget skal være SYN_ACK
         
-        connection.sendAck(syn, true);
        
         KtnDatagram ack = null;
-        
-        while(!isValid(ack)){
+        while(!connection.isValid(ack)){
+        	connection.sendAck(syn, true);
         	ack = connection.receiveAck();
         }
-        lastValidPacketReceived = ack;
-        connection.state = State.ESTABLISHED;
-		return connection;
+        connection.lastValidPacketReceived = ack;
+        this.state = State.CLOSED;
+        
+        if(connection.isValid(ack)){
+        	connection.state = State.ESTABLISHED;
+        	return connection;
+        }
+        else{
+        	throw new IOException("No valid connection: Didn't receive ACK on SYN_ACK");
+        }
+        
         
     }
 
@@ -210,22 +214,30 @@ public class ConnectionImpl extends AbstractConnection {
      */
     
     public void close() throws IOException {
+    	int finTries = 3;
         if(this.state != State.ESTABLISHED){
         	throw new IllegalStateException("Cannot close a connection if not in ESTABLISHED state");
         }
 //        initialisere disconnect
         if(disconnectRequest == null){
-        	  KtnDatagram closeRequest = constructInternalPacket(Flag.FIN), ack = null, fin = null;
-        	  while(ack==null || !isValid(ack)) {
-        		  ack = sendDataPacketWithRetransmit(closeRequest);
-        		  this.state = State.FIN_WAIT_1;
+        	  KtnDatagram closeRequest = constructInternalPacket(Flag.FIN);
+        	  KtnDatagram ack = null;
+        	  KtnDatagram fin = null;
+        	  while(!isValid(ack)) {
+        		  try {
+					simplySendPacket(closeRequest);
+					this.state = State.FIN_WAIT_1;
+					ack = receiveAck();
+				} catch (ClException e) {
+					e.printStackTrace();
+				}
         	  }
         	  
         	  lastValidPacketReceived = ack;
         	  
         	  this.state = State.FIN_WAIT_2;
         	  
-        	  while(fin == null || !isValid(fin)){
+        	  while(!isValid(fin)){
         		  try{
         			  fin = receivePacket(true);
         		  }catch (Exception e) {
@@ -243,14 +255,18 @@ public class ConnectionImpl extends AbstractConnection {
         	sendAck(disconnectRequest, false);
         	state = State.CLOSE_WAIT;
         	
-        	KtnDatagram fin = constructInternalPacket(Flag.FIN), finack=null;
+        	KtnDatagram fin = constructInternalPacket(Flag.FIN);
+        	KtnDatagram finack=null;
         	
-        	while(finack==null || !isValid(finack)){
-        		finack = sendDataPacketWithRetransmit(fin);
-        		state = State.LAST_ACK;
+        	while(!isValid(finack) && finTries-->0){
+        		try {
+        			simplySendPacket(fin);
+        			state = State.LAST_ACK;
+        		} catch (ClException e) {
+        			e.printStackTrace();
+        		}
+        		finack = receiveAck();
         	}
-        	
-        	lastValidPacketReceived = finack;
         	state = State.CLOSED;
         	disconnectRequest = null;        	
         }
