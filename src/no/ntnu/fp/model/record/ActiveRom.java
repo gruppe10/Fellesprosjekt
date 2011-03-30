@@ -39,12 +39,11 @@ public class ActiveRom extends ActiveModel{
 	}
 	
 	public static int getMaxId(){
-		PreparedStatement ps = null;
-		int romId=0;
+		int romId = 0;
 		try{
 			connect(); 
 			if( connection != null){
-	            ps = connection.prepareStatement(
+	            PreparedStatement ps = connection.prepareStatement(
 	            "SELECT MAX romID" +
 	            "FROM Rom"		    
 	            );
@@ -59,7 +58,7 @@ public class ActiveRom extends ActiveModel{
 	    	System.out.println("Kan ikke finne rom med id = " + romId);
 	    	System.out.println("ErrorMessage:" + e.getMessage());
 	    }
-	   return romId;         
+	    return romId;         
 	}
 	
 
@@ -106,6 +105,7 @@ public class ActiveRom extends ActiveModel{
 					}
 				}
 			}
+			connection.close();
 		}
 		catch( SQLException e){
 			System.out.println("Kan ikke finner rom med id = " + romID);
@@ -128,9 +128,11 @@ public class ActiveRom extends ActiveModel{
 				ps.setInt(1, romID);
 				ps.execute();
 			}	
+			connection.close();
 		} 
 		catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Failed to delete rom with id" + romID);
+			System.out.println("Details:" + e.getMessage());
 		}
 	}
 	
