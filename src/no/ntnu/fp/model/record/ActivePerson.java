@@ -12,7 +12,9 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
+import java.util.ArrayList;
 
+import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Person;
 
 import org.apache.derby.tools.sysinfo;
@@ -146,6 +148,33 @@ public class ActivePerson extends ActiveModel{
 			e.printStackTrace();
 		}
 	}
+	
+	public static ArrayList<Avtale> selectMoter(int ansattnr) {
+		ArrayList<Avtale> deltagere = new ArrayList<Avtale>();
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT avtaleID FROM Deltakere WHERE ansattnr = ?"
+				);
+				ps.setInt(1, ansattnr);
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					int moteId = rs.getInt("avtaleID");
+					Avtale nyttMote = ActiveAvtale.selectAvtale(moteId);
+					deltagere.add(nyttMote);
+				};
+			}
+			connection.close();	
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Meetings for Person with id:" + ansattnr);
+			System.out.println("Details:" + e.getMessage());
+		}
+		return deltagere;
+	}
+	
+	
 	
 	public static void main(String args[]){
 		int ansattnr = 10001;
