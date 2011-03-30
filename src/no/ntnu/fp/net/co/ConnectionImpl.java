@@ -90,16 +90,15 @@ public class ConnectionImpl extends AbstractConnection {
     	try {
 			simplySendPacket(synRequest);
 		} catch (ClException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-    	this.state = State.SYN_SENT;
+    	
+		this.state = State.SYN_SENT;
 		
     	KtnDatagram recieved = receiveAck();
-    	
-    	this.remotePort = receiveAck().getSrc_port();
-    	
-		if (recieved.getFlag() == Flag.SYN_ACK){
+
+		if (isValid(recieved)){
+			this.remotePort = recieved.getSrc_port();
+			lastValidPacketReceived = recieved;
 			sendAck(recieved, false);
 			state = State.ESTABLISHED;
 			return;
@@ -124,15 +123,12 @@ public class ConnectionImpl extends AbstractConnection {
         this.state = State.LISTEN;
         
         KtnDatagram syn = null;
-        System.out.println("22ergergergerge");
 
-        while(syn == null || syn.getFlag()!=Flag.SYN || !isValid(syn)){
-        	System.out.println("fewfew");
-
-        	syn = receivePacket(false);
-        	
+        while(!isValid(syn)){
+        	syn = receivePacket(true);	
         }
-        System.out.println("1ergergergerge");
+       
+        lastValidPacketReceived = syn;
         ConnectionImpl connection = new ConnectionImpl(myPort);
         usedPorts.put(myPort, true);
         connection.remoteAddress = syn.getSrc_addr();
@@ -142,13 +138,12 @@ public class ConnectionImpl extends AbstractConnection {
 //      Send synack tilbake til klient. sendAck(true) angir at flagget skal være SYN_ACK
         
         sendAck(syn, true);
-      
-        
         KtnDatagram ack = null;
         
-        while(ack == null || ack.getFlag() != Flag.ACK){
+        while(!isValid(ack)){
         	ack = receiveAck();
         }
+        lastValidPacketReceived = ack;
         connection.state = State.ESTABLISHED;
 		return connection;
         
@@ -172,9 +167,10 @@ public class ConnectionImpl extends AbstractConnection {
     	KtnDatagram toSend = constructDataPacket(msg);
         KtnDatagram ack = null;
         
-        while (ack == null || !isValid(ack)){
+        while (!isValid(ack)){
         	ack = sendDataPacketWithRetransmit(toSend);
         }
+        
         lastDataPacketSent = toSend;
         lastValidPacketReceived = ack;
     }
