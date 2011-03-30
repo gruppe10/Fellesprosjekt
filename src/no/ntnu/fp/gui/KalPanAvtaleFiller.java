@@ -2,7 +2,7 @@ package no.ntnu.fp.gui;
 
 import no.ntnu.fp.model.Avtale;
 
-public class KalPanAvtaleFiller {
+public class KalPanAvtaleFiller extends Avtale{
 
 
 	private Avtale avtale;

@@ -2,6 +2,7 @@
 package no.ntnu.fp.gui;
 
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -26,7 +27,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
-import javax.swing.JPanel;
+import javax.swing.BoxLayout;
 
 
 
@@ -42,13 +43,25 @@ public class KalenderPanel extends JPanel {
     private int startDay;
     private int endDay;
     
+    private int avtaleLengde;
+    
+    private int[] dayDatos;
+    private int[] datoToIndexArray;
+    
+    private int timeIndexRatio;
+    
+    private final Avtale[][] data;
+    
     private ArrayList<Avtale> avtaleListe;
+    
+    private KalPanInfoBoks infoBoks;
+    
+    
 	
 	public KalenderPanel(Person p, Calendar inDate) {
 		
 		
-		super(new GridLayout(1,0));
-		
+				
 		Calendar date = inDate;
 		int dato= date.get(Calendar.DAY_OF_MONTH);
 		
@@ -65,7 +78,7 @@ public class KalenderPanel extends JPanel {
 				
 		int ukedagint=date.get(Calendar.DAY_OF_WEEK)-2;
 		
-		int[] dayDatos = new int[7];
+		dayDatos = new int[7];
 		
 		inDate.add(Calendar.DAY_OF_MONTH, -ukedagint);
 		dayDatos[0]=date.get(Calendar.DAY_OF_MONTH);
@@ -79,7 +92,7 @@ public class KalenderPanel extends JPanel {
         	inDate.add(Calendar.DAY_OF_MONTH, 1);
         	dayDatos[i]=date.get(Calendar.DAY_OF_MONTH);
             dayNames[i]=dayNames[i]+dayDatos[i];
-        }
+        } //legger inn datoer i header
         
         endYear=date.get(Calendar.YEAR);
 		endMonth=date.get(Calendar.MONTH)+1;
@@ -96,39 +109,19 @@ public class KalenderPanel extends JPanel {
         	finnUtOmAvtaleErIdenneUka(ukuttaAvtaleListe.get(i));
         }
 
-        final int timeIndexRatio=6;
+        timeIndexRatio=6;
         
-        final Object[][] data = new Object[12][7];
+        data = new Avtale[12][7];
         
-        int[] datoToIndex = new int[avtaleListe.size()];
+        datoToIndexArray = new int[avtaleListe.size()];
         
         for (int i=0; i<avtaleListe.size(); i++) {
-        	for(int j=0; j<dayDatos.length; j++) {
-        		if (avtaleListe.get(i).getDatoDag()==dayDatos[j]) {
-        			datoToIndex[i]=j;
-        			
-        		}
-        	}
+        	datoToIndexArray(avtaleListe.get(i),i);
         }
         
-       int avtaleLengde;
         
         for (int i=0; i<avtaleListe.size(); i++) {
-        	
-        	avtaleLengde=avtaleListe.get(i).getSluttid()-avtaleListe.get(i).getStarttid();
-        	
-        	data[avtaleListe.get(i).getStarttid()-timeIndexRatio][datoToIndex[i]]=avtaleListe.get(i);
-        	
-        	for (int j=1; j<avtaleLengde; j++) {
-        		if (avtaleListe.get(i) instanceof Mote) {
-        			KalPanMoteFiller filler = new KalPanMoteFiller(avtaleListe.get(i));
-        			data[(avtaleListe.get(i).getStarttid()-timeIndexRatio)+j][datoToIndex[i]]=filler;
-        		}
-        		else if (avtaleListe.get(i) instanceof Avtale) {
-        			KalPanAvtaleFiller filler = new KalPanAvtaleFiller(avtaleListe.get(i));
-        			data[(avtaleListe.get(i).getStarttid()-timeIndexRatio)+j][datoToIndex[i]]=filler;
-        		}
-        	}
+        	putAvtaleInnTable(avtaleListe.get(i), i);
         }
         
 	   
@@ -144,7 +137,7 @@ public class KalenderPanel extends JPanel {
             TableCellRenderer renderer = new KalPanRenderer();  
             table.setDefaultRenderer(Object.class,new KalPanRenderer());
       
-        table.setPreferredScrollableViewportSize(new Dimension(700, 300));
+        table.setPreferredScrollableViewportSize(new Dimension(700, 192));
         table.setFillsViewportHeight(true);
         table.setGridColor(Color.gray);
         
@@ -187,13 +180,16 @@ public class KalenderPanel extends JPanel {
           
         
         JList timeRow = new JList(lm);
-        timeRow.setFixedCellWidth(100);
+        timeRow.setFixedCellWidth(80);
         
         timeRow.setFixedCellHeight(table.getRowHeight());
         timeRow.setCellRenderer(new KalPanRowHeaderRenderer(table));
         scrollPane.setRowHeaderView(timeRow);
         
+        infoBoks = new KalPanInfoBoks();
+        
         add(scrollPane);
+        add(infoBoks);
         
        
         /**
@@ -213,8 +209,11 @@ public class KalenderPanel extends JPanel {
                         selectedRow = lsm.getMinSelectionIndex();
                         int selectedTime = selectedRow+6;
                         
-                        if (data[selectedRow][selectedCol]!=null) {
-                        System.out.println("Something here");
+                        if (data[selectedRow][selectedCol] instanceof Avtale) {
+                        	infoBoks.displayAvtale(data[selectedRow][selectedCol]);
+                        }
+                        else if (data[selectedRow][selectedCol] == null) {
+                        	infoBoks.clear();
                         }
                     }
                 }
@@ -233,8 +232,11 @@ public class KalenderPanel extends JPanel {
                         System.out.println("No columns are selected.");
                     } else {
                         selectedCol = lsm.getMinSelectionIndex();
-                        if (data[selectedRow][selectedCol]!=null) {
-                            System.out.println("Something here");
+                        if (data[selectedRow][selectedCol] instanceof Avtale) {
+                        	infoBoks.displayAvtale(data[selectedRow][selectedCol]);
+                        }
+                        else if (data[selectedRow][selectedCol] == null) {
+                        	infoBoks.clear();
                         }
                                           
                     }
@@ -243,12 +245,6 @@ public class KalenderPanel extends JPanel {
         
     }
 
-    
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
     private static void createAndShowGUI() {
     	
         //Create and set up the window.
@@ -264,24 +260,28 @@ public class KalenderPanel extends JPanel {
         avtale1.setStarttid(10);
         avtale1.setSluttid(12);
         avtale1.setNavn("Lunsj");
-        avtale1.setBeskrivelse("Lunsj");
-        avtale1.setDato(3, 4, 2011);
+        avtale1.setBeskrivelse("Besk rivelse");
+        avtale1.setDato(1, 4, 2011);
         avtaler.add(avtale1);
         Avtale avtale2 = new Mote();
         avtale2.setStarttid(13);
-        avtale2.setSluttid(16);
+        avtale2.setSluttid(18);
         avtale2.setNavn("Brunsj");
-        avtale2.setBeskrivelse("Brunsj");
-        avtale2.setDato(30, 3, 2011);
+        avtale2.setBeskrivelse("lolololololomfgroflmao");
+        avtale2.setDato(1, 4, 2011);
         avtaler.add(avtale2);
         
         p.setAvtaler(avtaler);
         
         Calendar d = Calendar.getInstance();
+        
        d.add(Calendar.DAY_OF_MONTH, 0);
         
+     //Create and set up the content pane.
+       
         KalenderPanel newContentPane = new KalenderPanel(p, d);
         newContentPane.setOpaque(true); //content panes must be opaque
+        newContentPane.setLayout(new BoxLayout(newContentPane, BoxLayout.Y_AXIS));
         frame.setContentPane(newContentPane);
 
         //Display the window.
@@ -325,4 +325,40 @@ public class KalenderPanel extends JPanel {
     		}
     	}
     }
+    
+    private void datoToIndexArray(Avtale a, int i) {
+    	for(int j=0; j<dayDatos.length; j++) {
+    		if (a.getDatoDag()==dayDatos[j]) {
+			datoToIndexArray[i]=j;
+			
+    		}
+    	}
+	}
+    
+    public void putAvtaleInnTable(Avtale a, int i) {
+    	avtaleLengde=a.getSluttid()-a.getStarttid();
+	
+    	data[a.getStarttid()-timeIndexRatio][datoToIndexArray[i]]=a;
+	
+    	for (int j=1; j<avtaleLengde; j++) {
+    		if (a instanceof Mote) {
+    			KalPanMoteFiller filler = new KalPanMoteFiller(a);
+    			data[(a.getStarttid()-timeIndexRatio)+j][datoToIndexArray[i]]=filler;
+    		}
+    		else if (a instanceof Avtale) {
+    			KalPanAvtaleFiller filler = new KalPanAvtaleFiller(a);
+    			data[(a.getStarttid()-timeIndexRatio)+j][datoToIndexArray[i]]=filler;
+    		}
+    	}
     }
+    
+    public void addAvtale(Avtale a) {
+    	finnUtOmAvtaleErIdenneUka(a);
+    	putAvtaleInnTable(a, avtaleListe.size()-1); 
+    	
+    }
+    
+    public void removeAvtale(Avtale a) {
+    	
+    }
+}
