@@ -18,7 +18,7 @@ public class Rom {
 	}
 
 	public Rom(String navn){
-		this.romId= ActiveRom.getMaxRomId()+1;
+		this.romId= ActiveRom.getMaxId()+1;
 		this.navn = navn;
 	
 		

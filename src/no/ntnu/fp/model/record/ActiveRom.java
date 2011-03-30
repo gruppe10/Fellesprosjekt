@@ -50,7 +50,7 @@ public class ActiveRom {
 		}
 	}
 	
-	public static int getMaxRomId(){
+	public static int getMaxId(){
 		PreparedStatement ps = null;
 		int romId=0;
 		try{
