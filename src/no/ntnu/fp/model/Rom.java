@@ -18,7 +18,7 @@ public class Rom {
 	}
 
 	public Rom(String navn){
-		this.romId= ActiveRom.getMaxId()+1;
+		//this.romId= ActiveRom.getMaxId()+1;
 		this.navn = navn;
 	
 		
@@ -42,7 +42,12 @@ public class Rom {
 	}
 	
 	public boolean checkLedig(String tid){
+	/*SELECT starttid,sluttid FROM Mote AS m,ReserverteRom AS rr,Rom AS r
+	 * WHERE m.avtaleID=rr.avtaleId AND r.romID=rr.RomID
+	 * 
+	 */
 		return true; //spørring mot database om et annet møte bruker rommet) ? false : true ;
+	
 	}
 	
 	
