@@ -1,5 +1,8 @@
 package no.ntnu.fp.model;
 
+
+import no.ntnu.fp.model.record.ActiveRom;
+
 public class Rom {
 	
 	private int romId;
@@ -15,7 +18,10 @@ public class Rom {
 	}
 
 	public Rom(String navn){
+		this.romId= ActiveRom.getMaxRomId()+1;
 		this.navn = navn;
+	
+		
 //		Hent den nye id'en fra databasen (autogenereres der)
 	}
 

@@ -50,6 +50,29 @@ public class ActiveRom {
 		}
 	}
 	
+	public static int getMaxRomId(){
+		PreparedStatement ps = null;
+		int romId=0;
+		try{
+			connect(); 
+			if( connection != null){
+	            ps = connection.prepareStatement(
+	            "SELECT MAX romID" +
+	            "FROM Rom"		    
+	            );
+	            ResultSet rs = ps.executeQuery();
+	            while(rs.next()){
+					romId = rs.getInt("romID");
+				}
+			}
+		}
+	    catch( SQLException e){
+	    	System.out.println("Kan ikke finne rom med id = " + romId);
+	    	System.out.println("ErrorMessage:" + e.getMessage());
+	    }
+	   return romId;         
+	}
+	
 
 	public static void updateRom(Rom rom){
 		PreparedStatement ps = null;
