@@ -18,46 +18,28 @@ import no.ntnu.fp.model.Rom;
 
 import org.apache.derby.tools.sysinfo;
 
-public class ActiveAvtale {
-	private static String db_url = "Kal";
-	private static String admin_name = "";
-	private static String admin_pwd = "";
-	protected static Connection connection ;
+public class ActiveAvtale extends ActiveModel{
 	
-	@SuppressWarnings("deprecation")
-	private static Date formatDateFrom(Avtale avtale){
-		int dd = avtale.getDatoDag();
-		int mm = avtale.getDatoMnd();
-		int yyyy = avtale.getDatoAar();
-		
-		Date date = new Date(dd, mm, yyyy);
-		return date;
-	}
-	
-	@SuppressWarnings("deprecation")
-	public static Time formatTimeFrom(int tid){ 
-		Time time = new Time(tid, 00, 00);
-		return time;
-	}
 	
 	public static void createAvtale(Avtale avtale){
 		PreparedStatement ps = null;
 		try{
 			connect();
-			
-			ps = connection.prepareStatement(
-				"INSERT INTO Avtale(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
-				"VALUES ( ?, ?, ? ,? ,? ,? )" 
-			);
-			ps.setInt(1, avtale.getAvtaleId());
-			ps.setString(2, avtale.getNavn());
-			ps.setString(3, avtale.getBeskrivelse());
-			ps.setDate(4, formatDateFrom(avtale));
-			ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
-			ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
-			
-			ps.execute();
-			connection.close();
+			if( connection != null){
+				ps = connection.prepareStatement(
+					"INSERT INTO Avtale(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
+					"VALUES ( ?, ?, ? ,? ,? ,? )" 
+				);
+				ps.setInt(1, avtale.getAvtaleId());
+				ps.setString(2, avtale.getNavn());
+				ps.setString(3, avtale.getBeskrivelse());
+				ps.setDate(4, formatDateFrom(avtale));
+				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
+				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
+				
+				ps.execute();
+				connection.close();
+				}
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke lagre avtalen. Feilmelding:" + e.getMessage());
@@ -66,12 +48,11 @@ public class ActiveAvtale {
 	}
 	
 
-	public static void updateAvtale(Avtale avtale){
-		PreparedStatement ps = null;		
+	public static void updateAvtale(Avtale avtale){		
 		try {
         	connect();
         	if( connection != null ){
-	            ps = connection.prepareStatement(
+	            PreparedStatement ps = connection.prepareStatement(
 	            		"UPDATE Avtale " + 
 	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
 	                    "WHERE avtaleID = ? "
@@ -82,9 +63,10 @@ public class ActiveAvtale {
 				ps.setTime(4, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(5, formatTimeFrom(avtale.getSluttid()));
 				ps.setInt(6, avtale.getAvtaleId());
-        	}
-        	ps.executeUpdate();
-			connection.close();
+				ps.executeUpdate();
+				connection.close();
+			}
+        	
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke oppdatere avtalen. Feilmelding:" + e.getMessage());
@@ -92,16 +74,10 @@ public class ActiveAvtale {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
-	public static int formatIntFrom(Time time){
-		int i = time.getHours();
-		return i;
-	}
+
 	
 	
-	private static Avtale selectAvtale(int avtaleId){
-		PreparedStatement ps ;
-		
+	public static Avtale selectAvtale(int avtaleId){
 		Avtale avtale = new Avtale();
 		String navn = "";
 		String beskrivelse = "";
@@ -113,26 +89,28 @@ public class ActiveAvtale {
 		
 		try{
 			connect();
-			ps = connection.prepareStatement(
-					"SELECT * FROM Avtale WHERE avtaleID = ? "
-			);
-			ps.setInt(1, avtaleId);
-			
-			ResultSet rs = ps.executeQuery(); 
-			if (rs != null){
-				while(rs.next()){
-					navn = rs.getString("navn");
-					beskrivelse = rs.getString("beskrivelse");
-					
-					dd = 00;
-					mm = 00;
-					yyyy = 00;
-					
-					starttid = formatIntFrom(rs.getTime("starttid"));
-					sluttid = formatIntFrom(rs.getTime("sluttid"));
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM Avtale WHERE avtaleID = ? "
+				);
+				ps.setInt(1, avtaleId);
+				
+				ResultSet rs = ps.executeQuery(); 
+				if (rs != null){
+					while(rs.next()){
+						navn = rs.getString("navn");
+						beskrivelse = rs.getString("beskrivelse");
+						
+						dd = 00;
+						mm = 00;
+						yyyy = 00;
+						
+						starttid = formatIntFrom(rs.getTime("starttid"));
+						sluttid = formatIntFrom(rs.getTime("sluttid"));
+					}
 				}
+				connection.close();
 			}
-			connection.close();
 		}
 		catch( SQLException e){
 			System.out.println("Kan ikke finner person med id = " + avtaleId);
@@ -152,31 +130,19 @@ public class ActiveAvtale {
 	private static void deleteAvtale(int avtaleId) {
 		try {
 			connect();
-			PreparedStatement ps = connection.prepareStatement(
-					"DELETE FROM Avtale WHERE avtaleID = ?"
-			);
-			ps.setInt(1, avtaleId);
-			ps.execute();
-			connection.close();
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"DELETE FROM Avtale WHERE avtaleID = ?"
+				);
+				ps.setInt(1, avtaleId);
+				ps.execute();
+				connection.close();
+			}
 		} 
 		catch (SQLException e) {
 			System.out.println("Failed to delete Avtale \n Details:" + e.getMessage());
 		}
 	}
-	
-	
-	private static void connect() throws SQLException{
-		try{
-			connection =  DriverManager.getConnection("jdbc:derby:" + db_url, admin_name, admin_pwd );
-		}
-		catch(SQLException e){
-			connection = null;
-			System.out.println("Kan ikke koble til database");
-		}
-		finally{ 
-		}		
-	}
-	
 	
 	public static void main(String args[]){
 		testAll();
@@ -195,7 +161,7 @@ public class ActiveAvtale {
 	
 	private static Avtale mockAvtaleWithId(int id){
 		Avtale avtale = new Avtale();
-		
+			
 		avtale.setAvtaleId(id);
 		avtale.setNavn("Annet navn!");
 		avtale.setDato(01, 22, 2011);
