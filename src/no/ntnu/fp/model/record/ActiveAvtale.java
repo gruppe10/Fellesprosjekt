@@ -12,6 +12,7 @@ package no.ntnu.fp.model.record;
 
 import java.sql.*;
 
+
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Rom;
 
@@ -227,6 +228,12 @@ public class ActiveAvtale {
 		avtale.setNavn("Avtale 1");
 		createAvtale(avtale);
 		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		
+		deleteAvtale(avtale.getAvtaleId());
+		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		
+		createAvtale(avtale);
+		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
 		
 		avtale = selectAvtale(avtale.getAvtaleId());
 		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
