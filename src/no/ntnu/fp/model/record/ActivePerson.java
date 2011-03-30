@@ -50,6 +50,28 @@ public class ActivePerson {
 		}
 	}
 	
+	public static int getMaxId(){
+		PreparedStatement ps = null;
+		int ansattNummer=0;
+		try{
+			connect(); 
+			if( connection != null){
+	            ps = connection.prepareStatement(
+	            "SELECT MAX ansattnr" +
+	            "FROM Person"		    
+	            );
+	            ResultSet rs = ps.executeQuery();
+	            while(rs.next()){
+					ansattNummer = rs.getInt("ansattnr");
+				}
+			}
+		}
+	    catch( SQLException e){
+	    	System.out.println("Kan ikke finne rom med id = " + ansattNummer);
+	    	System.out.println("ErrorMessage:" + e.getMessage());
+	    }
+	   return ansattNummer;         
+	}
 
 	public static void updatePerson(Person person){
 		PreparedStatement ps = null;

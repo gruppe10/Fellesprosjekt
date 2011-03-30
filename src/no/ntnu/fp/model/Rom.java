@@ -1,5 +1,8 @@
 package no.ntnu.fp.model;
 
+
+import no.ntnu.fp.model.record.ActiveRom;
+
 public class Rom {
 	
 	private int romId;
@@ -15,7 +18,10 @@ public class Rom {
 	}
 
 	public Rom(String navn){
+		this.romId= ActiveRom.getMaxId()+1;
 		this.navn = navn;
+	
+		
 //		Hent den nye id'en fra databasen (autogenereres der)
 	}
 
@@ -36,7 +42,7 @@ public class Rom {
 	}
 	
 	public boolean checkLedig(String tid){
-		return (//spørring mot database om et annet møte bruker rommet) ? false : true ;
+		return true; //spørring mot database om et annet møte bruker rommet) ? false : true ;
 	}
 	
 	
