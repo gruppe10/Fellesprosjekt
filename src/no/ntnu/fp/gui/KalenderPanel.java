@@ -17,71 +17,134 @@ import javax.swing.event.ListSelectionListener;
 
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Avtale;
-import java.util.List;
+import no.ntnu.fp.model.Mote;
+
 import java.util.ArrayList;
 
+import javax.swing.table.TableCellRenderer;
 
-/** 
- * Funksjonl¿s versjon
- */
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import javax.swing.ListModel;
+import javax.swing.JPanel;
+
+
+
 public class KalenderPanel extends JPanel {
   
+    private int selectedRow;
+    private int selectedCol;
     
+    private int startYear;
+    private int endYear;
+    private int startMonth;
+    private int endMonth;
+    private int startDay;
+    private int endDay;
+    
+    private ArrayList<Avtale> avtaleListe;
 	
-	public KalenderPanel() {
+	public KalenderPanel(Person p, Calendar inDate) {
+		
 		
 		super(new GridLayout(1,0));
 		
-		Calendar inDate = Calendar.getInstance();
+		Calendar date = inDate;
+		int dato= date.get(Calendar.DAY_OF_MONTH);
+		
+		 final String[] dayNames = 
+	        {
+	        		"Mandag ",
+	        		"Tirsdag ",
+	        		"Onsdag ",
+	        		"Torsdag ",
+	        		"Fredag ",
+	        		"L¿rdag ",
+	        		"S¿ndag "};
+		
 				
-		int ukedagint=inDate.get(Calendar.DAY_OF_WEEK)-2;
+		int ukedagint=date.get(Calendar.DAY_OF_WEEK)-2;
 		
+		int[] dayDatos = new int[7];
 		
-		System.out.println(ukedagint);
-        
-      
-
-        final String[] dayNames = 
-        {
-        		"Mandag ",
-        		"Tirsdag ",
-        		"Onsdag ",
-        		"Torsdag ",
-        		"Fredag ",
-        		"L¿rdag ",
-        		"S¿ndag "};
-        
-        inDate.add(Calendar.DAY_OF_MONTH, -ukedagint);
-        dayNames[0]=dayNames[0]+inDate.get(Calendar.DAY_OF_MONTH);
+		inDate.add(Calendar.DAY_OF_MONTH, -ukedagint);
+		dayDatos[0]=date.get(Calendar.DAY_OF_MONTH);
+		dayNames[0]=dayNames[0]+dayDatos[0];
+		
+		startYear=date.get(Calendar.YEAR);
+		startMonth=date.get(Calendar.MONTH)+1;
+		startDay=date.get(Calendar.DAY_OF_MONTH);
         
         for (int i=1; i<7; i++) {
         	inDate.add(Calendar.DAY_OF_MONTH, 1);
-            dayNames[i]=dayNames[i]+inDate.get(Calendar.DAY_OF_MONTH);
+        	dayDatos[i]=date.get(Calendar.DAY_OF_MONTH);
+            dayNames[i]=dayNames[i]+dayDatos[i];
         }
         
+        endYear=date.get(Calendar.YEAR);
+		endMonth=date.get(Calendar.MONTH)+1;
+		endDay=date.get(Calendar.DAY_OF_MONTH);
+        
+		
+        
+        ArrayList<Avtale> ukuttaAvtaleListe= p.getAvtaler();
+        avtaleListe = new ArrayList<Avtale>();
+        
+       
+        for (int i=0; i<ukuttaAvtaleListe.size(); i++) {
+        	
+        	finnUtOmAvtaleErIdenneUka(ukuttaAvtaleListe.get(i));
+        }
 
-        final Object[][] data = {
-	    {"","","","","","",""}, //8
-	    {"","","","","","",""}, //9
-	    {"","","","","","",""}, //10
-	    {"","","","","","",""}, //11
-	    {"","","","","","",""}, //12
-	    {"","","","","","",""}, //13
-	    {"","","","","","",""}, //14
-	    {"","","","","","",""}, //15
-	    {"","","","","","",""}  //16
+        final int timeIndexRatio=6;
+        
+        final Object[][] data = new Object[12][7];
+        
+        int[] datoToIndex = new int[avtaleListe.size()];
+        
+        for (int i=0; i<avtaleListe.size(); i++) {
+        	for(int j=0; j<dayDatos.length; j++) {
+        		if (avtaleListe.get(i).getDatoDag()==dayDatos[j]) {
+        			datoToIndex[i]=j;
+        			
+        		}
+        	}
+        }
+        
+       int avtaleLengde;
+        
+        for (int i=0; i<avtaleListe.size(); i++) {
+        	
+        	avtaleLengde=avtaleListe.get(i).getSluttid()-avtaleListe.get(i).getStarttid();
+        	
+        	data[avtaleListe.get(i).getStarttid()-timeIndexRatio][datoToIndex[i]]=avtaleListe.get(i);
+        	
+        	for (int j=1; j<avtaleLengde; j++) {
+        		if (avtaleListe.get(i) instanceof Mote) {
+        			KalPanMoteFiller filler = new KalPanMoteFiller(avtaleListe.get(i));
+        			data[(avtaleListe.get(i).getStarttid()-timeIndexRatio)+j][datoToIndex[i]]=filler;
+        		}
+        		else if (avtaleListe.get(i) instanceof Avtale) {
+        			KalPanAvtaleFiller filler = new KalPanAvtaleFiller(avtaleListe.get(i));
+        			data[(avtaleListe.get(i).getStarttid()-timeIndexRatio)+j][datoToIndex[i]]=filler;
+        		}
+        	}
+        }
+        
 	   
-        };
      
         
-        JTable table = new JTable(data, dayNames) {
-        	
+        final JTable table = new JTable(data, dayNames) {
+        
         	public boolean isCellEditable(int rowIndex, int colIndex) {return false;}
         	
         	};  //Disallow the editing of any cell
-        
+
+
+            TableCellRenderer renderer = new KalPanRenderer();  
+            table.setDefaultRenderer(Object.class,new KalPanRenderer());
       
-        table.setPreferredScrollableViewportSize(new Dimension(600, 200));
+        table.setPreferredScrollableViewportSize(new Dimension(700, 300));
         table.setFillsViewportHeight(true);
         table.setGridColor(Color.gray);
         
@@ -90,15 +153,53 @@ public class KalenderPanel extends JPanel {
         
         table.setDragEnabled(false);
         table.getTableHeader().setReorderingAllowed(false);
-
         
+
         JScrollPane scrollPane = new JScrollPane(table);
+        
+        
+    
+        ListModel lm = new AbstractListModel() {
+            String headers[] = { 
+            		"6.00-7.00", 
+            		"7.00-8.00", 
+            		"8.00-9.00", 
+            		"9.00-10.00", 
+            		"10.00-11.00",
+            		"11.00-12.00", 
+            		"12.00-13.00", 
+            		"13.00-14.00", 
+            		"14.00-15.00", 
+            		"15.00-16.00", 
+            		"16.00-17.00",
+            		"17.00-18.00" 
+            		};
+
+            public int getSize() {
+              return headers.length;
+            }
+
+            public Object getElementAt(int index) {
+              return headers[index];
+            }
+          };
+          
+          
+        
+        JList timeRow = new JList(lm);
+        timeRow.setFixedCellWidth(100);
+        
+        timeRow.setFixedCellHeight(table.getRowHeight());
+        timeRow.setCellRenderer(new KalPanRowHeaderRenderer(table));
+        scrollPane.setRowHeaderView(timeRow);
+        
         add(scrollPane);
         
        
         /**
          * Listeners
          */
+        	
             ListSelectionModel rowSM = table.getSelectionModel();
             rowSM.addListSelectionListener(new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent e) {
@@ -109,10 +210,12 @@ public class KalenderPanel extends JPanel {
                     if (lsm.isSelectionEmpty()) {
                         System.out.println("No rows are selected.");
                     } else {
-                        int selectedRow = lsm.getMinSelectionIndex();
-                        int selectedTime = selectedRow+8;
-                        System.out.println("Time: " + selectedTime
-                                           + ".00 - "+ (selectedTime+1) + ".00");
+                        selectedRow = lsm.getMinSelectionIndex();
+                        int selectedTime = selectedRow+6;
+                        
+                        if (data[selectedRow][selectedCol]!=null) {
+                        System.out.println("Something here");
+                        }
                     }
                 }
             });
@@ -129,8 +232,10 @@ public class KalenderPanel extends JPanel {
                     if (lsm.isSelectionEmpty()) {
                         System.out.println("No columns are selected.");
                     } else {
-                        int selectedCol = lsm.getMinSelectionIndex();
-                        System.out.println("Day: " + dayNames[selectedCol]);
+                        selectedCol = lsm.getMinSelectionIndex();
+                        if (data[selectedRow][selectedCol]!=null) {
+                            System.out.println("Something here");
+                        }
                                           
                     }
                 }
@@ -151,20 +256,38 @@ public class KalenderPanel extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
+        
+        //Test Test - Lager en ny person med avtaler
         Person p= new Person();
-        ArrayList<Avtale> Avtaler = new ArrayList<Avtale>();
+        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
         Avtale avtale1 = new Avtale();
-        p.setAvtaler(Avtaler);
+        avtale1.setStarttid(10);
+        avtale1.setSluttid(12);
+        avtale1.setNavn("Lunsj");
+        avtale1.setBeskrivelse("Lunsj");
+        avtale1.setDato(3, 4, 2011);
+        avtaler.add(avtale1);
+        Avtale avtale2 = new Mote();
+        avtale2.setStarttid(13);
+        avtale2.setSluttid(16);
+        avtale2.setNavn("Brunsj");
+        avtale2.setBeskrivelse("Brunsj");
+        avtale2.setDato(30, 3, 2011);
+        avtaler.add(avtale2);
         
+        p.setAvtaler(avtaler);
         
+        Calendar d = Calendar.getInstance();
+       d.add(Calendar.DAY_OF_MONTH, 0);
         
-        KalenderPanel newContentPane = new KalenderPanel();
+        KalenderPanel newContentPane = new KalenderPanel(p, d);
         newContentPane.setOpaque(true); //content panes must be opaque
         frame.setContentPane(newContentPane);
 
         //Display the window.
         frame.pack();
         frame.setVisible(true);
+        
     }
 
     public static void main(String[] args) {
@@ -176,4 +299,30 @@ public class KalenderPanel extends JPanel {
             }
         });
     }
-}
+    
+    private void finnUtOmAvtaleErIdenneUka(Avtale a) {
+      	
+    	if (a.getDatoAar() == startYear || a.getDatoAar() == endYear) {
+    		
+    		if (startYear != endYear) {
+    			if ((a.getDatoMnd() == 12 && a.getDatoAar() == startYear) || (a.getDatoMnd() == 1 && a.getDatoAar() == endYear)) {
+    				if (a.getDatoDag() >= startDay || a.getDatoDag() <= endDay) {
+    					avtaleListe.add(a);
+    				}
+    			}
+    		}
+    		else if (a.getDatoMnd() == startMonth || a.getDatoMnd() == endMonth) {
+    			if (startMonth != endMonth) {
+            		if ((a.getDatoDag() >= startDay && a.getDatoMnd() == startMonth) || (a.getDatoDag() <= endDay && a.getDatoMnd() == endMonth) ){
+            			avtaleListe.add(a);
+            		}
+            	}
+    			else {
+    				if (a.getDatoDag() >= startDay && a.getDatoDag() <= endDay) {
+    					avtaleListe.add(a);
+    				}
+    			}
+    		}
+    	}
+    }
+    }

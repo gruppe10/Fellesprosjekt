@@ -4,6 +4,8 @@
 .project
 .settings
 db-derby*
+db-derby
 bin*
 Kal
+
 

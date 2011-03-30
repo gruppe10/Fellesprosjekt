@@ -2,7 +2,6 @@ package no.ntnu.fp.model.record;
 
 /*
  *   Methods:
-
  *   
  * 	 CreateAvtale(Avtale avtale)
  * 	 SelectPerson(int ansattnummer)
@@ -13,7 +12,9 @@ package no.ntnu.fp.model.record;
 
 import java.sql.*;
 
+
 import no.ntnu.fp.model.Avtale;
+import no.ntnu.fp.model.Rom;
 
 import org.apache.derby.tools.sysinfo;
 
@@ -33,58 +34,57 @@ public class ActiveAvtale {
 		return date;
 	}
 	
+	@SuppressWarnings("deprecation")
+	public static Time formatTimeFrom(int tid){ 
+		Time time = new Time(tid, 00, 00);
+		return time;
+	}
+	
 	public static void createAvtale(Avtale avtale){
 		PreparedStatement ps = null;
 		try{
 			connect();
 			
 			ps = connection.prepareStatement(
-				"INSERT INTO Person(avtaleid, tittel, beskrivelse, dato, starttid, sluttid)" +
+				"INSERT INTO Avtale(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
 				"VALUES ( ?, ?, ? ,? ,? ,? )" 
 			);
 			ps.setInt(1, avtale.getAvtaleId());
-			ps.setString(2, avtale.getTittel());
+			ps.setString(2, avtale.getNavn());
 			ps.setString(3, avtale.getBeskrivelse());
 			ps.setDate(4, formatDateFrom(avtale));
-			ps.setInt(5, avtale.getStarttid());
-			ps.setInt(6, avtale.getSluttid());
+			ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
+			ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 			
-			boolean success = ps.execute();
-			if (success){
-				System.out.println("Created Avtale!\n");
-			}
+			ps.execute();
+			connection.close();
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke lagre avtalen. Feilmelding:" + e.getMessage());
 			System.out.println(e.getStackTrace());
 		}
-		finally{
-			//if(ps != null) ps.close();
-		}
 	}
 	
 
-	public static void updatePerson(Avtale avtale){
+	public static void updateAvtale(Avtale avtale){
 		PreparedStatement ps = null;		
 		try {
         	connect();
-        	if( connection != null){
+        	if( connection != null ){
 	            ps = connection.prepareStatement(
-	            		"UPDATE Person " + 
-	            		"SET navn= ? , brukernavn = ?, passord = ?" +
-	                    "WHERE ansattnr = ? "
+	            		"UPDATE Avtale " + 
+	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
+	                    "WHERE avtaleID = ? "
 	            );
-	            ps.setInt(1, avtale.getAvtaleId());
-				ps.setString(2, avtale.getTittel());
-				ps.setString(3, avtale.getBeskrivelse());
-				ps.setDate(4, formatDateFrom(avtale));
-				ps.setInt(5, avtale.getStarttid());
-				ps.setInt(6, avtale.getSluttid());
+				ps.setString(1, avtale.getNavn());
+				ps.setString(2, avtale.getBeskrivelse());
+				ps.setDate(3, formatDateFrom(avtale));
+				ps.setTime(4, formatTimeFrom(avtale.getStarttid()));
+				ps.setTime(5, formatTimeFrom(avtale.getSluttid()));
+				ps.setInt(6, avtale.getAvtaleId());
         	}
-        	boolean success = ps.execute());
-			if (success){
-				System.out.println("Updated Avtale!\n");
-			}
+        	ps.executeUpdate();
+			connection.close();
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke oppdatere avtalen. Feilmelding:" + e.getMessage());
@@ -92,11 +92,18 @@ public class ActiveAvtale {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
+	public static int formatIntFrom(Time time){
+		int i = time.getHours();
+		return i;
+	}
 	
 	
-	private static Avtale selectAvtale(int avtaleid){
+	private static Avtale selectAvtale(int avtaleId){
+		PreparedStatement ps ;
+		
 		Avtale avtale = new Avtale();
-		String tittel = "";
+		String navn = "";
 		String beskrivelse = "";
 		int dd = 00;
 		int mm = 00;
@@ -106,31 +113,34 @@ public class ActiveAvtale {
 		
 		try{
 			connect();
-			PreparedStatement ps = connection.prepareStatement(
-					"SELECT * FROM Avtale WHERE avtaleid = ? "
+			ps = connection.prepareStatement(
+					"SELECT * FROM Avtale WHERE avtaleID = ? "
 			);
-			ps.setInt(1, avtaleid);
+			ps.setInt(1, avtaleId);
 			
 			ResultSet rs = ps.executeQuery(); 
 			if (rs != null){
 				while(rs.next()){
-					tittel = rs.getString("tittel");
+					navn = rs.getString("navn");
 					beskrivelse = rs.getString("beskrivelse");
 					
 					dd = 00;
 					mm = 00;
 					yyyy = 00;
 					
-					starttid = rs.getInt("starttid");
-					sluttid = rs.getInt("Sluttid");
+					starttid = formatIntFrom(rs.getTime("starttid"));
+					sluttid = formatIntFrom(rs.getTime("sluttid"));
 				}
 			}
+			connection.close();
 		}
 		catch( SQLException e){
-			System.out.println("Kan ikke finner person med id = " + avtaleid);
+			System.out.println("Kan ikke finner person med id = " + avtaleId);
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
 		
+		avtale.setAvtaleId(avtaleId);
+		avtale.setNavn(navn);
 		avtale.setBeskrivelse(beskrivelse);
 		avtale.setDato(dd, mm, yyyy);
 		avtale.setSluttid(sluttid);
@@ -139,19 +149,21 @@ public class ActiveAvtale {
 		return avtale;
 	}
 		
-	private static void deletePerson(int ansattNr) {
+	private static void deleteAvtale(int avtaleId) {
 		try {
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"DELETE FROM Person WHERE ansattnr = ?"
+					"DELETE FROM Avtale WHERE avtaleID = ?"
 			);
-			ps.setInt(1, ansattNr);
-			ps.execute();	
+			ps.setInt(1, avtaleId);
+			ps.execute();
+			connection.close();
 		} 
 		catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Failed to delete Avtale \n Details:" + e.getMessage());
 		}
 	}
+	
 	
 	private static void connect() throws SQLException{
 		try{
@@ -165,51 +177,72 @@ public class ActiveAvtale {
 		}		
 	}
 	
-	public static void main(String args[]){
 	
-		//test-iciles
+	public static void main(String args[]){
+		testAll();
 	}
 	
 	
+/******************************
+*  			Tester			  *
+******************************/
 	
-//  Uncompleted test
-//
-//	private void testUpdatePerson(){
-//		int ansattnr = 10001;
-//		String navn = "Martin";
-//		String nyttNavn = "Per-Donald";
-//		Person person = new Person();
-//		person.setAnsattNummer(ansattnr);
-//		
-//		//Hente ut person 10001 som allerede ligger inne
-//		Person orginalPerson = selectPerson(person.getAnsattNummer());
-//		System.out.println("Orginalt navn: " + orginalPerson.getName());
-//		
-//		//oppdatere ny person
-//		orginalPerson.setName(nyttNavn);
-//		updatePerson(orginalPerson);
-//		Person oppdatertPerson = selectPerson(orginalPerson.getAnsattNummer());
-//		System.out.println("Nytt navn:" + oppdatertPerson.getName());
-//	}
-//	
-//	
-//	private void testCreatePerson(){
-//		Person person = new Person();
-//		person.setAnsattNummer(10004);
-//		person.setName("Martin");
-//		person.setBrukerNavn("martin");
-//		person.setPassord("1234");
-//		
-//		createPerson(person);
-//		
-//		Person nyeperson = selectPerson(person.getAnsattNummer());
-//		System.out.println(nyeperson.getName());
-//	}
-//	
-//	
-//	private void testSelectPerson(){
-//		int ansattnr = 10001;
-//		Person testPerson  = selectPerson(ansattnr);
-//		System.out.println(testPerson.getName());
-//	}
+	private void testCreatePerson(){
+		Avtale avtale = mockAvtaleWithId(10001);
+
+		createAvtale(avtale);
+	}	
+	
+	private static Avtale mockAvtaleWithId(int id){
+		Avtale avtale = new Avtale();
+		
+		avtale.setAvtaleId(id);
+		avtale.setNavn("Annet navn!");
+		avtale.setDato(01, 22, 2011);
+		avtale.setStarttid(12);
+		avtale.setSluttid(12);
+		avtale.setBeskrivelse("Dette er en avtale");
+		
+		return avtale;
+	}
+	
+	private static void testUpdateAvtale(){
+		Avtale avtale = mockAvtaleWithId(10003);
+		avtale.setNavn("Avtale nr 1");
+		createAvtale(avtale);
+		System.out.println("Avtale 1 er lagret med navn:" + avtale.getNavn());
+		
+		avtale.setNavn("Avtale nr 2");
+		updateAvtale(avtale);
+		System.out.println("Avtale 2 er lagret med navn:" + avtale.getNavn());
+	}
+
+	private static void testSelectAvtale(){
+		int ansattnr = 10002;
+		Avtale avtale = selectAvtale(ansattnr);
+		System.out.println("Avtalen har navnet:" + avtale.getNavn() + ".");
+	}
+	
+	private static void testAll(){
+		Avtale avtale = mockAvtaleWithId(4);
+		avtale.setNavn("Avtale 1");
+		createAvtale(avtale);
+		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		
+		deleteAvtale(avtale.getAvtaleId());
+		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		
+		createAvtale(avtale);
+		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		
+		avtale = selectAvtale(avtale.getAvtaleId());
+		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		
+		avtale.setNavn("Avtale 2");
+		updateAvtale(avtale);
+		System.out.println("Oppdaterte avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		
+		avtale = selectAvtale(avtale.getAvtaleId());
+		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+	}
 }

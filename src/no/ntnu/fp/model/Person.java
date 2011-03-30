@@ -7,6 +7,8 @@ import java.util.Date;
 
 import java.util.ArrayList;
 
+import no.ntnu.fp.model.record.ActivePerson;
+
 /**
  * The <code>Person</code> class stores information about a single person.
  * 
@@ -129,6 +131,7 @@ public class Person {
 		dateOfBirth = new Date();
 		id = System.currentTimeMillis();
 		propChangeSupp = new PropertyChangeSupport(this);
+		//this.ansattNummer = ActivePerson.getMaxId()+1;
 	}
 	
 	/**
@@ -144,6 +147,7 @@ public class Person {
 		this.name = name;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
+		this.ansattNummer = ActivePerson.getMaxId()+1;
 	}
 	
 	/**

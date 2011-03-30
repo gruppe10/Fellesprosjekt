@@ -2,23 +2,31 @@ package no.ntnu.fp.model;
 
 import java.util.Calendar;
 
-public  class Avtale {
+public class Avtale {
 
+	private int avtaleId;
+	private String navn;
+	private String beskrivelse;
+	private Person initiativtaker;
 	private int starttid, sluttid;
 	private int datoDag;
 	private int datoMnd;
 	private int datoAar;
-	private String tittel;
-	private String beskrivelse;
-	private Person initiativtaker;
-	private String navn;
 
 	public Avtale(){
 		starttid = sluttid = 0;
 		
-		tittel = beskrivelse = null;
+		navn = beskrivelse = null;
 		initiativtaker = null;
 		//Oppdater database!
+	}
+	
+	public int getAvtaleId(){
+		return avtaleId;
+	}
+	
+	public void setAvtaleId(int nyId){
+		this.avtaleId = nyId;
 	}
 
 	public int getStarttid() {
@@ -56,15 +64,6 @@ public  class Avtale {
 		//Oppdater database!
 	}
 
-	public String getTittel() {
-		return tittel;
-	}
-
-	public void setTittel(String tittel) {
-		this.tittel = tittel;
-		//Oppdater database!
-	}
-
 	public String getBeskrivelse() {
 		return beskrivelse;
 	}
@@ -93,14 +92,5 @@ public  class Avtale {
 	
 	public String toString() {
 		return navn;
-	}
-
-	public int getAvtaleId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-	
-	
+	}	
 }
