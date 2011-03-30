@@ -84,10 +84,12 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 					brukernavnField = new JTextField();
 					brukernavnField.setText("Skriv inn brukernavn");
 					brukernavnField.setFont(new java.awt.Font("Tahoma",2,11));
+					brukernavnField.getText();
 				}
 				{
 					passordField = new JPasswordField();
 					passordField.setText("Passord");
+					passordField.getText();
 				}
 				{
 					loggInnButton = new JButton();

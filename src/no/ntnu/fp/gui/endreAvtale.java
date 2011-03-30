@@ -144,6 +144,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 									new String[] { "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" });
 						jComboBox1 = new JComboBox();
 						jComboBox1.setModel(jComboBox1Model);
+						jComboBox1.getSelectedItem();
 					}
 					{
 						ComboBoxModel jComboBox2Model = 
@@ -151,6 +152,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 									new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" });
 						jComboBox2 = new JComboBox();
 						jComboBox2.setModel(jComboBox2Model);
+						jComboBox2.getSelectedItem();
 					}
 					{
 						slettButton = new JButton();
@@ -268,7 +270,6 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 		if(evt.getSource() == slettButton){
 			slett slett = new slett();
 			slett.show();
-			hide();
 		}
 	}
 
