@@ -42,7 +42,7 @@ public class ActiveAvtale {
 				"INSERT INTO Person(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
 				"VALUES ( ?, ?, ? ,? ,? ,? )" 
 			);
-			ps.setInt(1, avtale.getAvtaleID());
+			ps.setInt(1, avtale.getAvtaleId());
 			ps.setString(2, avtale.getNavn());
 			ps.setString(3, avtale.getBeskrivelse());
 			ps.setDate(4, formatDateFrom(avtale));
