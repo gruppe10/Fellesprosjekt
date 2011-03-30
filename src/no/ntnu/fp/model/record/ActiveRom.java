@@ -19,11 +19,6 @@ import no.ntnu.fp.model.Rom;
 import org.apache.derby.tools.sysinfo;
 
 public class ActiveRom extends ActiveModel{
-	private static String db_url = "Kal";
-	private static String admin_name = "";
-	private static String admin_pwd = "";
-	protected static Connection connection ;
-	
 	public static void createRom(Rom rom){
 		try{
 			connect();
@@ -40,9 +35,6 @@ public class ActiveRom extends ActiveModel{
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
-		}
-		finally{
-			//if(ps != null) ps.close();
 		}
 	}
 	

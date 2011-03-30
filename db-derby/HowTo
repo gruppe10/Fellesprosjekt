@@ -16,3 +16,13 @@
  >> run 'create_db.sql';
  >> exit;
  > exit;
+ 
+ 
+ 
+ WITH reserverte_rom_med_tider as(
+ 	SELECT * from Mote,ReserverteRom
+ 	WHERE Mote.avtaleID = ReserverteRom.avtaleID
+ )
+ 
+ 
+ 
