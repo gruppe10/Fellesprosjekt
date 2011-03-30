@@ -79,6 +79,7 @@ public class avlysMoete extends javax.swing.JFrame implements ActionListener{
 				{
 					tittelField = new JTextField();
 					tittelField.setText("Tittel");
+					tittelField.getText();
 				}
 				{
 					grunnTextArea = new JTextArea();
@@ -165,10 +166,8 @@ public class avlysMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == meldAvbudButton){
-			slett slett = new slett();
-			slett.show();
-			hide();
-			//gi beskjed til møteleder om at man ikke kan delta
+			meldAvbud meldAvbud = new meldAvbud();
+			meldAvbud.show();
 		}
 		else if(evt.getSource() == avbrytButton){
 			kal kal = new kal();
