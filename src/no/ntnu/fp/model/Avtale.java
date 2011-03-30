@@ -92,5 +92,10 @@ public class Avtale {
 	
 	public String toString() {
 		return navn;
+	}
+
+	public Calendar getDate() {
+		// TODO Auto-generated method stub
+		return null;
 	}	
 }
