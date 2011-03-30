@@ -81,7 +81,7 @@ public class ActiveAvtale {
 				ps.setInt(5, avtale.getStarttid());
 				ps.setInt(6, avtale.getSluttid());
         	}
-        	boolean success = ps.execute();
+        	boolean success = ps.execute());
 			if (success){
 				System.out.println("Updated Avtale!\n");
 			}
@@ -143,7 +143,7 @@ public class ActiveAvtale {
 		try {
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"DELETE FROM Person WHERE ansattNR = ?"
+					"DELETE FROM Person WHERE ansattnr = ?"
 			);
 			ps.setInt(1, ansattNr);
 			ps.execute();	
