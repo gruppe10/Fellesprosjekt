@@ -95,10 +95,8 @@ public class ConnectionImpl extends AbstractConnection {
 		}
     	this.state = State.SYN_SENT;
 		
-    	KtnDatagram recieved = null;
-    	while(recieved == null){
-    		recieved = receiveAck();
-    	}
+    	KtnDatagram recieved = receiveAck();
+    	
     	this.remotePort = receiveAck().getSrc_port();
     	
 		if (recieved.getFlag() == Flag.SYN_ACK){
