@@ -36,7 +36,7 @@ public class Rom {
 	}
 	
 	public boolean checkLedig(String tid){
-		return (//spørring mot database om et annet møte bruker rommet) ? false : true ;
+		return true; //spørring mot database om et annet møte bruker rommet) ? false : true ;
 	}
 	
 	
