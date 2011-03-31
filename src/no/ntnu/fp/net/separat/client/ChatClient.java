@@ -84,11 +84,16 @@ public class ChatClient {
         String message;
         System.out.println("Logger inn " + username);
         try {
-            connection.connect(InetAddress.getByName(addressServer),
+           System.out.println("A");
+        	connection.connect(InetAddress.getByName(addressServer),
                     port_to_server);
+        	System.out.println("B");
             connection.send("Hello:" + username);
+            System.out.println("BA");
             recieveThread = new RecieveThread();
+            System.out.println("BB");
             recieveThread.start();
+            System.out.println("BC");
         } catch (SocketTimeoutException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {
@@ -142,11 +147,16 @@ public class ChatClient {
     }
 
     public static void main(String[] args) {
-        String address;
+        String address = null;
         int port;
         Log.setLogName("Klienten");
         Settings settings = new Settings();
-        address = settings.getServerAddress();
+//        try {
+//        	address = InetAddress.getLocalHost().getHostAddress();
+//        } catch (UnknownHostException e) {
+//        	
+//        }
+        address = "78.91.5.157";
         port = settings.getServerPort();
         SIMPLE_CONNECTION = settings.useSimpleConnection();
         
@@ -160,6 +170,7 @@ public class ChatClient {
      * @param username
      *            The username to set.
      */
+    
     public void setUsername(String username) {
         this.username = username;
     }

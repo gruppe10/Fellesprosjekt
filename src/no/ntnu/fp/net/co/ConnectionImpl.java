@@ -99,12 +99,17 @@ public class ConnectionImpl extends AbstractConnection {
     	KtnDatagram recieved = receiveAck();
 
 		if (isValid(recieved)){
+			System.out.println("C");
 			this.remotePort = recieved.getSrc_port();
 			lastValidPacketReceived = recieved;
+
 			sendAck(recieved, false);
 			state = State.ESTABLISHED;
+			
+			
 		}
 		else{
+			System.out.println("D");
 			state = State.CLOSED;			
 		}
 			
@@ -141,6 +146,7 @@ public class ConnectionImpl extends AbstractConnection {
         while(!connection.isValid(ack)){
         	connection.sendAck(syn, true);
         	ack = connection.receiveAck();
+
         }
         connection.lastValidPacketReceived = ack;
         this.state = State.CLOSED;
@@ -174,13 +180,15 @@ public class ConnectionImpl extends AbstractConnection {
     	KtnDatagram toSend = constructDataPacket(msg);
     	KtnDatagram ack = null;
         
-        while (!isValid(ack)){
-        	ack = sendDataPacketWithRetransmit(toSend);
-        	lastDataPacketSent = toSend;
+        
+    	while (!isValid(ack)){
+        	ack = sendDataPacketWithRetransmit(toSend); 
+        	lastDataPacketSent = toSend; 
         }
+        
         lastValidPacketReceived = ack;
     }
-
+    
     /**
      * Wait for incoming data.
      * 
@@ -197,6 +205,7 @@ public class ConnectionImpl extends AbstractConnection {
         KtnDatagram received = null;
         
         received = receivePacket(false);
+
         if (isValid(received)){
         	lastValidPacketReceived = received;
         	sendAck(lastValidPacketReceived, false);
@@ -297,7 +306,7 @@ public class ConnectionImpl extends AbstractConnection {
     			&& packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
     	case ESTABLISHED: return ((packet.getFlag()==Flag.NONE || packet.getFlag()==Flag.ACK || packet.getFlag()==Flag.FIN)
     			&& (packet.getFlag() == Flag.NONE || packet.getAck() == lastDataPacketSent.getSeq_nr())
-                && (packet.getFlag() == Flag.ACK || packet.getSeq_nr() > lastValidPacketReceived.getSeq_nr())&&
+                && (packet.getFlag() == Flag.ACK || packet.getSeq_nr() > lastValidPacketReceived.getSeq_nr()) &&
     			 	packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
     	case FIN_WAIT_1: return (packet.getFlag() == Flag.ACK
     			&& packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
