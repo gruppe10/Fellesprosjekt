@@ -181,7 +181,11 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT avtaleID FROM Avtaler WHERE lederID = ?"
+						" WITH Moter as(                                                     " +
+						"	SELECT Avtaler From Deltager, Avtaler                                  " +
+						"	WHERE Deltager.ansattId = Avtaler.ansattId                       " +
+						" )	                                                                 " +
+						" SELECT avtaleID FROM Avtaler WHERE lederID = ? AND COUNT(Moter) < 0"
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();

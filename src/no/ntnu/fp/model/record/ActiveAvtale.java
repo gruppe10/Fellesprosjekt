@@ -65,7 +65,6 @@ public class ActiveAvtale extends ActiveModel{
 				ps.executeUpdate();
 				connection.close();
 			}
-        	
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke oppdatere avtalen");
@@ -166,8 +165,6 @@ public class ActiveAvtale extends ActiveModel{
 		}
 		return deltagere;
 	}
-	
-	
 	
 	public static void main(String args[]){
 		testCrud();
