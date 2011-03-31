@@ -147,7 +147,7 @@ public class Person {
 		this.name = name;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
-		this.ansattNummer = ActivePerson.getMaxId()+1;
+		//this.ansattNummer = ActivePerson.getMaxId()+1;
 	}
 	
 	/**
@@ -360,5 +360,10 @@ public class Person {
 		}
 		
 		return hendelser;
+	}
+	
+	public void setMoteStatus(boolean status){
+		ArrayList<Avtale> moter = finnMoter();
+		
 	}
 }
