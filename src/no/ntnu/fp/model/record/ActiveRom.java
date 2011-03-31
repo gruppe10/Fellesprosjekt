@@ -12,6 +12,7 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
@@ -135,7 +136,45 @@ public class ActiveRom extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
+
 	
+	public boolean[] selectLedigeTider(int romId, Date date){
+		boolean[] ledigeTider = new boolean[24];
+		
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						" WITH reserverteTider as(" +
+						"	SELECT * from ReservertRom,Mote " +
+						"	WHERE ReservertRom.avtaleId = ? " +
+						"	AND Mote.avtaleId = ? 			" +
+						"	AND Mote.date = ?  			    " +
+						" )" +
+						" SELECT starttid,sluttid from reserverteTider" 
+				);
+				ps.setInt(1,romId);
+				ps.setInt(2, romId);
+				ps.setDate(3,date);
+				
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					int starttid = formatIntFrom(rs.getTime(""));
+					int sluttid = formatIntFrom(rs.getTime(""));
+					
+					for(int i = starttid ; i <= sluttid; i++ ){
+						ledigeTider[i] = false;
+					}
+				}
+				connection.close();
+			}
+		}catch(SQLException e){
+			System.out.println("Kan ikke finne tider for rom med id:" + romId + "på datoen:" + date);
+			System.out.println("Detaljer:" + e.getMessage());
+		}
+		return ledigeTider;
+		
+	}
 	
 	public static void main(String args[]){
 //		int romID = 112;
@@ -182,6 +221,7 @@ public class ActiveRom extends ActiveModel{
 		Rom oppdatertPerson = selectRom(orginalRom.getRomId());
 		System.out.println("Nytt navn:" + oppdatertPerson.getNavn());
 	}
+	
 
 
 		
