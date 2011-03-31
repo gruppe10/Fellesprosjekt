@@ -1,48 +1,44 @@
 CREATE TABLE Person (
-        ansattnr INT PRIMARY KEY NOT NULL,
+        ansattId INT PRIMARY KEY NOT NULL,
         navn VARCHAR(50) NOT NULL,
         brukernavn VARCHAR(50) NOT NULL,
         passord VARCHAR(50) NOT NULL
 );
 CREATE TABLE Avtale (
-        avtaleID INT PRIMARY KEY NOT NULL,
+        avtaleId INT PRIMARY KEY NOT NULL AUTO INCREMENT,
 	starttid TIME NOT NULL,
 	sluttid TIME NOT NULL,
         dato DATE NOT NULL,
 	navn VARCHAR(50) NOT NULL,
 	beskrivelse VARCHAR(300),
-	lederID INT,
-	FOREIGN KEY (lederID) REFERENCES Person(ansattnr)
+	lederId INT,
+	FOREIGN KEY (lederId) REFERENCES Person(ansattId)
 );
 CREATE TABLE Deltakere (
-        ansattnr INT,
-        avtaleID INT,
-        FOREIGN KEY (ansattnr) REFERENCES Person(ansattnr),
-        FOREIGN KEY (avtaleID) REFERENCES Mote(avtaleID)
+        ansattId INT,
+        avtaleId INT,
+        status VARCHAR(15) NOT NULL DEFAULT 'IKKE_MOTTATT',
+        FOREIGN KEY (ansattId) REFERENCES Person(ansattId),
+        FOREIGN KEY (avtaleId) REFERENCES Mote(avtaleId)
 );
 CREATE TABLE Mote (
-        avtaleID INT PRIMARY KEY NOT NULL,
+        avtaleId INT PRIMARY KEY NOT NULL AUTO INCREMENT,
 	starttid TIME NOT NULL,
 	sluttid TIME NOT NULL,
         dato DATE NOT NULL,
 	navn VARCHAR(50) NOT NULL,
 	beskrivelse VARCHAR(300),
-	lederID INT,
-	FOREIGN KEY(lederID) REFERENCES Person(ansattnr)
+	lederId INT,
+	FOREIGN KEY(lederId) REFERENCES Person(ansattId)
 );
-CREATE TABLE Notis (
-	notisID INT PRIMARY KEY NOT NULL,        
-	innhold VARCHAR(50) NOT NULL,
-	personID INT,
-	FOREIGN KEY(personID) REFERENCES Person(ansattnr)
-);
+
 CREATE TABLE Rom (
-        romID INT PRIMARY KEY NOT NULL,
+        romId INT PRIMARY KEY NOT NULL AUTO INCREMENT,
 	navn VARCHAR(50) NOT NULL
 );
 CREATE TABLE ReserverteRom (
-        romID INT,
-        avtaleID int,
-        FOREIGN KEY(romID) REFERENCES Rom(romID),
-        FOREIGN KEY(avtaleID) REFERENCES Mote(avtaleID)
+        romId INT PRIMARY KEY,
+        avtaleId INT PRIMARY KEY,
+        FOREIGN KEY(romId) REFERENCES Rom(romId),
+        FOREIGN KEY(avtaleId) REFERENCES Mote(avtaleId)
 );
