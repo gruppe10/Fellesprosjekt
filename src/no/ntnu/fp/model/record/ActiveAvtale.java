@@ -73,9 +73,6 @@ public class ActiveAvtale extends ActiveModel{
 		}
 	}
 	
-
-	
-	
 	public static Avtale selectAvtale(int avtaleId){
 		Avtale avtale = new Avtale();
 		String navn = "";
