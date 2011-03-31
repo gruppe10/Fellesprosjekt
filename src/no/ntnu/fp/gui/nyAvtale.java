@@ -18,6 +18,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import no.ntnu.fp.model.Person;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -46,6 +47,9 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel sluttidLabel;
 	private JLabel starttidLabel;
 	private JLabel headerLabel;
+	
+	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
+	private int timeIndexDiff=6;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -53,15 +57,22 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				nyAvtale inst = new nyAvtale(6, 31, 3, 2011);
+				nyAvtale inst = new nyAvtale(6, 31, 3, 2011, null);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 	
-	public nyAvtale(int startTime, int startDato, int startMonth, int startAar) {
+	public nyAvtale(int dStartTime, int dDato, int dMonth, int dYear, Person p) {
+
 		super();
+		
+		defaultStartTime = dStartTime;
+		defaultDato = dDato;
+		defaultMonth = dMonth;
+		defaultYear = dYear;
+		
 		initGUI();
 	}
 	
@@ -111,6 +122,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					jComboBox1 = new JComboBox();
 					jComboBox1.setModel(jComboBox1Model);
 					jComboBox1.getSelectedItem();
+					jComboBox1.setSelectedIndex((defaultStartTime-timeIndexDiff));
 				}
 				{
 					ComboBoxModel jComboBox2Model = 
@@ -119,6 +131,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					jComboBox2 = new JComboBox();
 					jComboBox2.setModel(jComboBox2Model);
 					jComboBox2.getSelectedItem();
+					jComboBox2.setSelectedIndex((defaultStartTime-timeIndexDiff));
 				}
 				{
 					jTextArea1 = new JTextArea();
@@ -132,7 +145,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				}
 				{
 					datoField = new JTextField();
-					datoField.setText("dd.mm.aaaa");
+					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);
 					datoField.setFont(new java.awt.Font("Tahoma",2,11));
 					//do something
 				}
@@ -180,8 +193,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					                    .addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(0, 32, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 52, Short.MAX_VALUE))
+					                     .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					                   .addGap(0, 52, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addComponent(jComboBox2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(0, 52, Short.MAX_VALUE)))
@@ -241,13 +254,13 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == lagreButton){
 			kal kal = new kal();
-			kal.show();
+			//kal.show();
 			hide();
 			// må kunne lagre avtalen, og legge den til på rett sted i kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){
 			kal kal = new kal();
-			kal.show();
+			//kal.show();
 			hide();
 		}
 		

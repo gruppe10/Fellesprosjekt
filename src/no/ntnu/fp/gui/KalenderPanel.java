@@ -52,12 +52,12 @@ public class KalenderPanel extends JPanel {
         
         final JTable table = new JTable(model) {
         
-        	public boolean isCellEditable(int rowIndex, int colIndex) {return false;}
+        	public boolean isCellEditable(int rowIndex, int colIndex) {return false;} //Disallow the editing of any cell
         	
-        	};  //Disallow the editing of any cell
+        }; 
 
 
-            table.setDefaultRenderer(Object.class,new KalPanRenderer());
+        table.setDefaultRenderer(Object.class,new KalPanRenderer());
       
         table.setPreferredScrollableViewportSize(new Dimension(700, 192));
         table.setFillsViewportHeight(true);
@@ -134,6 +134,7 @@ public class KalenderPanel extends JPanel {
                     }
                     else if (model.getData()[selectedRow][selectedCol] == null) {
                     	infoBoks.clear();
+                    	illegalSelection=false;
                     }
                 }
             }
@@ -159,6 +160,7 @@ public class KalenderPanel extends JPanel {
                     }
                     else if (model.getData()[selectedRow][selectedCol] == null) {
                     	infoBoks.clear();
+                    	illegalSelection=false;
                     }
                                       
                 }

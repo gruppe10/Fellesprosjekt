@@ -322,7 +322,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == nyAvtaleButton){
-			nyAvtale nyAvtale = new nyAvtale(6, 31, 3, 2011);
+			nyAvtale nyAvtale = new nyAvtale(kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), mainDate.get(Calendar.MONTH), mainDate.get(Calendar.YEAR), person);
 			nyAvtale.show();
 		}
 		else if(evt.getSource() == nyttMoeteButton){
@@ -370,9 +370,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
         	
         	mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
         	ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
-        	
-        	//System.out.println("Dato: "+ kalenderPanel1.getSelectedDato());
-        	//System.out.println("Tid: "+ kalenderPanel1.getSelectedTime());
         	
         	kalPanModel.newDate(mainDate);
         	kalenderPanel1.getInfoBoks().clear();
