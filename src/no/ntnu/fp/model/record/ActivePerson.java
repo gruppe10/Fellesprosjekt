@@ -26,7 +26,7 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO Person(ansattnr, navn, brukernavn, passord)" +
+					"INSERT INTO Person(ansattId, navn, brukernavn, passord)" +
 					"VALUES ( ?, ?, ? ,? )" 
 				);
 				ps.setInt(1, person.getAnsattNummer());
@@ -50,12 +50,12 @@ public class ActivePerson extends ActiveModel{
 			connect(); 
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-	            "SELECT MAX ansattnr" +
+	            "SELECT MAX ansattId" +
 	            "FROM Person"		    
 	            );
 	            ResultSet rs = ps.executeQuery();
 	            while(rs.next()){
-					ansattNummer = rs.getInt("ansattnr");
+					ansattNummer = rs.getInt("ansattId");
 				}
 			}
 		}
@@ -70,7 +70,7 @@ public class ActivePerson extends ActiveModel{
 		String navn = person.getName();
 		String brukernavn = person.getBrukerNavn();
 		String passord = person.getPassord();
-		int ansattnr = person.getAnsattNummer();
+		int ansattId = person.getAnsattNummer();
 		
 		try {
         	connect();
@@ -78,12 +78,12 @@ public class ActivePerson extends ActiveModel{
         		PreparedStatement ps = connection.prepareStatement(
 	            		"UPDATE Person " + 
 	            		"SET navn= ? , brukernavn = ?, passord = ?" +
-	                    "WHERE ansattnr = ? "
+	                    "WHERE ansattId = ? "
 	            );
 	            ps.setString(1, navn);
 	            ps.setString(2, brukernavn);
 	            ps.setString(3, passord);
-	            ps.setInt(4, ansattnr);
+	            ps.setInt(4, ansattId);
 	            ps.executeUpdate();
 	            connection.close();
         	}  
@@ -94,7 +94,7 @@ public class ActivePerson extends ActiveModel{
         }
 	}
 	
-	public static Person selectPerson(int ansattnr){
+	public static Person selectPerson(int ansattId){
 		Person person = new Person();
 		String navn  = "";
 		String brukernavn = "";
@@ -104,9 +104,9 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Person WHERE ansattnr = ? "
+						"SELECT * FROM Person WHERE ansattId = ? "
 				);
-				ps.setInt(1, ansattnr);
+				ps.setInt(1, ansattId);
 				
 				ResultSet rs = ps.executeQuery(); 
 				if (rs != null){
@@ -120,11 +120,11 @@ public class ActivePerson extends ActiveModel{
 			}
 		}
 		catch( SQLException e){
-			System.out.println("Kan ikke finner person med id = " + ansattnr);
+			System.out.println("Kan ikke finner person med id = " + ansattId);
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
 		
-		person.setAnsattNummer(ansattnr);
+		person.setAnsattNummer(ansattId);
 		person.setName(navn);
 		person.setBrukerNavn(brukernavn);
 		person.setPassord(passord);
@@ -132,32 +132,33 @@ public class ActivePerson extends ActiveModel{
 		return person;
 	}
 		
-	public static void deletePerson(int ansattNr) {
+	public static void deletePerson(int ansattId) {
 		try {
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"DELETE FROM Person WHERE ansattNR = ?"
+						"DELETE FROM Person WHERE ansattId = ?"
 				);
-				ps.setInt(1, ansattNr);
+				ps.setInt(1, ansattId);
 				ps.execute();	
 				connection.close();
 			}
 		} 
 		catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Kan ikke slette person med id:" + ansattId);
+			System.out.println("Detaljer:" + e.getMessage());
 		}
 	}
 	
-	public static ArrayList<Avtale> selectMoter(int ansattnr) {
+	public static ArrayList<Avtale> selectMoter(int ansattId) {
 		ArrayList<Avtale> moter = new ArrayList<Avtale>();
 		try{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT avtaleID FROM Deltakere WHERE ansattnr = ?"
+						"SELECT avtaleID FROM Deltakere WHERE ansattId = ?"
 				);
-				ps.setInt(1, ansattnr);
+				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int moteId = rs.getInt("avtaleID");
@@ -168,13 +169,13 @@ public class ActivePerson extends ActiveModel{
 			connection.close();	
 		}
 		catch(SQLException e){
-			System.out.println("Could not find any Meetings for Person with id:" + ansattnr);
+			System.out.println("Could not find any Meetings for Person with id:" + ansattId);
 			System.out.println("Details:" + e.getMessage());
 		}
 		return moter;
 	}
 	
-	public static ArrayList<Avtale> selectAvtaler(int ansattnr) {
+	public static ArrayList<Avtale> selectAvtaler(int ansattId) {
 		ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
 		try{
 			connect();
@@ -182,7 +183,7 @@ public class ActivePerson extends ActiveModel{
 				PreparedStatement ps = connection.prepareStatement(
 						"SELECT avtaleID FROM Avtaler WHERE lederID = ?"
 				);
-				ps.setInt(1, ansattnr);
+				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int avtaleId = rs.getInt("avtaleID");
@@ -193,7 +194,7 @@ public class ActivePerson extends ActiveModel{
 			connection.close();	
 		}
 		catch(SQLException e){
-			System.out.println("Could not find any Meetings for Person with id:" + ansattnr);
+			System.out.println("Could not find any Meetings for Person with id:" + ansattId);
 			System.out.println("Details:" + e.getMessage());
 		}
 		return avtaler;
@@ -202,22 +203,55 @@ public class ActivePerson extends ActiveModel{
 	
 	
 	public static void main(String args[]){
-		int ansattnr = 10001;
-		Person person = new Person();
-		person.setAnsattNummer(ansattnr);
-		
-		deletePerson(person.getAnsattNummer());
-		
-		selectPerson(person.getAnsattNummer());
+		testCrud();
 	}
 	
 	
+	
+	
+	/******************************
+	 *              TESTER        *
+	 ******************************/
+	
+	private static void testCrud(){
+		int ansattId = 15;
+		Person person = mockPersonWithId(ansattId);
+		
+		createPerson(person);
+		System.out.println("Lagrer personen " + person.getName() + " med id=" + person.getAnsattNummer());
+		
+		deletePerson(person.getAnsattNummer());
+		System.out.println("Sletter personen: "  + person.getName() + " med id=" + person.getAnsattNummer());
+		
+		person.setName("Dole");
+		createPerson(person);
+		System.out.println("Lagrer personen " + person.getName() + " med id=" + person.getAnsattNummer());
+		
+		Person nyPerson = selectPerson(ansattId);
+		System.out.println("Henter ut ny person: " + nyPerson.getName() + " med id=" + nyPerson.getAnsattNummer());
+		
+		nyPerson.setName("Doffen");
+		updatePerson(nyPerson);
+		System.out.println("Oppdaterte ny person til: " + nyPerson.getName() + " med id=" + nyPerson.getAnsattNummer());
+	}
+	
+	
+	private static Person mockPersonWithId(int ansattId) {
+		Person person = new Person();
+		person.setAnsattNummer(ansattId);
+		person.setBrukerNavn("ole");
+		person.setName("Ole");
+		person.setPassord("laila");
+		
+		return person;
+	}
+
 	private void testUpdatePerson(){
-		int ansattnr = 10001;
+		int ansattId = 10001;
 		String navn = "Martin";
 		String nyttNavn = "Per-Donald";
 		Person person = new Person();
-		person.setAnsattNummer(ansattnr);
+		person.setAnsattNummer(ansattId);
 		
 		//Hente ut person 10001 som allerede ligger inne
 		Person orginalPerson = selectPerson(person.getAnsattNummer());
@@ -246,8 +280,8 @@ public class ActivePerson extends ActiveModel{
 	
 	
 	private void testSelectPerson(){
-		int ansattnr = 10001;
-		Person testPerson  = selectPerson(ansattnr);
+		int ansattId = 10001;
+		Person testPerson  = selectPerson(ansattId);
 		System.out.println(testPerson.getName());
 	}
 }

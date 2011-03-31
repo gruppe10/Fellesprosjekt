@@ -364,6 +364,5 @@ public class Person {
 	
 	public void setMoteStatus(boolean status){
 		ArrayList<Avtale> moter = finnMoter();
-		
 	}
 }

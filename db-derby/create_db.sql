@@ -5,7 +5,7 @@ CREATE TABLE Person (
         passord VARCHAR(50) NOT NULL
 );
 CREATE TABLE Avtale (
-        avtaleId INT PRIMARY KEY NOT NULL AUTO INCREMENT,
+        avtaleId INT PRIMARY KEY NOT NULL ,
 	starttid TIME NOT NULL,
 	sluttid TIME NOT NULL,
         dato DATE NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE Deltakere (
         FOREIGN KEY (avtaleId) REFERENCES Mote(avtaleId)
 );
 CREATE TABLE Mote (
-        avtaleId INT PRIMARY KEY NOT NULL AUTO INCREMENT,
+        avtaleId INT PRIMARY KEY NOT NULL,
 	starttid TIME NOT NULL,
 	sluttid TIME NOT NULL,
         dato DATE NOT NULL,
@@ -33,12 +33,12 @@ CREATE TABLE Mote (
 );
 
 CREATE TABLE Rom (
-        romId INT PRIMARY KEY NOT NULL AUTO INCREMENT,
+        romId INT PRIMARY KEY NOT NULL ,
 	navn VARCHAR(50) NOT NULL
 );
 CREATE TABLE ReserverteRom (
-        romId INT PRIMARY KEY,
-        avtaleId INT PRIMARY KEY,
+        romId INT,
+        avtaleId INT,
         FOREIGN KEY(romId) REFERENCES Rom(romId),
         FOREIGN KEY(avtaleId) REFERENCES Mote(avtaleId)
 );

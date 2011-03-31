@@ -23,7 +23,7 @@ import org.apache.derby.tools.sysinfo;
 import no.ntnu.fp.model.record.*;
 
 public class ActiveModel {
-	private static String db_url = "Kal";
+	private static String db_url = "Kalender";
 	private static String admin_name = "";
 	private static String admin_pwd = "";
 	protected static Connection connection ;

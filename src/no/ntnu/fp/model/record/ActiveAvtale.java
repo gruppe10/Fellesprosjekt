@@ -25,7 +25,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Avtale(avtaleID, navn, beskrivelse, dato, starttid, sluttid)" +
+					"INSERT INTO Avtale(avtaleId, navn, beskrivelse, dato, starttid, sluttid)" +
 					"VALUES ( ?, ?, ? ,? ,? ,? )" 
 				);
 				ps.setInt(1, avtale.getAvtaleId());
@@ -34,15 +34,15 @@ public class ActiveAvtale extends ActiveModel{
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
-				ps.setInt(7, avtale.getLederId());
+				//ps.setInt(7, avtale.getLederId());
 				
 				ps.execute();
 				connection.close();
 				}
 		}
 		catch(SQLException e){
-			System.out.println("Kan ikke lagre avtalen. Feilmelding:" + e.getMessage());
-			System.out.println(e.getStackTrace());
+			System.out.println("Kan ikke lagre avtalen");
+			System.out.println("Details:" + e.getMessage());
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class ActiveAvtale extends ActiveModel{
 	            PreparedStatement ps = connection.prepareStatement(
 	            		"UPDATE Avtale " + 
 	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-	                    "WHERE avtaleID = ? "
+	                    "WHERE avtaleId = ? "
 	            );
 				ps.setString(1, avtale.getNavn());
 				ps.setString(2, avtale.getBeskrivelse());
@@ -68,8 +68,8 @@ public class ActiveAvtale extends ActiveModel{
         	
 		}
 		catch(SQLException e){
-			System.out.println("Kan ikke oppdatere avtalen. Feilmelding:" + e.getMessage());
-			System.out.println(e.getStackTrace());
+			System.out.println("Kan ikke oppdatere avtalen");
+			System.out.println("Details:" + e.getMessage());
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Avtale WHERE avtaleID = ? "
+						"SELECT * FROM Avtale WHERE avtaleId = ? "
 				);
 				ps.setInt(1, avtaleId);
 				
@@ -110,7 +110,7 @@ public class ActiveAvtale extends ActiveModel{
 		}
 		catch( SQLException e){
 			System.out.println("Kan ikke finner person med id = " + avtaleId);
-			System.out.println("ErrorMessage:" + e.getMessage());
+			System.out.println("Details:" + e.getMessage());
 		}
 		
 		avtale.setAvtaleId(avtaleId);
@@ -128,7 +128,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"DELETE FROM Avtale WHERE avtaleID = ?"
+						"DELETE FROM Avtale WHERE avtaleId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ps.execute();
@@ -136,7 +136,8 @@ public class ActiveAvtale extends ActiveModel{
 			}
 		} 
 		catch (SQLException e) {
-			System.out.println("Failed to delete Avtale \n Details:" + e.getMessage());
+			System.out.println("Failed to delete Avtale \n");
+			System.out.println("Details:" + e.getMessage());
 		}
 	}
 	
@@ -146,7 +147,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT ansattnr FROM Deltakere WHERE avtaleID = ?"
+						"SELECT ansattnr FROM Deltakere WHERE avtaleId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ResultSet rs = ps.executeQuery();
@@ -169,7 +170,7 @@ public class ActiveAvtale extends ActiveModel{
 	
 	
 	public static void main(String args[]){
-		testAll();
+		testCrud();
 	}
 	
 	
@@ -213,9 +214,10 @@ public class ActiveAvtale extends ActiveModel{
 		System.out.println("Avtalen har navnet:" + avtale.getNavn() + ".");
 	}
 	
-	private static void testAll(){
+	private static void testCrud(){
 		Avtale avtale = mockAvtaleWithId(4);
 		avtale.setNavn("Avtale 1");
+		deleteAvtale(avtale.getAvtaleId());
 		createAvtale(avtale);
 		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
 		
