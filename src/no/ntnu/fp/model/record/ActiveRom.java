@@ -35,7 +35,8 @@ public class ActiveRom extends ActiveModel{
 			connection.close();
 		}
 		catch(SQLException e){
-			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
+			System.out.println("Kan ikke lage person."); 
+			System.out.println("Feilmelding:" + e.getMessage());
 		}
 	}
 	
@@ -74,7 +75,7 @@ public class ActiveRom extends ActiveModel{
 	            		"UPDATE Rom SET navn= ? WHERE romID = ? "
 	            );
 	            ps.setString(1, navn);
-	            ps.setInt(4, romID);
+	            ps.setInt(2, romID);
 	            ps.executeUpdate();
         	}
         	connection.close();
@@ -194,17 +195,28 @@ public class ActiveRom extends ActiveModel{
 	******************************/
 	
 	private static void testCreateRom(){
-		Rom rom = new Rom("");
-		rom.setRomId(113);
-		rom.setNavn("Martin");
-		
-		createRom(rom);
-		
-//		Rom nyeRom = selectRom(rom.getRomId());
-//		System.out.println(nyeRom.getNavn());
+	testCrud();
 	}
 	
-	private void testUpdateRom(){
+	private static void testCrud(){
+		Rom rom = new Rom("");
+		rom.setRomId(115);
+		rom.setNavn("Martin");
+		
+		//createRom(rom);
+		deleteRom(rom.getRomId());
+		createRom(rom);
+		System.out.println("Rom nr 115 heter:" + rom.getNavn());
+		
+		rom.setNavn("KaareKonraadi");
+		updateRom(rom);
+		Rom nyttRom = selectRom(115);
+		
+		System.out.println("Rom nr 115 heter:" + nyttRom.getNavn());
+		System.out.println("Test Utført!");
+	}
+	
+	private static void testUpdateRom(){
 		int ansattnr = 10001;
 		String navn = "Martin";
 		String nyttNavn = "Per-Donald";
