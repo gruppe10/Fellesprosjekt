@@ -50,6 +50,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JButton hoeyreButton;
 	private JButton vensteButton;
 	private KalenderPanel kalenderPanel1;
+	private KalenderPanelModel kalPanModel;
 	private JScrollPane jScrollPane1;
 	private JList jList1;
 	private JButton nyAvtaleButton;
@@ -59,6 +60,8 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JButton nyttMoeteButton;
 	private JButton sletteAvtaleButton;
 	private JButton endreAvtaleButton;
+	
+	private Person person;
 	
 	private Calendar mainDate;
 
@@ -78,6 +81,25 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	public kal() {
 		super();
 		mainDate=Calendar.getInstance();
+		
+		 	person= new Person();
+	        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
+	        Avtale avtale1 = new Avtale();
+	        avtale1.setStarttid(10);
+	        avtale1.setSluttid(12);
+	        avtale1.setNavn("Lunsj");
+	        avtale1.setBeskrivelse("Lunsj");
+	        avtale1.setDato(13, 4, 2011);
+	        avtaler.add(avtale1);
+	        Avtale avtale2 = new Mote();
+	        avtale2.setStarttid(13);
+	        avtale2.setSluttid(16);
+	        avtale2.setNavn("Brunsj");
+	        avtale2.setBeskrivelse("Brunsj");
+	        avtale2.setDato(30, 3, 2011);
+	        avtaler.add(avtale2);
+	        person.setAvtaler(avtaler);
+	        
 		initGUI();
 	}
 	
@@ -119,37 +141,21 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			{
 				vensteButton = new JButton();
 				vensteButton.setText("<-");
-				vensteButton.addActionListener(this);
 			}
 			{
 				hoeyreButton = new JButton();
 				hoeyreButton.setText("->");
-				hoeyreButton.addActionListener(this);
+				
 			}
 			 //Test Test - Lager en ny person med avtaler
-	        Person p= new Person();
-	        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
-	        Avtale avtale1 = new Avtale();
-	        avtale1.setStarttid(10);
-	        avtale1.setSluttid(12);
-	        avtale1.setNavn("Lunsj");
-	        avtale1.setBeskrivelse("Lunsj");
-	        avtale1.setDato(3, 4, 2011);
-	        avtaler.add(avtale1);
-	        Avtale avtale2 = new Mote();
-	        avtale2.setStarttid(13);
-	        avtale2.setSluttid(16);
-	        avtale2.setNavn("Brunsj");
-	        avtale2.setBeskrivelse("Brunsj");
-	        avtale2.setDato(30, 3, 2011);
-	        avtaler.add(avtale2);
-	        p.setAvtaler(avtaler);
+	       
 	        
 			{
-				kalenderPanel1 = new KalenderPanel(p, mainDate);
+				kalPanModel= new KalenderPanelModel(person, mainDate);
+				kalenderPanel1 = new KalenderPanel(kalPanModel);
 			}
 			{
-				jPanel1 = new KalenderPanel(p, mainDate);
+				jPanel1 = new JPanel();
 				GroupLayout jPanel1Layout = new GroupLayout((JComponent)jPanel1);
 				jPanel1.setLayout(jPanel1Layout);
 				jPanel1.setVisible(true);
@@ -304,6 +310,9 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				.addContainerGap(37, 37));
 			pack();
 			this.setSize(981, 431);
+			
+			vensteButton.addActionListener(new venstreButtonAction());
+			hoeyreButton.addActionListener(new hoeyreButtonAction());
 		} catch (Exception e) {
 		    //add your error handling code here
 			e.printStackTrace();
@@ -313,7 +322,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == nyAvtaleButton){
-			nyAvtale nyAvtale = new nyAvtale();
+			nyAvtale nyAvtale = new nyAvtale(6, 31, 3, 2011);
 			nyAvtale.show();
 		}
 		else if(evt.getSource() == nyttMoeteButton){
@@ -336,41 +345,38 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			avlysMoete avlysMoete = new avlysMoete();
 			avlysMoete.show();
 		}
-		else if(evt.getSource() == vensteButton){
-			 
-		       mainDate.add(Calendar.WEEK_OF_YEAR, -1);
-		       mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
-		       ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
-		       
-		}
-		else if(evt.getSource() == hoeyreButton){
-			 	
-				mainDate.add(Calendar.WEEK_OF_YEAR, 1);
-				mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
-				ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
-				
-				 //Test Test - Lager en ny person med avtaler
-		        Person p= new Person();
-		        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
-		        Avtale avtale1 = new Avtale();
-		        avtale1.setStarttid(10);
-		        avtale1.setSluttid(12);
-		        avtale1.setNavn("Lunsj");
-		        avtale1.setBeskrivelse("Lunsj");
-		        avtale1.setDato(3, 4, 2011);
-		        avtaler.add(avtale1);
-		        Avtale avtale2 = new Mote();
-		        avtale2.setStarttid(10);
-		        avtale2.setSluttid(16);
-		        avtale2.setNavn("Brunsj");
-		        avtale2.setBeskrivelse("Brunsj");
-		        avtale2.setDato(30, 3, 2011);
-		        avtaler.add(avtale2);
-		        p.setAvtaler(avtaler);
-				
-				//kalenderPanel1 = new KalenderPanel(p, mainDate);
-				
-		}
+		
 	}
+	
+	class venstreButtonAction implements ActionListener {
+    	
+        public void actionPerformed(ActionEvent e) {
+        	mainDate.add(Calendar.WEEK_OF_YEAR, -2);
+        	
+        	mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
+        	ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
+        	
+        	kalPanModel.newDate(mainDate);
+        	kalenderPanel1.getInfoBoks().clear();
+		       
+        }
+    }
+	
+	class hoeyreButtonAction implements ActionListener {
+    	
+        public void actionPerformed(ActionEvent e) {
+        	mainDate.add(Calendar.WEEK_OF_YEAR, 1);
+        	mainDate.add(Calendar.WEEK_OF_YEAR, -1); //wtf? well, if it works...
+        	
+        	mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
+        	ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
+        	
+        	//System.out.println("Dato: "+ kalenderPanel1.getSelectedDato());
+        	//System.out.println("Tid: "+ kalenderPanel1.getSelectedTime());
+        	
+        	kalPanModel.newDate(mainDate);
+        	kalenderPanel1.getInfoBoks().clear();
+        }
+    }
 
 }

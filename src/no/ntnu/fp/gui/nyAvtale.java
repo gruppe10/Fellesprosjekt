@@ -53,14 +53,14 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				nyAvtale inst = new nyAvtale();
+				nyAvtale inst = new nyAvtale(6, 31, 3, 2011);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 	
-	public nyAvtale() {
+	public nyAvtale(int startTime, int startDato, int startMonth, int startAar) {
 		super();
 		initGUI();
 	}

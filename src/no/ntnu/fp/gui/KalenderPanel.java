@@ -2,10 +2,8 @@
 package no.ntnu.fp.gui;
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.Calendar;
 
 import javax.swing.JFrame;
@@ -33,108 +31,32 @@ import javax.swing.BoxLayout;
 
 public class KalenderPanel extends JPanel {
   
-    private int selectedRow;
-    private int selectedCol;
-    
-    private int startYear;
-    private int endYear;
-    private int startMonth;
-    private int endMonth;
-    private int startDay;
-    private int endDay;
-    
-    private int avtaleLengde;
-    
-    private int[] dayDatos;
-    private int[] datoToIndexArray;
-    
-    private int timeIndexRatio;
-    
-    private final Avtale[][] data;
-    
-    private ArrayList<Avtale> avtaleListe;
+   
     
     private KalPanInfoBoks infoBoks;
+    private KalenderPanelModel model;
+    
+    private int timeIndexDiff=6;
+    
+    private int selectedRow;
+    private int selectedCol;
+
+    private boolean illegalSelection=false;
     
     
 	
-	public KalenderPanel(Person p, Calendar inDate) {
+	public KalenderPanel(KalenderPanelModel m) {
 		
-		
-				
-		Calendar date = inDate;
-		int dato= date.get(Calendar.DAY_OF_MONTH);
-		
-		 final String[] dayNames = 
-	        {
-	        		"Mandag ",
-	        		"Tirsdag ",
-	        		"Onsdag ",
-	        		"Torsdag ",
-	        		"Fredag ",
-	        		"L¿rdag ",
-	        		"S¿ndag "};
-		
-				
-		int ukedagint=date.get(Calendar.DAY_OF_WEEK)-2;
-		
-		dayDatos = new int[7];
-		
-		inDate.add(Calendar.DAY_OF_MONTH, -ukedagint);
-		dayDatos[0]=date.get(Calendar.DAY_OF_MONTH);
-		dayNames[0]=dayNames[0]+dayDatos[0];
-		
-		startYear=date.get(Calendar.YEAR);
-		startMonth=date.get(Calendar.MONTH)+1;
-		startDay=date.get(Calendar.DAY_OF_MONTH);
-        
-        for (int i=1; i<7; i++) {
-        	inDate.add(Calendar.DAY_OF_MONTH, 1);
-        	dayDatos[i]=date.get(Calendar.DAY_OF_MONTH);
-            dayNames[i]=dayNames[i]+dayDatos[i];
-        } //legger inn datoer i header
-        
-        endYear=date.get(Calendar.YEAR);
-		endMonth=date.get(Calendar.MONTH)+1;
-		endDay=date.get(Calendar.DAY_OF_MONTH);
-        
-		
-        
-        ArrayList<Avtale> ukuttaAvtaleListe= p.getAvtaler();
-        avtaleListe = new ArrayList<Avtale>();
-        
-       
-        for (int i=0; i<ukuttaAvtaleListe.size(); i++) {
-        	
-        	finnUtOmAvtaleErIdenneUka(ukuttaAvtaleListe.get(i));
-        }
-
-        timeIndexRatio=6;
-        
-        data = new Avtale[12][7];
-        
-        datoToIndexArray = new int[avtaleListe.size()];
-        
-        for (int i=0; i<avtaleListe.size(); i++) {
-        	datoToIndexArray(avtaleListe.get(i),i);
-        }
-        
-        
-        for (int i=0; i<avtaleListe.size(); i++) {
-        	putAvtaleInnTable(avtaleListe.get(i), i);
-        }
-        
-	   
+		model=m;
      
         
-        final JTable table = new JTable(data, dayNames) {
+        final JTable table = new JTable(model) {
         
         	public boolean isCellEditable(int rowIndex, int colIndex) {return false;}
         	
         	};  //Disallow the editing of any cell
 
 
-            TableCellRenderer renderer = new KalPanRenderer();  
             table.setDefaultRenderer(Object.class,new KalPanRenderer());
       
         table.setPreferredScrollableViewportSize(new Dimension(700, 192));
@@ -146,6 +68,8 @@ public class KalenderPanel extends JPanel {
         
         table.setDragEnabled(false);
         table.getTableHeader().setReorderingAllowed(false);
+     
+        
         
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -191,57 +115,55 @@ public class KalenderPanel extends JPanel {
         add(scrollPane);
         add(infoBoks);
         
-       
-        /**
-         * Listeners
-         */
-        	
-            ListSelectionModel rowSM = table.getSelectionModel();
-            rowSM.addListSelectionListener(new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    //Ignore extra messages.
-                    if (e.getValueIsAdjusting()) return;
+        ListSelectionModel rowSM = table.getSelectionModel();
+        rowSM.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                //Ignore extra messages.
+                if (e.getValueIsAdjusting()) return;
 
-                    ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                    if (lsm.isSelectionEmpty()) {
-                        System.out.println("No rows are selected.");
-                    } else {
-                        selectedRow = lsm.getMinSelectionIndex();
-                        int selectedTime = selectedRow+6;
-                        
-                        if (data[selectedRow][selectedCol] instanceof Avtale) {
-                        	infoBoks.displayAvtale(data[selectedRow][selectedCol]);
-                        }
-                        else if (data[selectedRow][selectedCol] == null) {
-                        	infoBoks.clear();
-                        }
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+                if (lsm.isSelectionEmpty()) {
+                    illegalSelection=true;
+                } else {
+                    selectedRow = lsm.getMinSelectionIndex();
+                    int selectedTime = selectedRow+6;
+                    
+                    if (model.getData()[selectedRow][selectedCol] instanceof Avtale) {
+                    	infoBoks.displayAvtale(model.getData()[selectedRow][selectedCol]);
+                    	illegalSelection=true;
+                    }
+                    else if (model.getData()[selectedRow][selectedCol] == null) {
+                    	infoBoks.clear();
                     }
                 }
-            });
-            
-            table.setColumnSelectionAllowed(true);
-            ListSelectionModel colSM =
-                table.getColumnModel().getSelectionModel();
-            colSM.addListSelectionListener(new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    //Ignore extra messages.
-                    if (e.getValueIsAdjusting()) return;
+            }
+        });
+        
+        table.setColumnSelectionAllowed(true);
+        ListSelectionModel colSM =
+            table.getColumnModel().getSelectionModel();
+        colSM.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                //Ignore extra messages.
+                if (e.getValueIsAdjusting()) return;
 
-                    ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                    if (lsm.isSelectionEmpty()) {
-                        System.out.println("No columns are selected.");
-                    } else {
-                        selectedCol = lsm.getMinSelectionIndex();
-                        if (data[selectedRow][selectedCol] instanceof Avtale) {
-                        	infoBoks.displayAvtale(data[selectedRow][selectedCol]);
-                        }
-                        else if (data[selectedRow][selectedCol] == null) {
-                        	infoBoks.clear();
-                        }
-                                          
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+                if (lsm.isSelectionEmpty()) {
+                	illegalSelection=true;
+                } else {
+                    selectedCol = lsm.getMinSelectionIndex();
+                    
+                    if (model.getData()[selectedRow][selectedCol] instanceof Avtale) {
+                    	infoBoks.displayAvtale(model.getData()[selectedRow][selectedCol]);
+                    	illegalSelection=true;
                     }
+                    else if (model.getData()[selectedRow][selectedCol] == null) {
+                    	infoBoks.clear();
+                    }
+                                      
                 }
-            });
+            }
+        });
         
     }
 
@@ -279,7 +201,8 @@ public class KalenderPanel extends JPanel {
         
      //Create and set up the content pane.
        
-        KalenderPanel newContentPane = new KalenderPanel(p, d);
+       	KalenderPanelModel model= new 	KalenderPanelModel(p, d);
+        KalenderPanel newContentPane = new KalenderPanel(model);
         newContentPane.setOpaque(true); //content panes must be opaque
         newContentPane.setLayout(new BoxLayout(newContentPane, BoxLayout.Y_AXIS));
         frame.setContentPane(newContentPane);
@@ -289,7 +212,7 @@ public class KalenderPanel extends JPanel {
         frame.setVisible(true);
         
     }
-
+    
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
@@ -300,65 +223,26 @@ public class KalenderPanel extends JPanel {
         });
     }
     
-    private void finnUtOmAvtaleErIdenneUka(Avtale a) {
-      	
-    	if (a.getDatoAar() == startYear || a.getDatoAar() == endYear) {
-    		
-    		if (startYear != endYear) {
-    			if ((a.getDatoMnd() == 12 && a.getDatoAar() == startYear) || (a.getDatoMnd() == 1 && a.getDatoAar() == endYear)) {
-    				if (a.getDatoDag() >= startDay || a.getDatoDag() <= endDay) {
-    					avtaleListe.add(a);
-    				}
-    			}
-    		}
-    		else if (a.getDatoMnd() == startMonth || a.getDatoMnd() == endMonth) {
-    			if (startMonth != endMonth) {
-            		if ((a.getDatoDag() >= startDay && a.getDatoMnd() == startMonth) || (a.getDatoDag() <= endDay && a.getDatoMnd() == endMonth) ){
-            			avtaleListe.add(a);
-            		}
-            	}
-    			else {
-    				if (a.getDatoDag() >= startDay && a.getDatoDag() <= endDay) {
-    					avtaleListe.add(a);
-    				}
-    			}
-    		}
+   	protected KalPanInfoBoks getInfoBoks() {
+   	return infoBoks;
+   }
+   
+    public int getSelectedTime() {
+    	if (illegalSelection) {
+    		return 6;
+    	}
+    	else {
+    	return selectedRow+timeIndexDiff;
     	}
     }
     
-    private void datoToIndexArray(Avtale a, int i) {
-    	for(int j=0; j<dayDatos.length; j++) {
-    		if (a.getDatoDag()==dayDatos[j]) {
-			datoToIndexArray[i]=j;
-			
-    		}
+    public int getSelectedDato() {
+    	if (illegalSelection) {
+    		return model.getDatoAtIndex(0);
     	}
-	}
-    
-    public void putAvtaleInnTable(Avtale a, int i) {
-    	avtaleLengde=a.getSluttid()-a.getStarttid();
-	
-    	data[a.getStarttid()-timeIndexRatio][datoToIndexArray[i]]=a;
-	
-    	for (int j=1; j<avtaleLengde; j++) {
-    		if (a instanceof Mote) {
-    			KalPanMoteFiller filler = new KalPanMoteFiller(a);
-    			data[(a.getStarttid()-timeIndexRatio)+j][datoToIndexArray[i]]=filler;
-    		}
-    		else if (a instanceof Avtale) {
-    			KalPanAvtaleFiller filler = new KalPanAvtaleFiller(a);
-    			data[(a.getStarttid()-timeIndexRatio)+j][datoToIndexArray[i]]=filler;
-    		}
+    	else {
+    		return model.getDatoAtIndex(selectedCol);
     	}
-    }
-    
-    public void addAvtale(Avtale a) {
-    	finnUtOmAvtaleErIdenneUka(a);
-    	putAvtaleInnTable(a, avtaleListe.size()-1); 
-    	
-    }
-    
-    public void removeAvtale(Avtale a) {
-    	
     }
 }
+    
