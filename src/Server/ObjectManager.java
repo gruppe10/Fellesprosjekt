@@ -26,11 +26,17 @@ public class ObjectManager {
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case UPDATE:
-
+				if(true){//ActiveAvtale.exists(avtale.getAvtaleId())){
+					ActiveAvtale.updateAvtale(avtale);
+				}else{
+					ActiveAvtale.createAvtale(avtale);
+				}
 				break;
 			case DESTROY:
 				ActiveAvtale.deleteAvtale(avtale.getAvtaleId());
 				break;
+			case SELECT:
+				ActiveAvtale.selectAvtale(avtale.getAvtaleId());
 			}
 		}
 		// TODO Auto-generated method stub
