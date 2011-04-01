@@ -4,7 +4,6 @@ package no.ntnu.fp.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.Calendar;
 
 import javax.swing.JFrame;
@@ -26,125 +25,41 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import javax.swing.ListModel;
-import javax.swing.JPanel;
+import javax.swing.BoxLayout;
 
 
 
 public class KalenderPanel extends JPanel {
   
+   
+    
+    private KalPanInfoBoks infoBoks;
+    private KalenderPanelModel model;
+    
+    private int timeIndexDiff=6;
+    
     private int selectedRow;
     private int selectedCol;
-    
-    private int startYear;
-    private int endYear;
-    private int startMonth;
-    private int endMonth;
-    private int startDay;
-    private int endDay;
-    
-    private ArrayList<Avtale> avtaleListe;
-	
-	public KalenderPanel(Person p, Calendar inDate) {
-		
-		
-		super(new GridLayout(1,0));
-		
-		Calendar date = inDate;
-		int dato= date.get(Calendar.DAY_OF_MONTH);
-		
-		 final String[] dayNames = 
-	        {
-	        		"Mandag ",
-	        		"Tirsdag ",
-	        		"Onsdag ",
-	        		"Torsdag ",
-	        		"Fredag ",
-	        		"L¿rdag ",
-	        		"S¿ndag "};
-		
-				
-		int ukedagint=date.get(Calendar.DAY_OF_WEEK)-2;
-		
-		int[] dayDatos = new int[7];
-		
-		inDate.add(Calendar.DAY_OF_MONTH, -ukedagint);
-		dayDatos[0]=date.get(Calendar.DAY_OF_MONTH);
-		dayNames[0]=dayNames[0]+dayDatos[0];
-		
-		startYear=date.get(Calendar.YEAR);
-		startMonth=date.get(Calendar.MONTH)+1;
-		startDay=date.get(Calendar.DAY_OF_MONTH);
-        
-        for (int i=1; i<7; i++) {
-        	inDate.add(Calendar.DAY_OF_MONTH, 1);
-        	dayDatos[i]=date.get(Calendar.DAY_OF_MONTH);
-            dayNames[i]=dayNames[i]+dayDatos[i];
-        }
-        
-        endYear=date.get(Calendar.YEAR);
-		endMonth=date.get(Calendar.MONTH)+1;
-		endDay=date.get(Calendar.DAY_OF_MONTH);
-        
-		
-        
-        ArrayList<Avtale> ukuttaAvtaleListe= p.getAvtaler();
-        avtaleListe = new ArrayList<Avtale>();
-        
-       
-        for (int i=0; i<ukuttaAvtaleListe.size(); i++) {
-        	
-        	finnUtOmAvtaleErIdenneUka(ukuttaAvtaleListe.get(i));
-        }
 
-        final int timeIndexRatio=6;
-        
-        final Object[][] data = new Object[12][7];
-        
-        int[] datoToIndex = new int[avtaleListe.size()];
-        
-        for (int i=0; i<avtaleListe.size(); i++) {
-        	for(int j=0; j<dayDatos.length; j++) {
-        		if (avtaleListe.get(i).getDatoDag()==dayDatos[j]) {
-        			datoToIndex[i]=j;
-        			
-        		}
-        	}
-        }
-        
-       int avtaleLengde;
-        
-        for (int i=0; i<avtaleListe.size(); i++) {
-        	
-        	avtaleLengde=avtaleListe.get(i).getSluttid()-avtaleListe.get(i).getStarttid();
-        	
-        	data[avtaleListe.get(i).getStarttid()-timeIndexRatio][datoToIndex[i]]=avtaleListe.get(i);
-        	
-        	for (int j=1; j<avtaleLengde; j++) {
-        		if (avtaleListe.get(i) instanceof Mote) {
-        			KalPanMoteFiller filler = new KalPanMoteFiller(avtaleListe.get(i));
-        			data[(avtaleListe.get(i).getStarttid()-timeIndexRatio)+j][datoToIndex[i]]=filler;
-        		}
-        		else if (avtaleListe.get(i) instanceof Avtale) {
-        			KalPanAvtaleFiller filler = new KalPanAvtaleFiller(avtaleListe.get(i));
-        			data[(avtaleListe.get(i).getStarttid()-timeIndexRatio)+j][datoToIndex[i]]=filler;
-        		}
-        	}
-        }
-        
-	   
+    private boolean illegalSelection=false;
+    
+    
+	
+	public KalenderPanel(KalenderPanelModel m) {
+		
+		model=m;
      
         
-        final JTable table = new JTable(data, dayNames) {
+        final JTable table = new JTable(model) {
         
-        	public boolean isCellEditable(int rowIndex, int colIndex) {return false;}
+        	public boolean isCellEditable(int rowIndex, int colIndex) {return false;} //Disallow the editing of any cell
         	
-        	};  //Disallow the editing of any cell
+        }; 
 
 
-            TableCellRenderer renderer = new KalPanRenderer();  
-            table.setDefaultRenderer(Object.class,new KalPanRenderer());
+        table.setDefaultRenderer(Object.class,new KalPanRenderer());
       
-        table.setPreferredScrollableViewportSize(new Dimension(700, 300));
+        table.setPreferredScrollableViewportSize(new Dimension(700, 192));
         table.setFillsViewportHeight(true);
         table.setGridColor(Color.gray);
         
@@ -153,6 +68,8 @@ public class KalenderPanel extends JPanel {
         
         table.setDragEnabled(false);
         table.getTableHeader().setReorderingAllowed(false);
+     
+        
         
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -187,68 +104,71 @@ public class KalenderPanel extends JPanel {
           
         
         JList timeRow = new JList(lm);
-        timeRow.setFixedCellWidth(100);
+        timeRow.setFixedCellWidth(80);
         
         timeRow.setFixedCellHeight(table.getRowHeight());
         timeRow.setCellRenderer(new KalPanRowHeaderRenderer(table));
         scrollPane.setRowHeaderView(timeRow);
         
-        add(scrollPane);
+        infoBoks = new KalPanInfoBoks();
         
-       
-        /**
-         * Listeners
-         */
-        	
-            ListSelectionModel rowSM = table.getSelectionModel();
-            rowSM.addListSelectionListener(new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    //Ignore extra messages.
-                    if (e.getValueIsAdjusting()) return;
+        add(scrollPane);
+        add(infoBoks);
+        
+        ListSelectionModel rowSM = table.getSelectionModel();
+        rowSM.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                //Ignore extra messages.
+                if (e.getValueIsAdjusting()) return;
 
-                    ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                    if (lsm.isSelectionEmpty()) {
-                        System.out.println("No rows are selected.");
-                    } else {
-                        selectedRow = lsm.getMinSelectionIndex();
-                        int selectedTime = selectedRow+6;
-                        
-                        if (data[selectedRow][selectedCol]!=null) {
-                        System.out.println("Something here");
-                        }
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+                if (lsm.isSelectionEmpty()) {
+                    illegalSelection=true;
+                } else {
+                    selectedRow = lsm.getMinSelectionIndex();
+                    int selectedTime = selectedRow+6;
+                    
+                    if (model.getData()[selectedRow][selectedCol] instanceof Avtale) {
+                    	infoBoks.displayAvtale(model.getData()[selectedRow][selectedCol]);
+                    	illegalSelection=true;
+                    }
+                    else if (model.getData()[selectedRow][selectedCol] == null) {
+                    	infoBoks.clear();
+                    	illegalSelection=false;
                     }
                 }
-            });
-            
-            table.setColumnSelectionAllowed(true);
-            ListSelectionModel colSM =
-                table.getColumnModel().getSelectionModel();
-            colSM.addListSelectionListener(new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent e) {
-                    //Ignore extra messages.
-                    if (e.getValueIsAdjusting()) return;
+            }
+        });
+        
+        table.setColumnSelectionAllowed(true);
+        ListSelectionModel colSM =
+            table.getColumnModel().getSelectionModel();
+        colSM.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                //Ignore extra messages.
+                if (e.getValueIsAdjusting()) return;
 
-                    ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                    if (lsm.isSelectionEmpty()) {
-                        System.out.println("No columns are selected.");
-                    } else {
-                        selectedCol = lsm.getMinSelectionIndex();
-                        if (data[selectedRow][selectedCol]!=null) {
-                            System.out.println("Something here");
-                        }
-                                          
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+                if (lsm.isSelectionEmpty()) {
+                	illegalSelection=true;
+                } else {
+                    selectedCol = lsm.getMinSelectionIndex();
+                    
+                    if (model.getData()[selectedRow][selectedCol] instanceof Avtale) {
+                    	infoBoks.displayAvtale(model.getData()[selectedRow][selectedCol]);
+                    	illegalSelection=true;
                     }
+                    else if (model.getData()[selectedRow][selectedCol] == null) {
+                    	infoBoks.clear();
+                    	illegalSelection=false;
+                    }
+                                      
                 }
-            });
+            }
+        });
         
     }
 
-    
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
     private static void createAndShowGUI() {
     	
         //Create and set up the window.
@@ -264,24 +184,29 @@ public class KalenderPanel extends JPanel {
         avtale1.setStarttid(10);
         avtale1.setSluttid(12);
         avtale1.setNavn("Lunsj");
-        avtale1.setBeskrivelse("Lunsj");
-        avtale1.setDato(3, 4, 2011);
+        avtale1.setBeskrivelse("Besk rivelse");
+        avtale1.setDato(1, 4, 2011);
         avtaler.add(avtale1);
         Avtale avtale2 = new Mote();
         avtale2.setStarttid(13);
-        avtale2.setSluttid(16);
+        avtale2.setSluttid(18);
         avtale2.setNavn("Brunsj");
-        avtale2.setBeskrivelse("Brunsj");
-        avtale2.setDato(30, 3, 2011);
+        avtale2.setBeskrivelse("lolololololomfgroflmao");
+        avtale2.setDato(1, 4, 2011);
         avtaler.add(avtale2);
         
         p.setAvtaler(avtaler);
         
         Calendar d = Calendar.getInstance();
+        
        d.add(Calendar.DAY_OF_MONTH, 0);
         
-        KalenderPanel newContentPane = new KalenderPanel(p, d);
+     //Create and set up the content pane.
+       
+       	KalenderPanelModel model= new 	KalenderPanelModel(p, d);
+        KalenderPanel newContentPane = new KalenderPanel(model);
         newContentPane.setOpaque(true); //content panes must be opaque
+        newContentPane.setLayout(new BoxLayout(newContentPane, BoxLayout.Y_AXIS));
         frame.setContentPane(newContentPane);
 
         //Display the window.
@@ -289,7 +214,7 @@ public class KalenderPanel extends JPanel {
         frame.setVisible(true);
         
     }
-
+    
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
@@ -300,29 +225,26 @@ public class KalenderPanel extends JPanel {
         });
     }
     
-    private void finnUtOmAvtaleErIdenneUka(Avtale a) {
-      	
-    	if (a.getDatoAar() == startYear || a.getDatoAar() == endYear) {
-    		
-    		if (startYear != endYear) {
-    			if ((a.getDatoMnd() == 12 && a.getDatoAar() == startYear) || (a.getDatoMnd() == 1 && a.getDatoAar() == endYear)) {
-    				if (a.getDatoDag() >= startDay || a.getDatoDag() <= endDay) {
-    					avtaleListe.add(a);
-    				}
-    			}
-    		}
-    		else if (a.getDatoMnd() == startMonth || a.getDatoMnd() == endMonth) {
-    			if (startMonth != endMonth) {
-            		if ((a.getDatoDag() >= startDay && a.getDatoMnd() == startMonth) || (a.getDatoDag() <= endDay && a.getDatoMnd() == endMonth) ){
-            			avtaleListe.add(a);
-            		}
-            	}
-    			else {
-    				if (a.getDatoDag() >= startDay && a.getDatoDag() <= endDay) {
-    					avtaleListe.add(a);
-    				}
-    			}
-    		}
+   	protected KalPanInfoBoks getInfoBoks() {
+   	return infoBoks;
+   }
+   
+    public int getSelectedTime() {
+    	if (illegalSelection) {
+    		return 6;
+    	}
+    	else {
+    	return selectedRow+timeIndexDiff;
     	}
     }
+    
+    public int getSelectedDato() {
+    	if (illegalSelection) {
+    		return model.getDatoAtIndex(0);
+    	}
+    	else {
+    		return model.getDatoAtIndex(selectedCol);
+    	}
     }
+}
+    

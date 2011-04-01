@@ -1,14 +1,20 @@
 package no.ntnu.fp.gui;
 
 import no.ntnu.fp.model.Avtale;
-
-public class KalPanMoteFiller {
+import no.ntnu.fp.model.Mote;
+import no.ntnu.fp.model.Person;
+public class KalPanMoteFiller extends Mote{
 
 
 	private Avtale avtale;
 	
-	public KalPanMoteFiller(Avtale a) {
-		avtale=a;
+	public KalPanMoteFiller(Avtale m) {
+		setStarttid(m.getStarttid());
+		setSluttid(m.getSluttid());
+		setDato(m.getDatoDag(), m.getDatoMnd(), m.getDatoAar());
+		setBeskrivelse(m.getBeskrivelse());
+		setNavn(m.getNavn());
+		
 	}
 
 	public Avtale getAvtale() {

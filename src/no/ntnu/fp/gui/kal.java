@@ -50,6 +50,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JButton hoeyreButton;
 	private JButton vensteButton;
 	private KalenderPanel kalenderPanel1;
+	private KalenderPanelModel kalPanModel;
 	private JScrollPane jScrollPane1;
 	private JList jList1;
 	private JButton nyAvtaleButton;
@@ -59,6 +60,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JButton nyttMoeteButton;
 	private JButton sletteAvtaleButton;
 	private JButton endreAvtaleButton;
+	
+	private Person person;
+	
+	private Calendar mainDate;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -75,6 +80,26 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	
 	public kal() {
 		super();
+		mainDate=Calendar.getInstance();
+		
+		 	person= new Person();
+	        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
+	        Avtale avtale1 = new Avtale();
+	        avtale1.setStarttid(10);
+	        avtale1.setSluttid(12);
+	        avtale1.setNavn("Lunsj");
+	        avtale1.setBeskrivelse("Lunsj");
+	        avtale1.setDato(13, 4, 2011);
+	        avtaler.add(avtale1);
+	        Avtale avtale2 = new Mote();
+	        avtale2.setStarttid(13);
+	        avtale2.setSluttid(16);
+	        avtale2.setNavn("Brunsj");
+	        avtale2.setBeskrivelse("Brunsj");
+	        avtale2.setDato(30, 3, 2011);
+	        avtaler.add(avtale2);
+	        person.setAvtaler(avtaler);
+	        
 		initGUI();
 	}
 	
@@ -90,29 +115,27 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			}
 			{
 				mndLabel1 = new JLabel();
-				mndLabel1.setText("Måned");
+				mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
 				mndLabel1.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
 				datoLabel1 = new JLabel();
-				datoLabel1.setText("Dato");
+				datoLabel1.setText(""+(mainDate.get(Calendar.DAY_OF_MONTH)));
 				datoLabel1.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
 				ukeLabel = new JLabel();
-				 Calendar d = Calendar.getInstance();
-			       d.get(Calendar.WEEK_OF_YEAR);
-				ukeLabel.setText("Uke ");
+				ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
 				ukeLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
 				mndLabel = new JLabel();
-				mndLabel.setText("Måned");
+				mndLabel.setText(""+(mainDate.get(Calendar.MONTH)+1));
 				mndLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
 				aarLabel = new JLabel();
-				aarLabel.setText("År");
+				aarLabel.setText(""+mainDate.get(Calendar.YEAR));
 				aarLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
@@ -122,34 +145,17 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			{
 				hoeyreButton = new JButton();
 				hoeyreButton.setText("->");
+				
 			}
 			 //Test Test - Lager en ny person med avtaler
-	        Person p= new Person();
-	        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
-	        Avtale avtale1 = new Avtale();
-	        avtale1.setStarttid(10);
-	        avtale1.setSluttid(12);
-	        avtale1.setNavn("Lunsj");
-	        avtale1.setBeskrivelse("Lunsj");
-	        avtale1.setDato(3, 4, 2011);
-	        avtaler.add(avtale1);
-	        Avtale avtale2 = new Mote();
-	        avtale2.setStarttid(13);
-	        avtale2.setSluttid(16);
-	        avtale2.setNavn("Brunsj");
-	        avtale2.setBeskrivelse("Brunsj");
-	        avtale2.setDato(30, 3, 2011);
-	        avtaler.add(avtale2);
+	       
 	        
-	        p.setAvtaler(avtaler);
-	        
-	        Calendar d = Calendar.getInstance();
-	       d.add(Calendar.DAY_OF_MONTH, 0);
 			{
-				kalenderPanel1 = new KalenderPanel(p, d);
+				kalPanModel= new KalenderPanelModel(person, mainDate);
+				kalenderPanel1 = new KalenderPanel(kalPanModel);
 			}
 			{
-				jPanel1 = new KalenderPanel(p, d);
+				jPanel1 = new JPanel();
 				GroupLayout jPanel1Layout = new GroupLayout((JComponent)jPanel1);
 				jPanel1.setLayout(jPanel1Layout);
 				jPanel1.setVisible(true);
@@ -304,6 +310,9 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				.addContainerGap(37, 37));
 			pack();
 			this.setSize(981, 431);
+			
+			vensteButton.addActionListener(new venstreButtonAction());
+			hoeyreButton.addActionListener(new hoeyreButtonAction());
 		} catch (Exception e) {
 		    //add your error handling code here
 			e.printStackTrace();
@@ -313,24 +322,20 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == nyAvtaleButton){
-			nyAvtale nyAvtale = new nyAvtale();
+			nyAvtale nyAvtale = new nyAvtale(kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), mainDate.get(Calendar.MONTH), mainDate.get(Calendar.YEAR), person);
 			nyAvtale.show();
-			hide();
 		}
 		else if(evt.getSource() == nyttMoeteButton){
 			nyttMoete nyttMoete = new nyttMoete();
 			nyttMoete.show();
-			hide();
 		}
 		else if(evt.getSource() == endreAvtaleButton){
 			endreAvtale endreAvtale = new endreAvtale();
 			endreAvtale.show();
-			hide();
 		}
 		else if(evt.getSource() == endreMoeteButton){
 			endreMoete endreMoete = new endreMoete();
 			endreMoete.show();
-			hide();
 		}
 		else if(evt.getSource() == sletteAvtaleButton){
 			slett slett = new slett();
@@ -339,8 +344,36 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		else if(evt.getSource() == avlysMoeteButton){
 			avlysMoete avlysMoete = new avlysMoete();
 			avlysMoete.show();
-			hide();
 		}
+		
 	}
+	
+	class venstreButtonAction implements ActionListener {
+    	
+        public void actionPerformed(ActionEvent e) {
+        	mainDate.add(Calendar.WEEK_OF_YEAR, -2);
+        	
+        	mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
+        	ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
+        	
+        	kalPanModel.newDate(mainDate);
+        	kalenderPanel1.getInfoBoks().clear();
+		       
+        }
+    }
+	
+	class hoeyreButtonAction implements ActionListener {
+    	
+        public void actionPerformed(ActionEvent e) {
+        	mainDate.add(Calendar.WEEK_OF_YEAR, 1);
+        	mainDate.add(Calendar.WEEK_OF_YEAR, -1); //wtf? well, if it works...
+        	
+        	mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
+        	ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
+        	
+        	kalPanModel.newDate(mainDate);
+        	kalenderPanel1.getInfoBoks().clear();
+        }
+    }
 
 }

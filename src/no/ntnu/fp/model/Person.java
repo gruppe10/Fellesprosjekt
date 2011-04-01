@@ -147,7 +147,7 @@ public class Person {
 		this.name = name;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
-		this.ansattNummer = ActivePerson.getMaxId()+1;
+		//this.ansattNummer = ActivePerson.getMaxId()+1;
 	}
 	
 	/**
@@ -334,5 +334,35 @@ public class Person {
 		s += "Email: " + getEmail() + "; ";
 		s += "Date of birth: " + getDateOfBirth().toString();
 		return s;
+	}
+	
+	private ArrayList<Avtale> finnMoter(){
+		ArrayList<Avtale> moter = ActivePerson.selectMoter(ansattNummer);
+		return moter;
+	}
+	
+	private ArrayList<Avtale> finnAvtaler(){
+		ArrayList<Avtale> avtaler = ActivePerson.selectAvtaler(ansattNummer);
+		return avtaler;
+	}
+	
+	private ArrayList<Avtale> finnAlleHendelder(){
+		ArrayList<Avtale> moter = finnMoter();
+		ArrayList<Avtale> avtaler = finnAvtaler();
+		ArrayList<Avtale> hendelser = new ArrayList<Avtale>();
+		
+		for (int i = 0; i < moter.size(); i++){
+			hendelser.add(moter.get(i));
+		}
+		
+		for (int i = 0; i < avtaler.size(); i++){
+			hendelser.add(avtaler.get(i));
+		}
+		
+		return hendelser;
+	}
+	
+	public void setMoteStatus(boolean status){
+		ArrayList<Avtale> moter = finnMoter();
 	}
 }

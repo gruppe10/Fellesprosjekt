@@ -19,10 +19,17 @@
  
  
  
- WITH reserverte_rom_med_tider as(
- 	SELECT * from Mote,ReserverteRom
- 	WHERE Mote.avtaleID = ReserverteRom.avtaleID
+ WITH reserverte_rom_med_tider AS(
+ 	SELECT * from Mote, ReserverteRom
+ 	WHERE Mote.avtaleID = ReserverteRom.avtaleId AND Dato = riktig_dato
  )
+ Select 
+ 
+ 
+ 
+ new Time() => int i, int j , int k
+ 
+ 
  
  
  

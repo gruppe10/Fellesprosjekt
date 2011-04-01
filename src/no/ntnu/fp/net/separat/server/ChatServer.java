@@ -144,7 +144,7 @@ public class ChatServer extends JFrame {
                 e.printStackTrace();
             }
         }
-    }
+    } // END CLASS User
 
     private synchronized void broadcast(String mess) {
         for (Iterator iter = users.iterator(); iter.hasNext();) {

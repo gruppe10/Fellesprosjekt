@@ -58,7 +58,7 @@ public class deltkal extends javax.swing.JFrame implements ActionListener{
 				alledeltLabel1.setFont(new java.awt.Font("Tahoma",1,16));
 			}
 			{
-				kalenderPanel1 = new KalenderPanel(null, null);
+				kalenderPanel1 = new KalenderPanel(null);
 			}
 			{
 				tilbakeButton1 = new JButton();

@@ -12,6 +12,7 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
@@ -24,17 +25,18 @@ public class ActiveRom extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO Rom(romID, navn)" +
-					"VALUES ( ?, ? )" 
+					"INSERT INTO Rom(romId, navn) VALUES ( ?, ? )" 
 				);
-				ps.setInt(1, rom.getRomId());
+				ps.setInt(1,rom.getRomId());
 				ps.setString(2, rom.getNavn());
+				
 				ps.execute();
 			}
 			connection.close();
 		}
 		catch(SQLException e){
-			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
+			System.out.println("Kan ikke lage person."); 
+			System.out.println("Feilmelding:" + e.getMessage());
 		}
 	}
 	
@@ -44,12 +46,12 @@ public class ActiveRom extends ActiveModel{
 			connect(); 
 			if( connection != null){
 	            PreparedStatement ps = connection.prepareStatement(
-	            "SELECT MAX romID" +
+	            "SELECT MAX romId" +
 	            "FROM Rom"		    
 	            );
 	            ResultSet rs = ps.executeQuery();
 	            while(rs.next()){
-					romId = rs.getInt("romID");
+					romId = rs.getInt("romId");
 				}
 			}
 			connection.close();
@@ -64,16 +66,16 @@ public class ActiveRom extends ActiveModel{
 
 	public static void updateRom(Rom rom){
 		String navn = rom.getNavn();
-		int romID = rom.getRomId();
+		int romId = rom.getRomId();
 		
 		try {
         	connect();
         	if( connection != null){
 	            PreparedStatement ps = connection.prepareStatement(
-	            		"UPDATE Rom SET navn= ? WHERE romID = ? "
+	            		"UPDATE Rom SET navn = ? WHERE romId = ? "
 	            );
 	            ps.setString(1, navn);
-	            ps.setInt(4, romID);
+	            ps.setInt(2, romId);
 	            ps.executeUpdate();
         	}
         	connection.close();
@@ -86,7 +88,7 @@ public class ActiveRom extends ActiveModel{
 	
 	
 	
-	public static Rom selectRom(int romID){
+	public static Rom selectRom(int romId){
 		Rom rom = new Rom("");
 		String navn  = "";
 		
@@ -94,9 +96,9 @@ public class ActiveRom extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Rom WHERE romID = ? "
+						"SELECT * FROM Rom WHERE romId = ? "
 				);
-				ps.setInt(1, romID);
+				ps.setInt(1, romId);
 				
 				ResultSet rs = ps.executeQuery(); 
 				if (rs != null){
@@ -108,44 +110,75 @@ public class ActiveRom extends ActiveModel{
 			connection.close();
 		}
 		catch( SQLException e){
-			System.out.println("Kan ikke finner rom med id = " + romID);
+			System.out.println("Kan ikke finner rom med id = " + romId);
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
 		
-		rom.setRomId(romID);
+		rom.setRomId(romId);
 		rom.setNavn(navn);
 		
 		return rom;
 	}
 		
-	public static void deleteRom(int romID) {
+	public static void deleteRom(int romId) {
 		try {
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"DELETE FROM Rom WHERE romID = ?"
+						"DELETE FROM Rom WHERE romId = ?"
 				);
-				ps.setInt(1, romID);
+				ps.setInt(1, romId);
 				ps.execute();
 			}	
 			connection.close();
 		} 
 		catch (SQLException e) {
-			System.out.println("Failed to delete rom with id" + romID);
+			System.out.println("Failed to delete rom with id" + romId);
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
+
 	
+	public boolean[] selectLedigeTider(int romId, Date date){
+		boolean[] ledigeTider = new boolean[24];
+		
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						" WITH reserverteTider as(" +
+						"	SELECT * from ReservertRom,Mote " +
+						"	WHERE ReservertRom.avtaleId = ? " +
+						"	AND Mote.avtaleId = ? 			" +
+						"	AND Mote.date = ?  			    " +
+						" )" +
+						" SELECT starttid,sluttid from reserverteTider" 
+				);
+				ps.setInt(1,romId);
+				ps.setInt(2, romId);
+				ps.setDate(3,date);
+				
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					int starttid = formatIntFrom(rs.getTime(""));
+					int sluttid = formatIntFrom(rs.getTime(""));
+					
+					for(int i = starttid ; i <= sluttid; i++ ){
+						ledigeTider[i] = false;
+					}
+				}
+				connection.close();
+			}
+		}catch(SQLException e){
+			System.out.println("Kan ikke finne tider for rom med id:" + romId + "på datoen:" + date);
+			System.out.println("Detaljer:" + e.getMessage());
+		}
+		return ledigeTider;
+		
+	}
 	
 	public static void main(String args[]){
-//		int romID = 112;
-//		Rom rom = new Rom("");
-//		rom.setRomId(romID);
-//		
-//		//deleteRom(rom.getRomId());
-//		
-//		selectRom(rom.getRomId());
-		testCreateRom();
+		testCrud();
 	}
 	
 	
@@ -154,18 +187,32 @@ public class ActiveRom extends ActiveModel{
 	*  			Tester			  *
 	******************************/
 	
-	private static void testCreateRom(){
-		Rom rom = new Rom("");
-		rom.setRomId(113);
-		rom.setNavn("Martin");
+	private static void testCrud(){
+		Rom rom = mockRomWith(1);
+		
+		deleteRom(rom.getRomId());
+		System.out.println("Slettet rom med navn " +rom.getNavn() + " som og har id: " + rom.getRomId());
 		
 		createRom(rom);
+		System.out.println("Laget rom med navn: " + rom.getNavn() + " som og har id: " + rom.getRomId());
 		
-//		Rom nyeRom = selectRom(rom.getRomId());
-//		System.out.println(nyeRom.getNavn());
+		rom.setNavn("Arne");
+		updateRom(rom);
+		System.out.println("Oppdaterte rommets navn til:" + rom.getNavn() + " og id: " + rom.getRomId());
+		
+		rom = selectRom(rom.getRomId());
+		System.out.println("Hentet ut rom med navn: " + rom.getNavn() + " som og har id: " + rom.getRomId());
+		
+		System.out.println("Test Utført!");
 	}
 	
-	private void testUpdateRom(){
+	private static Rom mockRomWith(int romId) {
+		Rom rom = new Rom("Kaare");
+		rom.setRomId(romId);
+		return rom;
+	}
+
+	private static void testUpdateRom(){
 		int ansattnr = 10001;
 		String navn = "Martin";
 		String nyttNavn = "Per-Donald";
@@ -182,12 +229,13 @@ public class ActiveRom extends ActiveModel{
 		Rom oppdatertPerson = selectRom(orginalRom.getRomId());
 		System.out.println("Nytt navn:" + oppdatertPerson.getNavn());
 	}
+	
 
 
 		
 //	private void testSelectPerson(){
-//		int romID = 113;
-//		Rom testRom  = selectRom(romID);
+//		int romId = 113;
+//		Rom testRom  = selectRom(romId);
 //		System.out.println(testRom.getNavn());
 //	}
 }
