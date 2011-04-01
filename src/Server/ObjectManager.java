@@ -21,20 +21,12 @@ public class ObjectManager {
 			System.out.println("avtale");
 			return null;
 		}
-		else if( o instanceof Hendelse){
-			System.out.println("hendelse");
-			return null;
-		}
 		else if( o instanceof Mote){
 			System.out.println("moete");
 			return null;
 		}
 		else if( o instanceof Person){
 			System.out.println("person");
-			return null;
-		}
-		else if( o instanceof Project){
-			System.out.println("prosjekt");
 			return null;
 		}
 		else if( o instanceof Rom){
