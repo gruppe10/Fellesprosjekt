@@ -2,34 +2,7 @@
  *  @author = Martin  /flex
  */ 
  
- $ cd db-derby
- $ java -jar lib/derbyrun.jar ij
- > connect 'jdbc:derby:<DatabaseNavn>;create=<true eller false>;';
- >> run '<scriptnavn>.sql';
- >> <queries>
- >> exit;
- > exit;
- 
- eksempel:
- $ java -jar lib/derbyrun.jar ij;
- > connect 'jdbc:derby:kalender;create=true';
- >> run 'create_db.sql';
- >> exit;
- > exit;
- 
- 
- 
- WITH reserverte_rom_med_tider AS(
- 	SELECT * from Mote, ReserverteRom
- 	WHERE Mote.avtaleID = ReserverteRom.avtaleId AND Dato = riktig_dato
- )
- Select 
- 
- 
- 
- new Time() => int i, int j , int k
- 
- 
- 
- 
- 
+ $ java -jar db-derby/lib/derbyrun.jar ij
+ > connect 'jdbc:derby:Kalender;create=true;';
+ > run 'db-derby/create_db.sql';
+ > exit; 
