@@ -18,20 +18,29 @@ public class ObjectManager {
 
 	public Object manageObject(Object o) {
 		Envelope e = (Envelope)o;
-		
+
 		Object content = e.getContent();
 		Action action = e.getAction();
-	
+
 		if( content instanceof Avtale){
 			Avtale avtale =(Avtale)content;
 			switch(action){
-				case UPDATE:
-					
-					break;
-				case DESTROY:
-					ActiveAvtale.deleteAvtale(avtale.getAvtaleId());
-					break;
+			case UPDATE:
+
+				break;
+			case DESTROY:
+				ActiveAvtale.deleteAvtale(avtale.getAvtaleId());
+				break;
 			}
+		}
+		// TODO Auto-generated method stub
+		if( o instanceof Notis){
+			//kode for håndtering av sending av notis til db-lagres ikke i databasen
+			//deltaker har status
+			System.out.println("notisok");
+			return null;
+		}
+		else if( o instanceof Avtale){
 			System.out.println("avtale");
 			return null;
 		}
@@ -42,7 +51,7 @@ public class ObjectManager {
 		else if( content instanceof Person){
 
 			ActivePerson.createPerson((Person)o);
-			
+
 			System.out.println("person");
 			return null;
 		}
@@ -50,8 +59,9 @@ public class ObjectManager {
 			System.out.println("rom");
 			return null;
 		}
-		
+
 		return null;
 	}
 
 }
+
