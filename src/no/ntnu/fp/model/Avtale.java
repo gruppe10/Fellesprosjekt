@@ -1,11 +1,12 @@
 package no.ntnu.fp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import no.ntnu.fp.model.record.ActiveAvtale;
 
-public class Avtale {
+public class Avtale implements Serializable{
 
 	private int avtaleId;
 	private String navn;

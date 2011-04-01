@@ -81,7 +81,8 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	public kal() {
 		super();
 		mainDate=Calendar.getInstance();
-		
+			
+			//test test
 		 	person= new Person();
 	        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
 	        Avtale avtale1 = new Avtale();
@@ -322,7 +323,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == nyAvtaleButton){
-			nyAvtale nyAvtale = new nyAvtale(kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), mainDate.get(Calendar.MONTH), mainDate.get(Calendar.YEAR), person);
+			nyAvtale nyAvtale = new nyAvtale(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), mainDate.get(Calendar.MONTH), mainDate.get(Calendar.YEAR));
 			nyAvtale.show();
 		}
 		else if(evt.getSource() == nyttMoeteButton){
@@ -376,4 +377,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+	public Person getConnectedPerson() {
+		return person;
+	}
 }

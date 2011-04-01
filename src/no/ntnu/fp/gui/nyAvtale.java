@@ -43,6 +43,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel nyAvtaleLabel;
 	private JLabel datoLabel;
 	private JTextField headerTextField;
+	private JLabel romLabel1;
+	private JComboBox romComboBox1;
 	private JComboBox sluttid;
 	private JComboBox starttid;
 	private JButton avbrytButton;
@@ -57,6 +59,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
+	private kal mainKal;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -64,16 +67,18 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				nyAvtale inst = new nyAvtale(6, 31, 3, 2011, null);
+				nyAvtale inst = new nyAvtale(null, 6, 31, 3, 2011);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 	
-	public nyAvtale(int dStartTime, int dDato, int dMonth, int dYear, Person p) {
-
+	public nyAvtale(kal kal, int dStartTime, int dDato, int dMonth, int dYear) {
+		
 		super();
+		
+		mainKal=kal;
 		
 		defaultStartTime = dStartTime;
 		defaultDato = dDato;
@@ -82,51 +87,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		
 		initGUI();
 		
-		//Test Test - Lager en ny person med avtaler
-        Person p= new Person();
-        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
-        Avtale avtale1 = new Avtale();
-        avtale1.setStarttid(10);
-        avtale1.setSluttid(12);
-        avtale1.setNavn("Lunsj");
-        avtale1.setBeskrivelse("Lunsj");
-        avtale1.setDato(3, 4, 2011);
-        avtaler.add(avtale1);
-        Avtale avtale2 = new Mote();
-        avtale2.setStarttid(13);
-        avtale2.setSluttid(16);
-        avtale2.setNavn("Brunsj");
-        avtale2.setBeskrivelse("Brunsj");
-        avtale2.setDato(30, 3, 2011);
-        avtaler.add(avtale2);
-        
-        p.setAvtaler(avtaler);
-        
-        Calendar d = Calendar.getInstance();
-       d.add(Calendar.DAY_OF_MONTH, 0);
-       
-       p.getAvtaler();
-       
-       
-       Avtale getAvtaleForTid(Calendar cal){
-           if(avtaler == null)
-               return;
-           for (Avtale avt : avtaler)
-           {
-               if (avt.getDate().get(Calendar.YEAR) == cal.get(Calendar.YEAR)
-                   && avt.getDate().get(Calendar.DAY_OF_YEAR) == cal.get(Calendar.DAY_OF_YEAR))
-               {
-                   boolean startsBefore = avt.getStarttid() <= cal.get(Calendar.HOUR_OF_DAY);
-                   boolean endsAfter = avt.getSluttid() > cal.get(Calendar.HOUR_OF_DAY);
-                   if (startsBefore && endsAfter)
-                   {
-                       return;
-                   }
-               }
-           }
-           return;
-       }
-       
+		
     
 
 	}
@@ -175,31 +136,22 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					ComboBoxModel jComboBox1Model = 
 						new DefaultComboBoxModel(
 								new String[] { "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" });
-<<<<<<< HEAD
+					
 					starttid = new JComboBox();
 					starttid.setModel(jComboBox1Model);
 					starttid.getSelectedItem();
-=======
-					jComboBox1 = new JComboBox();
-					jComboBox1.setModel(jComboBox1Model);
-					jComboBox1.getSelectedItem();
-					jComboBox1.setSelectedIndex((defaultStartTime-timeIndexDiff));
->>>>>>> 06f3722aee62ae16844ed4691d8d015753ceb991
+					starttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 				}
 				{
 					ComboBoxModel jComboBox2Model = 
 						new DefaultComboBoxModel(
 								new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" });
-<<<<<<< HEAD
+
+					
 					sluttid = new JComboBox();
 					sluttid.setModel(jComboBox2Model);
 					sluttid.getSelectedItem();
-=======
-					jComboBox2 = new JComboBox();
-					jComboBox2.setModel(jComboBox2Model);
-					jComboBox2.getSelectedItem();
-					jComboBox2.setSelectedIndex((defaultStartTime-timeIndexDiff));
->>>>>>> 06f3722aee62ae16844ed4691d8d015753ceb991
+					sluttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 				}
 				{
 					jTextArea1 = new JTextArea();
@@ -229,52 +181,64 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					avbrytButton.setFont(new java.awt.Font("Tahoma",0,12));
 					avbrytButton.addActionListener(this);
 				}
+				{
+					ComboBoxModel romComboBox1Model = 
+						new DefaultComboBoxModel(
+								new String[] { "Item One", "Item Two" });
+					romComboBox1 = new JComboBox();
+					romComboBox1.setModel(romComboBox1Model);
+				}
+				{
+					romLabel1 = new JLabel();
+					romLabel1.setText("Rom:");
+					romLabel1.setFont(new java.awt.Font("Tahoma",0,12));
+				}
 				jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup()
 					.addGroup(jPanel1Layout.createSequentialGroup()
 					    .addGroup(jPanel1Layout.createParallelGroup()
-					        .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					            .addComponent(nyAvtaleLabel, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-					            .addGap(0, 21, Short.MAX_VALUE)
-					            .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
 					        .addGroup(jPanel1Layout.createSequentialGroup()
 					            .addGroup(jPanel1Layout.createParallelGroup()
 					                .addComponent(sluttidLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(starttidLabel, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(8))
+					                    .addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(17))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addComponent(headerLabel, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(8))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(17))
-					                .addComponent(beskrivelseLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
+					                    .addComponent(starttidLabel, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(8))
+					                .addComponent(beskrivelseLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+					                    .addComponent(romLabel1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(31)))
 					            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					            .addGroup(jPanel1Layout.createParallelGroup()
-					                .addGroup(jPanel1Layout.createSequentialGroup()
-					                    .addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 0, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(datoField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 32, Short.MAX_VALUE))
+					                    .addComponent(sluttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(0, 52, Short.MAX_VALUE))
+					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+					                    .addComponent(starttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(0, 52, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(0, 32, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-<<<<<<< HEAD
-					                    .addComponent(starttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 52, Short.MAX_VALUE))
-=======
-					                     .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                   .addGap(0, 52, Short.MAX_VALUE))
->>>>>>> 06f3722aee62ae16844ed4691d8d015753ceb991
+					                    .addComponent(datoField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(0, 32, Short.MAX_VALUE))
+					                .addGroup(jPanel1Layout.createSequentialGroup()
+					                    .addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(0, 0, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(sluttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 52, Short.MAX_VALUE)))
-					            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
-					    .addContainerGap(15, 15))
+					                    .addComponent(romComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(0, 35, Short.MAX_VALUE))))
+					        .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+					            .addComponent(nyAvtaleLabel, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+					            .addGap(0, 17, Short.MAX_VALUE)
+					            .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)))
+					    .addContainerGap(19, 19))
 					.addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					    .addPreferredGap(nyAvtaleLabel, lagreButton, LayoutStyle.ComponentPlacement.INDENT)
+					    .addPreferredGap(datoLabel, lagreButton, LayoutStyle.ComponentPlacement.INDENT)
 					    .addComponent(lagreButton, 0, 77, Short.MAX_VALUE)
 					    .addContainerGap(110, 110)));
 				jPanel1Layout.setVerticalGroup(jPanel1Layout.createSequentialGroup()
@@ -295,22 +259,25 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(sluttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(sluttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, Short.MAX_VALUE)
+					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					    .addComponent(romComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(romLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup()
-					    .addComponent(jTextArea1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					        .addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					        .addGap(29)))
-					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					        .addGap(0, 30, GroupLayout.PREFERRED_SIZE))
+					    .addComponent(jTextArea1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(lagreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap());
+					    .addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)));
 			}
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap(20, 20)
-				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(30, Short.MAX_VALUE));
+				.addComponent(jPanel1, 0, 234, Short.MAX_VALUE)
+				.addContainerGap());
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap(25, 25)
 				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)

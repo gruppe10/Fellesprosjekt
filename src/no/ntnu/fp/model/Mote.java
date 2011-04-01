@@ -1,11 +1,12 @@
 package no.ntnu.fp.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Mote extends Avtale {
+public class Mote extends Avtale implements Serializable{
 	
 	private Rom moterom;
 	private static Map<Person, Boolean> deltakere = new HashMap<Person, Boolean>();

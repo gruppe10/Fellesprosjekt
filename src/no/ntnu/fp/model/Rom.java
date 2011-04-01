@@ -1,9 +1,11 @@
 package no.ntnu.fp.model;
 
 
+import java.io.Serializable;
+
 import no.ntnu.fp.model.record.ActiveRom;
 
-public class Rom {
+public class Rom implements Serializable{
 	
 	private int romId;
 	private String navn;
