@@ -1,8 +1,9 @@
 package no.ntnu.fp.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Hendelse {
+public abstract class Hendelse implements Serializable{
 
 	private int starttid, sluttid;
 	

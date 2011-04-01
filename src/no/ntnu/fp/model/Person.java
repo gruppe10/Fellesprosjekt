@@ -3,6 +3,7 @@ package no.ntnu.fp.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Date;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import no.ntnu.fp.model.record.ActivePerson;
  *
  * @version $Revision: 1.5 $ - $Date: 2005/02/20 14:52:29 $
  */
-public class Person {
+public class Person implements Serializable{
 	/**
 	 * VŒr kode
 	 */

@@ -1,6 +1,8 @@
 package no.ntnu.fp.model;
 
-public class Notis {
+import java.io.Serializable;
+
+public class Notis implements Serializable{
 	
 	private Person mottaker;
 	private Mote mote;
