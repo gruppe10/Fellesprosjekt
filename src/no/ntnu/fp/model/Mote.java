@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Klient.KlientOS;
+
 public class Mote extends Avtale implements Serializable{
 	
 	private Rom moterom;
 	private static Map<Person, Boolean> deltakere = new HashMap<Person, Boolean>();
+	KlientOS k = new KlientOS(int port, String serverip);
 	
 	public Mote(){
 		moterom = null;
