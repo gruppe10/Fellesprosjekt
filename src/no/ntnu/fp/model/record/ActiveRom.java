@@ -177,15 +177,50 @@ public class ActiveRom extends ActiveModel{
 		
 	}
 	
-	public static void main(String args[]){
-		testCrud();
+	
+	public static void createReservasjon(int romId, int avtaleId){
+		try{
+			connect();
+			PreparedStatement ps = connection.prepareStatement(
+					"INSERT INTO ReserverteRom(romId ,avtaleId) VALUES(?,?) "
+			);
+			ps.setInt(1, romId);
+			ps.setInt(2,avtaleId);
+		}catch(SQLException e){
+			System.out.println("Kan ikke reservere rom med id: " + romId + " for avtale: " + avtaleId);
+			System.out.println("Detaljer:" + e.getMessage());
+		}
 	}
 	
+	public static void deleteReservasjon(int romId,int avtaleId){
+		try{
+			connect();
+			PreparedStatement ps = connection.prepareStatement(
+					"DELETE FROM ReserverteRom " +
+					"WHERE romId = ? AND avtaleId = ? " 
+			);
+			ps.setInt(1, romId);
+			ps.setInt(2,avtaleId);
+		}catch(SQLException e){
+			System.out.println("Kan ikke reservere rom med id: " + romId + " for avtale: " + avtaleId);
+			System.out.println("Detaljer:" + e.getMessage());
+		}
+	}
 	
-	
+	public static void main(String args[]){
+		testCreateReservasjon();
+		System.out.println("TestUtført");
+	}
+
 	/******************************
 	*  			Tester			  *
 	******************************/
+	
+	private static void testCreateReservasjon(){
+		createReservasjon(1,2);
+		deleteReservasjon(1,2);
+		
+	}
 	
 	private static void testCrud(){
 		Rom rom = mockRomWith(1);
