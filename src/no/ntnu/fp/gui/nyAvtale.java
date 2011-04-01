@@ -320,18 +320,33 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == lagreButton){
-			//kal kal = new kal();
-			//kal.show();
-			if (isValidDate(datoField.getText())) {
-			Avtale tempAvtale = new Avtale(headerTextField.getText(), jTextArea1.getText(), kal.getPerson(), Integer.parseInt((String) starttid.getSelectedItem()), Integer.parseInt((String)sluttid.getSelectedItem()), null, null, null );
-				dispose();
+			boolean gyldigeFelt = true;
+			if (headerTextField.getText().equals("")){
+				gyldigeFelt = false;
+			}
+			else if (jTextArea1.getText().equals("")){
+				gyldigeFelt = false;
+			}
+			if (gyldigeFelt) {
+				try{
+					String[] dato = datoField.getText().replace("/", ".").split(".");
+					int year = Integer.parseInt(dato[2]);
+					int month = Integer.parseInt(dato[1]);
+					int day = Integer.parseInt(dato[0]);
+					Avtale tempAvtale = new Avtale(headerTextField.getText(), jTextArea1.getText(), mainKal.getPerson(), Integer.parseInt((String) starttid.getSelectedItem()), Integer.parseInt((String)sluttid.getSelectedItem()), day, month, year );
+					dispose();
+				}
+				catch(Exception error){
+					error.printStackTrace();
+				}
+				
 			}
 			// må kunne lagre avtalen, og legge den til på rett sted i kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){
 			//kal kal = new kal();
 			//kal.show();
-			hide();
+			this.dispose();
 		}
 		
 	}
