@@ -27,6 +27,9 @@ import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Person;
 
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 /**
 * This code was edited or generated using CloudGarden's Jigloo
 * SWT/Swing GUI Builder, which is free for non-commercial
@@ -43,6 +46,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel nyAvtaleLabel;
 	private JLabel datoLabel;
 	private JTextField headerTextField;
+	private JLabel jLabel2;
+	private JLabel jLabel1;
 	private JLabel romLabel1;
 	private JComboBox romComboBox1;
 	private JComboBox sluttid;
@@ -87,8 +92,6 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		
 		initGUI();
 		
-		
-    
 
 	}
 	
@@ -106,6 +109,11 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					nyAvtaleLabel = new JLabel();
 					nyAvtaleLabel.setText("Ny avtale");
 					nyAvtaleLabel.setFont(new java.awt.Font("Tahoma",1,16));
+				}
+				{
+					jLabel2 = new JLabel();
+					jLabel2.setText("b");
+					jLabel2.setFont(new java.awt.Font("Tahoma",2,12));
 				}
 				{
 					datoLabel = new JLabel();
@@ -131,6 +139,11 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					beskrivelseLabel = new JLabel();
 					beskrivelseLabel.setText("Beskrivelse:");
 					beskrivelseLabel.setFont(new java.awt.Font("Tahoma",0,12));
+				}
+				{
+					jLabel1 = new JLabel();
+					jLabel1.setText("a");
+					jLabel1.setFont(new java.awt.Font("Tahoma",2,12));
 				}
 				{
 					ComboBoxModel jComboBox1Model = 
@@ -165,7 +178,12 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				}
 				{
 					datoField = new JTextField();
-					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);
+					if (defaultMonth<10) {
+					datoField.setText(defaultDato+".0"+defaultMonth+"."+defaultYear);
+					}
+					else {
+						datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);	
+					}
 					datoField.setFont(new java.awt.Font("Tahoma",2,11));
 					//do something
 				}
@@ -208,67 +226,75 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addComponent(starttidLabel, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(8))
-					                .addComponent(beskrivelseLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addComponent(romLabel1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(31)))
+					                    .addGap(31))
+					                .addComponent(beskrivelseLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
 					            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					            .addGroup(jPanel1Layout.createParallelGroup()
-					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(sluttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 52, Short.MAX_VALUE))
-					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(starttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 52, Short.MAX_VALUE))
-					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 32, Short.MAX_VALUE))
-					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(datoField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 32, Short.MAX_VALUE))
 					                .addGroup(jPanel1Layout.createSequentialGroup()
-					                    .addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 0, Short.MAX_VALUE))
+					                    .addGroup(jPanel1Layout.createParallelGroup()
+					                        .addComponent(starttid, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					                        .addComponent(sluttid, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					                    .addGroup(jPanel1Layout.createParallelGroup()
+					                        .addGroup(jPanel1Layout.createSequentialGroup()
+					                            .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+					                            .addGap(0, 0, Short.MAX_VALUE))
+					                        .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+					                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					                            .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					                            .addGap(0, 34, Short.MAX_VALUE))))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-					                    .addComponent(romComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                    .addGap(0, 35, Short.MAX_VALUE))))
+					                    .addGroup(jPanel1Layout.createParallelGroup()
+					                        .addComponent(datoField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					                        .addComponent(romComboBox1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					                        .addComponent(headerTextField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
+					                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					                    .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(0, 8, Short.MAX_VALUE))
+					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+					                    .addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+					                    .addGap(0, 22, Short.MAX_VALUE))))
 					        .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					            .addComponent(nyAvtaleLabel, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-					            .addGap(0, 17, Short.MAX_VALUE)
-					            .addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)))
-					    .addContainerGap(19, 19))
+					            .addGap(0, 113, Short.MAX_VALUE)))
+					    .addContainerGap(66, 66))
 					.addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					    .addPreferredGap(datoLabel, lagreButton, LayoutStyle.ComponentPlacement.INDENT)
-					    .addComponent(lagreButton, 0, 77, Short.MAX_VALUE)
-					    .addContainerGap(110, 110)));
+					    .addComponent(lagreButton, 0, 107, Short.MAX_VALUE)
+					    .addContainerGap(149, 149)));
 				jPanel1Layout.setVerticalGroup(jPanel1Layout.createSequentialGroup()
 					.addComponent(nyAvtaleLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(datoField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(jLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(datoLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(headerTextField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(headerLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-					    .addComponent(starttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(starttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					.addGroup(jPanel1Layout.createParallelGroup()
+					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+					        .addComponent(starttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					        .addComponent(starttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+					        .addGap(0, 13, Short.MAX_VALUE)
+					        .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(sluttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(sluttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, Short.MAX_VALUE)
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(romComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(romLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup()
+					    .addComponent(jTextArea1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					        .addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					        .addGap(0, 30, GroupLayout.PREFERRED_SIZE))
-					    .addComponent(jTextArea1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+					        .addGap(29)))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(lagreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -280,8 +306,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				.addContainerGap());
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap(25, 25)
-				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(168, Short.MAX_VALUE));
+				.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 268, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap(99, Short.MAX_VALUE));
 			pack();
 			setSize(400, 300);
 		} catch (Exception e) {
@@ -293,17 +319,43 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == lagreButton){
-			kal kal = new kal();
+			//kal kal = new kal();
 			//kal.show();
+			if (isValidDate(datoField.getText())) {
 			hide();
+			}
 			// må kunne lagre avtalen, og legge den til på rett sted i kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){
-			kal kal = new kal();
+			//kal kal = new kal();
 			//kal.show();
 			hide();
 		}
 		
 	}
+	
+	public boolean isValidDate(String inDate) {
+
+	    if (inDate == null)
+	      return false;
+
+	    //set the format to use as a constructor argument
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+	    
+	    if (inDate.trim().length() != dateFormat.toPattern().length())
+	      return false;
+
+	    dateFormat.setLenient(false);
+	    
+	    try {
+	      //parse the inDate parameter
+	      dateFormat.parse(inDate.trim());
+	    }
+	    catch (ParseException pe) {
+	      return false;
+	    }
+	    return true;
+	  }
+
 
 }

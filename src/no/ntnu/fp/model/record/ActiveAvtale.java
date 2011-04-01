@@ -34,9 +34,18 @@ public class ActiveAvtale extends ActiveModel{
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
-				//ps.setInt(7, avtale.getLederId());
-				
 				ps.execute();
+				
+				if(avtale.getLederId()!=null){
+					PreparedStatement ps2 = connection.prepareStatement(
+						"UPDATE Avtale(lederId)" +
+						"SET lederID = ?" +
+						"WHERE avtaleId = ?" 
+					);
+					ps2.setInt(1, avtale.getLederId());
+					ps2.setInt(2, avtale.getAvtaleId());
+				    ps2.execute();
+				}
 				connection.close();
 				}
 		}

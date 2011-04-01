@@ -16,7 +16,7 @@ public class Avtale implements Serializable{
 	private int datoDag;
 	private int datoMnd;
 	private int datoAar;
-	private int lederId;
+	private Integer lederId;
 	private ArrayList<Person> deltakere;
 
 	public Avtale(){
@@ -24,6 +24,7 @@ public class Avtale implements Serializable{
 		
 		navn = beskrivelse = null;
 		initiativtaker = null;
+		lederId=null;
 		//Oppdater database!
 	}
 	
@@ -106,10 +107,13 @@ public class Avtale implements Serializable{
 		return null;
 	}
 	
-	public int getLederId() {
+	public Integer getLederId() {
 		return lederId;
 
-	}	
+	}
+	public void setLederId(Integer lederId) {
+		this.lederId = lederId;
+	}
 	
 	public void selectDeltagere(){
 		deltakere = ActiveAvtale.selectDeltagere(avtaleId);
