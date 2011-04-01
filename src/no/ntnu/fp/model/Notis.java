@@ -27,5 +27,4 @@ public class Notis {
 		this.mote = mote;
 		this.beskjed = beskjed;
 	}
-
 }
