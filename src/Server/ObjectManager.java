@@ -13,7 +13,8 @@ public class ObjectManager {
 	public Object manageObject(Object o) {
 		// TODO Auto-generated method stub
 		if( o instanceof Notis){
-			//kode for håndtering av sending av notis til db
+			//kode for håndtering av sending av notis til db-lagres ikke i databasen
+			//deltaker har status
 			System.out.println("notisok");
 			return null;
 		}
