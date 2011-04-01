@@ -3,6 +3,18 @@ package no.ntnu.fp.model;
 public class Notis {
 	
 	private Person mottaker;
+	public Person getMottaker() {
+		return mottaker;
+	}
+
+	public Mote getMote() {
+		return mote;
+	}
+
+	public String getBeskjed() {
+		return beskjed;
+	}
+
 	private Mote mote;
 	private String beskjed;	
 	
