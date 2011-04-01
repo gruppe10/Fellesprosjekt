@@ -33,5 +33,5 @@ CREATE TABLE ReserverteRom (
     romId INT,
     hendelseId INT,
     FOREIGN KEY(romId) REFERENCES Rom(romId),
-    FOREIGN KEY(hendelseId) REFERENCES Hendelse(avtaleId)
+    FOREIGN KEY(hendelseId) REFERENCES Hendelse(hendelseId)
 );

@@ -146,11 +146,11 @@ public class ActiveRom extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						" WITH reserverteTider as(			 " +
-						"	SELECT * from ReservertRom, Mote " +
-						"	WHERE ReservertRom.avtaleId = ?  " +
-						"	AND Mote.avtaleId = ? 			 " +
-						"	AND Mote.date = ?  			     " +
+						" WITH reserverteTider as(			 	  " +
+						"	SELECT * from ReservertRom, Hendelse  " +
+						"	WHERE ReservertRom.hendelseId = ?  	  " +
+						"	AND Mote.hendelseId = ? 		      " +
+						"	AND Mote.date = ?  			    	  " +
 						" )" +
 						" SELECT starttid,sluttid from reserverteTider" 
 				);
@@ -182,7 +182,7 @@ public class ActiveRom extends ActiveModel{
 		try{
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO ReserverteRom(romId ,avtaleId) VALUES(?,?) "
+					"INSERT INTO ReserverteRom(romId ,hendelseId) VALUES(?,?) "
 			);
 			ps.setInt(1, romId);
 			ps.setInt(2,avtaleId);
@@ -197,7 +197,7 @@ public class ActiveRom extends ActiveModel{
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
 					"DELETE FROM ReserverteRom " +
-					"WHERE romId = ? AND avtaleId = ? " 
+					"WHERE romId = ? AND hendelseId = ? " 
 			);
 			ps.setInt(1, romId);
 			ps.setInt(2,avtaleId);

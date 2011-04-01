@@ -1,13 +1,22 @@
 package no.ntnu.fp.model.record;
 
-/*
+/*	About:
+ * 	
+ * 	Hendelse er en generell databasetabell som inneholder BÅDE Avtaler og Moter
+ * 	Forskjellen er at Moter også "snakker" med Deltager tabellen
+ * 
+ * 	Metodene er Objekt spesifikk, mens delete og select finner ut selv om det
+ *  er Avtale eller Mote som hentes ut
+ * 
+ * 	
  *   Methods:
-
  *   
  * 	 CreateAvtale(Avtale avtale)
- * 	 SelectPerson(int ansattnummer)
- * 	 UpdatePerson(Avtale Avtale)
- * 	 DeletePerson(int ansattnummer)	
+ * 	 CreateMote(Mote mote)
+ *   UpdateAvtale(Avtale Avtale)
+ * 	 UpdateMote(Mote mote)
+ * 	 SelectHendelse(int hendelseID)
+ *	 DeleteHendelse(int ansattnummer)	
  * 
  */
 
@@ -25,7 +34,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Avtale(avtaleId, navn, beskrivelse, dato, starttid, sluttid)" +
+					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid)" +
 					"VALUES ( ?, ?, ? ,? ,? ,? )" 
 				);
 				ps.setInt(1, avtale.getAvtaleId());
@@ -36,14 +45,40 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 				ps.execute();
 				
-				if(avtale.getInitiativtaker()!= null){
+				connection.close();
+				}
+		}
+		catch(SQLException e){
+			System.out.println("Kan ikke lagre avtalen");
+			System.out.println("Details:" + e.getMessage());
+		}
+	}
+	
+	public static void createMote(Mote mote){
+		PreparedStatement ps = null;
+		try{
+			connect();
+			if( connection != null){
+				ps = connection.prepareStatement(
+					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid)" +
+					"VALUES ( ?, ?, ? ,? ,? ,? )" 
+				);
+				ps.setInt(1, mote.getAvtaleId());
+				ps.setString(2, mote.getNavn());
+				ps.setString(3, mote.getBeskrivelse());
+				ps.setDate(4, formatDateFrom(mote));
+				ps.setTime(5, formatTimeFrom(mote.getStarttid()));
+				ps.setTime(6, formatTimeFrom(mote.getSluttid()));
+				ps.execute();
+				
+				if(mote.getInitiativtaker()!= null){
 					PreparedStatement ps2 = connection.prepareStatement(
 						"UPDATE Avtale(initiativTakerId)" +
 						"SET initiativtakerId = ?" +
 						"WHERE avtaleId = ?" 
 					);
-					ps2.setInt(1, avtale.getInitiativtaker().getAnsattNummer());
-					ps2.setInt(2, avtale.getAvtaleId());
+					ps2.setInt(1, mote.getInitiativtaker().getAnsattNummer());
+					ps2.setInt(2, mote.getAvtaleId());
 				    ps2.execute();
 				}
 				connection.close();
@@ -61,9 +96,9 @@ public class ActiveHendelse extends ActiveModel{
         	connect();
         	if( connection != null ){
 	            PreparedStatement ps = connection.prepareStatement(
-	            		"UPDATE Avtale " + 
+	            		"UPDATE Hendelse " + 
 	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-	                    "WHERE avtaleId = ? "
+	                    "WHERE hendelseId = ? "
 	            );
 				ps.setString(1, avtale.getNavn());
 				ps.setString(2, avtale.getBeskrivelse());
@@ -95,7 +130,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Avtale WHERE avtaleId = ? "
+						"SELECT * FROM Hendelse WHERE hendelseId = ? "
 				);
 				ps.setInt(1, avtaleId);
 				
@@ -136,7 +171,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"DELETE FROM Avtale WHERE avtaleId = ?"
+						"DELETE FROM Hendelse WHERE hendelseId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ps.execute();
@@ -155,7 +190,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT ansattId FROM Deltakere WHERE avtaleId = ?"
+						"SELECT ansattId FROM Deltakere WHERE hendelseId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ResultSet rs = ps.executeQuery();
@@ -183,7 +218,7 @@ public class ActiveHendelse extends ActiveModel{
 							PreparedStatement ps = connection.prepareStatement(
 							"UPDATE Deltakere" +
 							"SET ansattId = ? " +
-							"WHERE Deltakere.avtaleId = ? "
+							"WHERE Deltakere.hendelseId = ? "
 							);
 							ps.setInt(1, person.getAnsattNummer());
 							ps.setInt(2, avtaleId);
@@ -205,8 +240,8 @@ public class ActiveHendelse extends ActiveModel{
 			if(connection != null){
 
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Avtale " +
-						"WHERE avtaleId = ? "
+						"SELECT * FROM Hendelse " +
+						"WHERE hendelseId = ? "
 				);
 				ps.setInt(1, avtaleId);
 				ResultSet rs = ps.executeQuery();

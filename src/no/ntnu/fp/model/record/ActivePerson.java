@@ -216,7 +216,8 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static void main(String args[]){
-		testSelectAvtaler();
+		testCrud();
+		//testSelectAvtaler();
 	}
 	
 	/******************************
@@ -234,7 +235,7 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	private static void testCrud(){
-		int ansattId = 15;
+		int ansattId = 16;
 		Person person = mockPersonWithId(ansattId);
 		
 		createPerson(person);
