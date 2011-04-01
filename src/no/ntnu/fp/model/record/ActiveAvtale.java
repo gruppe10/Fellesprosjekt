@@ -195,12 +195,42 @@ public class ActiveAvtale extends ActiveModel{
 		catch(SQLException e){
 			System.out.println("Could not find any Participants for Meeting with id:");
 			System.out.println("Details:" + e.getMessage());
-		}		
-				
+		}					
+	}
+	
+	public static boolean exists(int avtaleId) {
+		boolean exists = false;
+		try{
+			connect();
+			if(connection != null){
+
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM Avtale " +
+						"WHERE avtaleId = ? "
+				);
+				ps.setInt(1, avtaleId);
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					exists = true;
+				}
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Participants for Meeting with id:");
+			System.out.println("Details:" + e.getMessage());
+		}
+		return exists;
 	}
 	
 	public static void main(String args[]){
 		testCrud();
+		if(exists(4)){
+			System.out.println("Den finnes!");
+		}else{
+			System.out.println("Finner den ikke!");
+		}
+		System.out.println("Test utført");
 	}
 	
 	
@@ -249,22 +279,25 @@ public class ActiveAvtale extends ActiveModel{
 		avtale.setNavn("Avtale 1");
 		deleteAvtale(avtale.getAvtaleId());
 		createAvtale(avtale);
-		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + "og id:" + avtale.getAvtaleId());
 		
 		deleteAvtale(avtale.getAvtaleId());
-		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		createAvtale(avtale);
-		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		avtale = selectAvtale(avtale.getAvtaleId());
-		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		avtale.setNavn("Avtale 2");
 		updateAvtale(avtale);
-		System.out.println("Oppdaterte avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Oppdaterte avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		avtale = selectAvtale(avtale.getAvtaleId());
-		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 	}
+
+
+	
 }
