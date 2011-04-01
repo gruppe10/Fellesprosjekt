@@ -36,13 +36,13 @@ public class ActiveAvtale extends ActiveModel{
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 				ps.execute();
 				
-				if(avtale.getLederId()!=null){
+				if(avtale.getInitiativtaker()!= null){
 					PreparedStatement ps2 = connection.prepareStatement(
-						"UPDATE Avtale(lederId)" +
-						"SET lederID = ?" +
+						"UPDATE Avtale(initiativTakerId)" +
+						"SET initiativtakerId = ?" +
 						"WHERE avtaleId = ?" 
 					);
-					ps2.setInt(1, avtale.getLederId());
+					ps2.setInt(1, avtale.getInitiativtaker().getAnsattNummer());
 					ps2.setInt(2, avtale.getAvtaleId());
 				    ps2.execute();
 				}
