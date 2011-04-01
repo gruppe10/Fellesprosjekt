@@ -29,5 +29,4 @@ public class Notis implements Serializable{
 		this.mote = mote;
 		this.beskjed = beskjed;
 	}
-
 }

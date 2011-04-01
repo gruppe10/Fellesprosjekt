@@ -6,3 +6,11 @@
  > connect 'jdbc:derby:Kalender;create=true;';
  > run 'db-derby/create_db.sql';
  > exit; 
+ 
+ 
+ " SELECT avtaleId FROM alleAktuelleHendelser, Deltakere  " +
+						" WHERE NOT alleAktuelleHendelser.avtaleId = Deltakere.avtaleId" + 
+						" WITH alleAktuelleHendelser AS(" +
+						"	SELECT avtaleID FROM Avtaler WHERE lederID = ? " +
+						")" 
+						

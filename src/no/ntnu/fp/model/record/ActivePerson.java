@@ -41,7 +41,6 @@ public class ActivePerson extends ActiveModel{
 		catch(SQLException e){
 			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
 		}
-		
 	}
 	
 	public static int getMaxId(){
@@ -176,24 +175,36 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static ArrayList<Avtale> selectAvtaler(int ansattId) {
-		ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
+		ArrayList<Avtale> hendelser = new ArrayList<Avtale>();
+		ArrayList<Avtale> hendelserUtenDeltagere = new ArrayList<Avtale>();
 		try{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						" WITH Moter as(                                                     " +
-						"	SELECT Avtaler From Deltager, Avtaler                            " +
-						"	WHERE Deltager.ansattId = Avtaler.ansattId                       " +
-						" )	                                                                 " +
-						" SELECT avtaleID FROM Avtaler WHERE lederID = ? AND COUNT(Moter) < 0"
+						" SELECT avtaleId FROM Avtale WHERE LederID = ? "
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
-					int avtaleId = rs.getInt("avtaleID");
-					Avtale nyttMote = ActiveAvtale.selectAvtale(avtaleId);
-					avtaler.add(nyttMote);
+					int hendelseId = rs.getInt("avtaleId");
+					Avtale nyHendelse = ActiveAvtale.selectAvtale(hendelseId);
+					hendelser.add(nyHendelse);
 				};
+				ps.close();
+				for (Avtale hendelse : hendelser){
+					PreparedStatement ps2 = connection.prepareStatement("" +
+							"Select Avtale.avtaleId from Avtale,Deltagere" +
+							"WHERE NOT Avtale.avtaleId = Deltagere.avtaleId" +
+							"AND Avtale.avtaleId = ?");
+					ps2.setInt(1,hendelse.getAvtaleId());
+					
+					ResultSet rs2 = ps2.executeQuery();
+					while(rs2.next()){
+						int avtaleId = rs2.getInt("avtaleId");
+						Avtale avtale = ActiveAvtale.selectAvtale(avtaleId);
+						hendelserUtenDeltagere.add(avtale);
+					}
+				}
 			}
 			connection.close();	
 		}
@@ -201,21 +212,26 @@ public class ActivePerson extends ActiveModel{
 			System.out.println("Could not find any Meetings for Person with id:" + ansattId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		return avtaler;
+		return hendelserUtenDeltagere;
 	}
-	
-	
 	
 	public static void main(String args[]){
-		testCrud();
+		testSelectAvtaler();
 	}
-	
-	
-	
 	
 	/******************************
 	 *              TESTER        *
 	 ******************************/
+	
+	
+	private static void testSelectAvtaler(){
+		int ansattId = 10;
+		ArrayList<Avtale> avtaler = selectAvtaler(ansattId);
+		for (Avtale avtale : avtaler) {
+			System.out.println(avtale.getNavn());
+		}
+		System.out.println("test fullført");
+	}
 	
 	private static void testCrud(){
 		int ansattId = 15;
