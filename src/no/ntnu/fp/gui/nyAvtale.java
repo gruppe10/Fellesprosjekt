@@ -85,6 +85,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		
 		mainKal=kal;
 		
+		
 		defaultStartTime = dStartTime;
 		defaultDato = dDato;
 		defaultMonth = dMonth;
@@ -322,7 +323,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 			//kal kal = new kal();
 			//kal.show();
 			if (isValidDate(datoField.getText())) {
-			hide();
+			Avtale tempAvtale = new Avtale(headerTextField.getText(), jTextArea1.getText(), kal.getPerson(), Integer.parseInt((String) starttid.getSelectedItem()), Integer.parseInt((String)sluttid.getSelectedItem()), null, null, null );
+				dispose();
 			}
 			// må kunne lagre avtalen, og legge den til på rett sted i kalenderen
 		}

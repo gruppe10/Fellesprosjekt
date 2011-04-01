@@ -104,6 +104,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		initGUI();
 	}
 	
+	public Person getPerson(){
+		return person;
+	}
+	
 	private void initGUI() {
 		try {
 			GroupLayout thisLayout = new GroupLayout((JComponent)getContentPane());
@@ -380,4 +384,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	public Person getConnectedPerson() {
 		return person;
 	}
+	
+	
 }
