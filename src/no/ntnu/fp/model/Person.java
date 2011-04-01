@@ -34,6 +34,9 @@ public class Person implements Serializable{
 		avtaler=nAvtaler;
 	}
 	
+	public void addAvtale(Avtale nyAvtale){
+		avtaler.add(nyAvtale);
+	}
 
 	public ArrayList<Avtale> getAvtaler() {
 		return avtaler;
