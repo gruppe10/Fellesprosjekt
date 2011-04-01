@@ -27,6 +27,9 @@ import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Person;
 
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 /**
 * This code was edited or generated using CloudGarden's Jigloo
 * SWT/Swing GUI Builder, which is free for non-commercial
@@ -87,8 +90,6 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		
 		initGUI();
 		
-		
-    
 
 	}
 	
@@ -165,7 +166,12 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				}
 				{
 					datoField = new JTextField();
-					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);
+					if (defaultMonth<10) {
+					datoField.setText(defaultDato+".0"+defaultMonth+"."+defaultYear);
+					}
+					else {
+						datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);	
+					}
 					datoField.setFont(new java.awt.Font("Tahoma",2,11));
 					//do something
 				}
@@ -293,17 +299,43 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == lagreButton){
-			kal kal = new kal();
+			//kal kal = new kal();
 			//kal.show();
+			if (isValidDate(datoField.getText())) {
 			hide();
+			}
 			// må kunne lagre avtalen, og legge den til på rett sted i kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){
-			kal kal = new kal();
+			//kal kal = new kal();
 			//kal.show();
 			hide();
 		}
 		
 	}
+	
+	public boolean isValidDate(String inDate) {
+
+	    if (inDate == null)
+	      return false;
+
+	    //set the format to use as a constructor argument
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+	    
+	    if (inDate.trim().length() != dateFormat.toPattern().length())
+	      return false;
+
+	    dateFormat.setLenient(false);
+	    
+	    try {
+	      //parse the inDate parameter
+	      dateFormat.parse(inDate.trim());
+	    }
+	    catch (ParseException pe) {
+	      return false;
+	    }
+	    return true;
+	  }
+
 
 }
