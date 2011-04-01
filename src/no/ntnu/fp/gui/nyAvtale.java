@@ -104,7 +104,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
            for (Avtale avt : avtaler)
            {
                if (avt.getDate().get(Calendar.YEAR) == cal.get(Calendar.YEAR)
-                   && avt.getDate().get(Calendar.DATE) == cal.get(Calendar.DATE))
+                   && avt.getDate().get(Calendar.DAY_OF_YEAR) == cal.get(Calendar.DAY_OF_YEAR))
                {
                    boolean startsBefore = avt.getStarttid() <= cal.get(Calendar.HOUR_OF_DAY);
                    boolean endsAfter = avt.getSluttid() > cal.get(Calendar.HOUR_OF_DAY);

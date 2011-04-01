@@ -17,46 +17,37 @@ import no.ntnu.fp.model.Person;
 
 import org.apache.derby.tools.sysinfo;
 
-public class ActivePerson {
-	private static String db_url = "Kal";
-	private static String admin_name = "";
-	private static String admin_pwd = "";
-	protected static Connection connection ;
+public class ActivePerson extends ActiveModel{
 	
 	public static void createPerson(Person person){
-		PreparedStatement ps = null;
 		try{
 			connect();
-			
-			ps = connection.prepareStatement(
-				"INSERT INTO Person(ansattnr, navn, brukernavn, passord)" +
-				"VALUES ( ?, ?, ? ,? )" 
-			);
-			ps.setInt(1, person.getAnsattNummer());
-			ps.setString(2, person.getName());
-			ps.setString(3, person.getBrukerNavn());
-			ps.setString(4, person.getPassord());
-			
-			boolean det_gikk_bra = ps.execute();
-			if (det_gikk_bra){
-				System.out.println("Det gikk bra!");
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+					"INSERT INTO Person(ansattnr, navn, brukernavn, passord)" +
+					"VALUES ( ?, ?, ? ,? )" 
+				);
+				ps.setInt(1, person.getAnsattNummer());
+				ps.setString(2, person.getName());
+				ps.setString(3, person.getBrukerNavn());
+				ps.setString(4, person.getPassord());
+				
+				ps.execute();
+				connection.close();
 			}
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
 		}
-		finally{
-			//if(ps != null) ps.close();
-		}
+		
 	}
 	
 	public static int getMaxId(){
-		PreparedStatement ps = null;
 		int ansattNummer=0;
 		try{
 			connect(); 
 			if( connection != null){
-	            ps = connection.prepareStatement(
+				PreparedStatement ps = connection.prepareStatement(
 	            "SELECT MAX ansattnr" +
 	            "FROM Person"		    
 	            );
@@ -74,8 +65,6 @@ public class ActivePerson {
 	}
 
 	public static void updatePerson(Person person){
-		PreparedStatement ps = null;
-		
 		String navn = person.getName();
 		String brukernavn = person.getBrukerNavn();
 		String passord = person.getPassord();
@@ -84,7 +73,7 @@ public class ActivePerson {
 		try {
         	connect();
         	if( connection != null){
-	            ps = connection.prepareStatement(
+        		PreparedStatement ps = connection.prepareStatement(
 	            		"UPDATE Person " + 
 	            		"SET navn= ? , brukernavn = ?, passord = ?" +
 	                    "WHERE ansattnr = ? "
@@ -93,22 +82,17 @@ public class ActivePerson {
 	            ps.setString(2, brukernavn);
 	            ps.setString(3, passord);
 	            ps.setInt(4, ansattnr);
-        	}
-        	
-            ps.executeUpdate();    
+	            ps.executeUpdate();
+	            connection.close();
+        	}  
         }
 		catch (SQLException e){
         	System.out.println("Kan ikke oppdatere!");
         	System.out.println("Detaljer:" + e.getMessage());
         }
-        finally {
-            //if (ps != null) ps.close();
-        }
 	}
 	
-	
-	
-	private static Person selectPerson(int ansattnr){
+	public static Person selectPerson(int ansattnr){
 		Person person = new Person();
 		String navn  = "";
 		String brukernavn = "";
@@ -116,19 +100,21 @@ public class ActivePerson {
 		
 		try{
 			connect();
-			
-			PreparedStatement ps = connection.prepareStatement(
-					"SELECT * FROM Person WHERE ansattnr = ? "
-			);
-			ps.setInt(1, ansattnr);
-			
-			ResultSet rs = ps.executeQuery(); 
-			if (rs != null){
-				while(rs.next()){
-					navn = rs.getString("navn");
-					brukernavn = rs.getString("brukernavn");
-					passord = rs.getString("passord");
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM Person WHERE ansattnr = ? "
+				);
+				ps.setInt(1, ansattnr);
+				
+				ResultSet rs = ps.executeQuery(); 
+				if (rs != null){
+					while(rs.next()){
+						navn = rs.getString("navn");
+						brukernavn = rs.getString("brukernavn");
+						passord = rs.getString("passord");
+					}
 				}
+				connection.close();
 			}
 		}
 		catch( SQLException e){
@@ -144,30 +130,21 @@ public class ActivePerson {
 		return person;
 	}
 		
-	private static void deletePerson(int ansattNr) {
+	public static void deletePerson(int ansattNr) {
 		try {
 			connect();
-			PreparedStatement ps = connection.prepareStatement(
-					"DELETE FROM Person WHERE ansattNR = ?"
-			);
-			ps.setInt(1, ansattNr);
-			ps.execute();	
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"DELETE FROM Person WHERE ansattNR = ?"
+				);
+				ps.setInt(1, ansattNr);
+				ps.execute();	
+				connection.close();
+			}
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private static void connect() throws SQLException{
-		try{
-			connection =  DriverManager.getConnection("jdbc:derby:" + db_url, admin_name, admin_pwd );
-		}
-		catch(SQLException e){
-			connection = null;
-			System.out.println("Kan ikke koble til database");
-		}
-		finally{ 
-		}		
 	}
 	
 	public static void main(String args[]){

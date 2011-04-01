@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.sound.sampled.ReverbType;
+
 
 import no.ntnu.fp.net.admin.Log;
 import no.ntnu.fp.net.cl.ClException;
@@ -101,11 +103,12 @@ public class ConnectionImpl extends AbstractConnection {
 			lastValidPacketReceived = recieved;
 			sendAck(recieved, false);
 			state = State.ESTABLISHED;
-			return;
+		}
+		else{
+			state = State.CLOSED;			
 		}
 			
 		
-		this.state = State.CLOSED;
     }
 
     /**
@@ -119,6 +122,7 @@ public class ConnectionImpl extends AbstractConnection {
         	throw new IllegalStateException("Cannot accept SYN without being in state CLOSED");
         }
         
+        ConnectionImpl connection = new ConnectionImpl(myPort);
 //       Lytte etter innkommende syn-pakke, og opprett port for denne tilkoblingen
         this.state = State.LISTEN;
         
@@ -127,21 +131,20 @@ public class ConnectionImpl extends AbstractConnection {
         while(!isValid(syn)){
         	syn = receivePacket(true);	
         }
-       
-        lastValidPacketReceived = syn;
-        ConnectionImpl connection = new ConnectionImpl(myPort);
         usedPorts.put(myPort, true);
         connection.remoteAddress = syn.getSrc_addr();
         connection.remotePort = syn.getSrc_port();
         connection.state = State.SYN_RCVD;
+        connection.lastValidPacketReceived = syn;
         
 //      Send synack tilbake til klient. sendAck(true) angir at flagget skal være SYN_ACK
         
-        sendAck(syn, true);
+        connection.sendAck(syn, true);
+       
         KtnDatagram ack = null;
         
         while(!isValid(ack)){
-        	ack = receiveAck();
+        	ack = connection.receiveAck();
         }
         lastValidPacketReceived = ack;
         connection.state = State.ESTABLISHED;
@@ -165,13 +168,12 @@ public class ConnectionImpl extends AbstractConnection {
         if(msg==null) return; 
         
     	KtnDatagram toSend = constructDataPacket(msg);
-        KtnDatagram ack = null;
+    	KtnDatagram ack = null;
         
         while (!isValid(ack)){
         	ack = sendDataPacketWithRetransmit(toSend);
+        	lastDataPacketSent = toSend;
         }
-        
-        lastDataPacketSent = toSend;
         lastValidPacketReceived = ack;
     }
 
@@ -189,16 +191,15 @@ public class ConnectionImpl extends AbstractConnection {
         }
         
         KtnDatagram received = null;
-        while (received == null || !isValid(received)){
-        	try {
-        		received = receivePacket(false);
-        	}catch (Exception e) {
-			// TODO: handle exception
-        	}
-        }
         
-        lastValidPacketReceived = received;
-        return ( (received.getPayload() != null) ? (String)received.getPayload() : null);
+        received = receivePacket(false);
+        if (isValid(received)){
+        	lastValidPacketReceived = received;
+        	sendAck(lastValidPacketReceived, false);
+        	return (String)lastValidPacketReceived.getPayload();
+        }
+        sendAck(lastValidPacketReceived, false);
+        return receive();
        
     }
 
@@ -274,21 +275,22 @@ public class ConnectionImpl extends AbstractConnection {
     	switch (state) {
     	case CLOSED: break;
     	case SYN_SENT: return (packet.getFlag() == Flag.SYN_ACK 
-    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    			&& packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
     	case LISTEN: return (packet.getFlag() == Flag.SYN);
     	case SYN_RCVD: return (packet.getFlag() == Flag.ACK 
-    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
-    	case ESTABLISHED: return ((packet.getFlag()==Flag.NONE || packet.getFlag()==Flag.ACK || packet.getFlag()==Flag.FIN) &&
-    			packet.getSeq_nr() == this.nextSequenceNo && packet.getSrc_addr() == remoteAddress 
-    			&& packet.getSrc_port() == remotePort);
+    			&& packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
+    	case ESTABLISHED: return ((packet.getFlag()==Flag.NONE || packet.getFlag()==Flag.ACK || packet.getFlag()==Flag.FIN)
+    			&& (packet.getFlag() == Flag.NONE || packet.getAck() == lastDataPacketSent.getSeq_nr())
+                && (packet.getFlag() == Flag.ACK || packet.getSeq_nr() > lastValidPacketReceived.getSeq_nr())&&
+    			 	packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
     	case FIN_WAIT_1: return (packet.getFlag() == Flag.ACK
-    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    			&& packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
     	case FIN_WAIT_2: return (packet.getFlag() == Flag.FIN
-    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    			&& packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
     	case TIME_WAIT: break;
     	case CLOSE_WAIT: break;
     	case LAST_ACK: return (packet.getFlag() == Flag.ACK 
-    			&& packet.getSrc_addr() == remoteAddress && packet.getSrc_port() == remotePort);
+    			&& packet.getSrc_addr().equals(remoteAddress) && packet.getSrc_port() == remotePort);
     	}
     	return false;
 	

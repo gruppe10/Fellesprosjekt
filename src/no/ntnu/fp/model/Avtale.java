@@ -1,6 +1,9 @@
 package no.ntnu.fp.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import no.ntnu.fp.model.record.ActiveAvtale;
 
 public class Avtale {
 
@@ -12,6 +15,8 @@ public class Avtale {
 	private int datoDag;
 	private int datoMnd;
 	private int datoAar;
+	private int lederId;
+	private ArrayList<Person> deltakere;
 
 	public Avtale(){
 		starttid = sluttid = 0;
@@ -94,8 +99,18 @@ public class Avtale {
 		return navn;
 	}
 
+
 	public Calendar getDate() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public int getLederId() {
+		return lederId;
+
 	}	
+	
+	public void selectDeltagere(){
+		deltakere = ActiveAvtale.selectDeltagere(avtaleId);
+	}
 }
