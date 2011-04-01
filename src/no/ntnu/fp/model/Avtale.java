@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import Klient.KlientOS;
 
-import no.ntnu.fp.model.record.ActiveAvtale;
+import no.ntnu.fp.model.record.ActiveHendelse;
 
 public class Avtale implements Serializable{
 
@@ -134,6 +134,6 @@ public class Avtale implements Serializable{
 	
 	
 	public void selectDeltagere(){
-		deltakere = ActiveAvtale.selectDeltagere(avtaleId);
+		deltakere = ActiveHendelse.selectDeltagere(avtaleId);
 	}
 }

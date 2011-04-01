@@ -26,21 +26,21 @@ public class ObjectManager {
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case UPDATE:
-				if(ActiveAvtale.exists(avtale.getAvtaleId())){
-					ActiveAvtale.updateAvtale(avtale);
+				if(ActiveHendelse.exists(avtale.getAvtaleId())){
+					ActiveHendelse.updateAvtale(avtale);
 				}else{
-					ActiveAvtale.createAvtale(avtale);
+					ActiveHendelse.createAvtale(avtale);
 				}
 				break;
 			case DESTROY:
-				ActiveAvtale.deleteAvtale(avtale.getAvtaleId());
+				ActiveHendelse.deleteAvtale(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveAvtale.selectAvtale(avtale.getAvtaleId());
+				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
+				break;
 			}
 		}
-		// TODO Auto-generated method stub
-		if( o instanceof Notis){
+		else if( o instanceof Notis){
 			//kode for håndtering av sending av notis til db-lagres ikke i databasen
 			//deltaker har status
 			System.out.println("notisok");

@@ -17,7 +17,7 @@ import no.ntnu.fp.model.*;
 
 import org.apache.derby.tools.sysinfo;
 
-public class ActiveAvtale extends ActiveModel{
+public class ActiveHendelse extends ActiveModel{
 	
 	public static void createAvtale(Avtale avtale){
 		PreparedStatement ps = null;
