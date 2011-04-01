@@ -36,13 +36,13 @@ public class ActiveAvtale extends ActiveModel{
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 				ps.execute();
 				
-				if(avtale.getLederId()!=null){
+				if(avtale.getInitiativtaker()!= null){
 					PreparedStatement ps2 = connection.prepareStatement(
-						"UPDATE Avtale(lederId)" +
-						"SET lederID = ?" +
+						"UPDATE Avtale(initiativTakerId)" +
+						"SET initiativtakerId = ?" +
 						"WHERE avtaleId = ?" 
 					);
-					ps2.setInt(1, avtale.getLederId());
+					ps2.setInt(1, avtale.getInitiativtaker().getAnsattNummer());
 					ps2.setInt(2, avtale.getAvtaleId());
 				    ps2.execute();
 				}
@@ -155,7 +155,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT ansattnr FROM Deltakere WHERE avtaleId = ?"
+						"SELECT ansattId FROM Deltakere WHERE avtaleId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ResultSet rs = ps.executeQuery();
@@ -173,6 +173,30 @@ public class ActiveAvtale extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 		return deltagere;
+	}
+	
+	public static void updateDeltagere(ArrayList<Person> deltagere, int avtaleId){
+		try{
+			connect();
+			if(connection != null){
+				for (Person person : deltagere){
+							PreparedStatement ps = connection.prepareStatement(
+							"UPDATE Deltakere" +
+							"SET ansattId = ? " +
+							"WHERE Deltakere.avtaleId = ? "
+							);
+							ps.setInt(1, person.getAnsattNummer());
+							ps.setInt(2, avtaleId);
+						ps.executeUpdate();
+				}
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Participants for Meeting with id:");
+			System.out.println("Details:" + e.getMessage());
+		}		
+				
 	}
 	
 	public static void main(String args[]){
