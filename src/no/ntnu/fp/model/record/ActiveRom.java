@@ -146,11 +146,11 @@ public class ActiveRom extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						" WITH reserverteTider as(" +
-						"	SELECT * from ReservertRom,Mote " +
-						"	WHERE ReservertRom.avtaleId = ? " +
-						"	AND Mote.avtaleId = ? 			" +
-						"	AND Mote.date = ?  			    " +
+						" WITH reserverteTider as(			 " +
+						"	SELECT * from ReservertRom, Mote " +
+						"	WHERE ReservertRom.avtaleId = ?  " +
+						"	AND Mote.avtaleId = ? 			 " +
+						"	AND Mote.date = ?  			     " +
 						" )" +
 						" SELECT starttid,sluttid from reserverteTider" 
 				);
@@ -206,6 +206,8 @@ public class ActiveRom extends ActiveModel{
 			System.out.println("Detaljer:" + e.getMessage());
 		}
 	}
+	
+	
 	
 	public static void main(String args[]){
 		testCreateReservasjon();
