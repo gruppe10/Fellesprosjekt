@@ -155,12 +155,12 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT avtaleID FROM Deltakere WHERE ansattId = ?"
+						"SELECT avtaleId FROM Deltakere WHERE ansattId = ?"
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
-					int moteId = rs.getInt("avtaleID");
+					int moteId = rs.getInt("avtaleId");
 					Avtale nyttMote = ActiveAvtale.selectAvtale(moteId);
 					moter.add(nyttMote);
 				};
