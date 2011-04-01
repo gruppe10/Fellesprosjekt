@@ -155,7 +155,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT ansattnr FROM Deltakere WHERE avtaleId = ?"
+						"SELECT ansattId FROM Deltakere WHERE avtaleId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ResultSet rs = ps.executeQuery();
@@ -173,6 +173,30 @@ public class ActiveAvtale extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 		return deltagere;
+	}
+	
+	public static void updateDeltagere(ArrayList<Person> deltagere, int avtaleId){
+		try{
+			connect();
+			if(connection != null){
+				for (Person person : deltagere){
+							PreparedStatement ps = connection.prepareStatement(
+							"UPDATE Deltakere" +
+							"SET ansattId = ? " +
+							"WHERE Deltakere.avtaleId = ? "
+							);
+							ps.setInt(1, person.getAnsattNummer());
+							ps.setInt(2, avtaleId);
+						ps.executeUpdate();
+				}
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Participants for Meeting with id:");
+			System.out.println("Details:" + e.getMessage());
+		}		
+				
 	}
 	
 	public static void main(String args[]){
