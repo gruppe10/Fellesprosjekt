@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import Klient.KlientOS;
+
 import no.ntnu.fp.model.record.ActiveAvtale;
 
 public class Avtale implements Serializable{
@@ -16,15 +18,26 @@ public class Avtale implements Serializable{
 	private int datoDag;
 	private int datoMnd;
 	private int datoAar;
-	private Integer lederId;
 	private ArrayList<Person> deltakere;
+	
+	public Avtale(String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar){
+		this.navn = navn;
+		this.beskrivelse = beskrivelse;
+		this.initiativtaker = initiativtaker;
+		this.starttid = starttid;
+		this.sluttid = sluttid;
+		this.datoDag = datoDag;
+		this.datoMnd = datoMnd;
+		this.datoAar = datoAar;
+		KlientOS klient = new KlientOS(6789, "ip server");
+		klient.sendObjectAndGetResponse(this);
+	}
 
 	public Avtale(){
 		starttid = sluttid = 0;
 		
 		navn = beskrivelse = null;
 		initiativtaker = null;
-		lederId=null;
 		//Oppdater database!
 	}
 	
@@ -107,13 +120,6 @@ public class Avtale implements Serializable{
 		return null;
 	}
 	
-	public Integer getLederId() {
-		return lederId;
-
-	}
-	public void setLederId(Integer lederId) {
-		this.lederId = lederId;
-	}
 	
 	public void selectDeltagere(){
 		deltakere = ActiveAvtale.selectDeltagere(avtaleId);

@@ -12,7 +12,6 @@ public class Mote extends Avtale implements Serializable{
 	
 	private Rom moterom;
 	private static Map<Person, Boolean> deltakere = new HashMap<Person, Boolean>();
-	KlientOS k = new KlientOS(int port, String serverip);
 	
 	public Mote(){
 		moterom = null;
