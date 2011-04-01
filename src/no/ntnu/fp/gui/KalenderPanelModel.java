@@ -113,8 +113,8 @@ class KalenderPanelModel extends AbstractTableModel {
     	dayNames[2]="Onsdag ";
     	dayNames[3]="Torsdag ";
     	dayNames[4]="Fredag ";
-    	dayNames[5]="L¿rdag ";
-    	dayNames[6]="S¿ndag "; 	
+    	dayNames[5]="L\u00F8rdag ";
+    	dayNames[6]="S\u00F8ndag "; 	
     	
     }
     
