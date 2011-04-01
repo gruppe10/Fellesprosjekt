@@ -57,6 +57,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
+	private kal mainKal;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -64,16 +65,18 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				nyAvtale inst = new nyAvtale(6, 31, 3, 2011, null);
+				nyAvtale inst = new nyAvtale(null, 6, 31, 3, 2011);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 	
-	public nyAvtale(int dStartTime, int dDato, int dMonth, int dYear, Person p) {
-
+	public nyAvtale(kal kal, int dStartTime, int dDato, int dMonth, int dYear) {
+		
 		super();
+		
+		mainKal=kal;
 		
 		defaultStartTime = dStartTime;
 		defaultDato = dDato;
@@ -82,51 +85,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		
 		initGUI();
 		
-		//Test Test - Lager en ny person med avtaler
-        Person p= new Person();
-        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
-        Avtale avtale1 = new Avtale();
-        avtale1.setStarttid(10);
-        avtale1.setSluttid(12);
-        avtale1.setNavn("Lunsj");
-        avtale1.setBeskrivelse("Lunsj");
-        avtale1.setDato(3, 4, 2011);
-        avtaler.add(avtale1);
-        Avtale avtale2 = new Mote();
-        avtale2.setStarttid(13);
-        avtale2.setSluttid(16);
-        avtale2.setNavn("Brunsj");
-        avtale2.setBeskrivelse("Brunsj");
-        avtale2.setDato(30, 3, 2011);
-        avtaler.add(avtale2);
-        
-        p.setAvtaler(avtaler);
-        
-        Calendar d = Calendar.getInstance();
-       d.add(Calendar.DAY_OF_MONTH, 0);
-       
-       p.getAvtaler();
-       
-       
-       Avtale getAvtaleForTid(Calendar cal){
-           if(avtaler == null)
-               return;
-           for (Avtale avt : avtaler)
-           {
-               if (avt.getDate().get(Calendar.YEAR) == cal.get(Calendar.YEAR)
-                   && avt.getDate().get(Calendar.DAY_OF_YEAR) == cal.get(Calendar.DAY_OF_YEAR))
-               {
-                   boolean startsBefore = avt.getStarttid() <= cal.get(Calendar.HOUR_OF_DAY);
-                   boolean endsAfter = avt.getSluttid() > cal.get(Calendar.HOUR_OF_DAY);
-                   if (startsBefore && endsAfter)
-                   {
-                       return;
-                   }
-               }
-           }
-           return;
-       }
-       
+		
     
 
 	}
@@ -175,31 +134,22 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					ComboBoxModel jComboBox1Model = 
 						new DefaultComboBoxModel(
 								new String[] { "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" });
-<<<<<<< HEAD
+					
 					starttid = new JComboBox();
 					starttid.setModel(jComboBox1Model);
 					starttid.getSelectedItem();
-=======
-					jComboBox1 = new JComboBox();
-					jComboBox1.setModel(jComboBox1Model);
-					jComboBox1.getSelectedItem();
-					jComboBox1.setSelectedIndex((defaultStartTime-timeIndexDiff));
->>>>>>> 06f3722aee62ae16844ed4691d8d015753ceb991
+					starttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 				}
 				{
 					ComboBoxModel jComboBox2Model = 
 						new DefaultComboBoxModel(
 								new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" });
-<<<<<<< HEAD
+
+					
 					sluttid = new JComboBox();
 					sluttid.setModel(jComboBox2Model);
 					sluttid.getSelectedItem();
-=======
-					jComboBox2 = new JComboBox();
-					jComboBox2.setModel(jComboBox2Model);
-					jComboBox2.getSelectedItem();
-					jComboBox2.setSelectedIndex((defaultStartTime-timeIndexDiff));
->>>>>>> 06f3722aee62ae16844ed4691d8d015753ceb991
+					sluttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 				}
 				{
 					jTextArea1 = new JTextArea();
@@ -261,13 +211,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					                    .addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(0, 32, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-<<<<<<< HEAD
 					                    .addComponent(starttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(0, 52, Short.MAX_VALUE))
-=======
-					                     .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					                   .addGap(0, 52, Short.MAX_VALUE))
->>>>>>> 06f3722aee62ae16844ed4691d8d015753ceb991
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addComponent(sluttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(0, 52, Short.MAX_VALUE)))
