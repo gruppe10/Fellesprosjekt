@@ -182,7 +182,7 @@ public class ActivePerson extends ActiveModel{
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
 						" WITH Moter as(                                                     " +
-						"	SELECT Avtaler From Deltager, Avtaler                                  " +
+						"	SELECT Avtaler From Deltager, Avtaler                            " +
 						"	WHERE Deltager.ansattId = Avtaler.ansattId                       " +
 						" )	                                                                 " +
 						" SELECT avtaleID FROM Avtaler WHERE lederID = ? AND COUNT(Moter) < 0"

@@ -5,6 +5,18 @@ import java.io.Serializable;
 public class Notis implements Serializable{
 	
 	private Person mottaker;
+	public Person getMottaker() {
+		return mottaker;
+	}
+
+	public Mote getMote() {
+		return mote;
+	}
+
+	public String getBeskjed() {
+		return beskjed;
+	}
+
 	private Mote mote;
 	private String beskjed;	
 	
