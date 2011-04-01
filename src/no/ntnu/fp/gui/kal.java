@@ -64,6 +64,8 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private Person person;
 	
 	private Calendar mainDate;
+	
+	private ArrayList<Avtale> avtaler;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -104,10 +106,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		initGUI();
 	}
 	
-	public Person getPerson(){
-		return person;
-	}
-	
+
 	private void initGUI() {
 		try {
 			GroupLayout thisLayout = new GroupLayout((JComponent)getContentPane());
@@ -335,7 +334,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			nyttMoete.show();
 		}
 		else if(evt.getSource() == endreAvtaleButton){
-			endreAvtale endreAvtale = new endreAvtale();
+			endreAvtale endreAvtale = new endreAvtale(new Avtale());
 			endreAvtale.show();
 		}
 		else if(evt.getSource() == endreMoeteButton){
@@ -385,5 +384,13 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		return person;
 	}
 	
+	public void setConnectedPerson(Person p) {
+		person=p;
+	}
+	
+	public KalenderPanelModel getKalenderPanelModel() {
+		return kalPanModel;
+	}
+
 	
 }

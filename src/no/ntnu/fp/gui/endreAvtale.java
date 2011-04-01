@@ -19,6 +19,9 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import no.ntnu.fp.model.Avtale;
+import no.ntnu.fp.model.Person;
+
 import Klient.KlientOS;
 
 
@@ -41,8 +44,8 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	private JComboBox romComboBox3;
 	private JLabel jLabel2;
 	private JLabel jLabel1;
-	private JComboBox jComboBox2;
-	private JComboBox jComboBox1;
+	private JComboBox sluttid;
+	private JComboBox starttid;
 	private JButton slettButton;
 	private JPanel jPanel2;
 	private JButton avbrytButton;
@@ -56,6 +59,8 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	private JTextArea jTextArea1;
 	private JTextField datoField;
 	
+	private kal mainKal;
+	private Avtale gammelAvtale;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -63,7 +68,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				endreAvtale inst = new endreAvtale();
+				endreAvtale inst = new endreAvtale(new Avtale());
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
@@ -71,8 +76,9 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	}
 	
 	
-	public endreAvtale() {
+	public endreAvtale(Avtale avt) {
 		super();
+		this.gammelAvtale = avt;
 		initGUI();
 	}
 	
@@ -175,17 +181,17 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						ComboBoxModel jComboBox1Model = 
 							new DefaultComboBoxModel(
 									new String[] { "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" });
-						jComboBox1 = new JComboBox();
-						jComboBox1.setModel(jComboBox1Model);
-						jComboBox1.getSelectedItem();
+						starttid = new JComboBox();
+						starttid.setModel(jComboBox1Model);
+						starttid.getSelectedItem();
 					}
 					{
 						ComboBoxModel jComboBox2Model = 
 							new DefaultComboBoxModel(
 									new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" });
-						jComboBox2 = new JComboBox();
-						jComboBox2.setModel(jComboBox2Model);
-						jComboBox2.getSelectedItem();
+						sluttid = new JComboBox();
+						sluttid.setModel(jComboBox2Model);
+						sluttid.getSelectedItem();
 					}
 					{
 						slettButton = new JButton();
@@ -200,7 +206,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						            .addComponent(lagreButton, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
 						            .addGroup(jPanel2Layout.createParallelGroup()
 						                .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-						                    .addComponent(jComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						                    .addComponent(starttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 						                    .addGap(0, 20, Short.MAX_VALUE))
 						                .addGroup(jPanel2Layout.createSequentialGroup()
 						                    .addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
@@ -235,7 +241,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						            .addGroup(jPanel2Layout.createParallelGroup()
 						                .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
 						                    .addGap(0, 0, Short.MAX_VALUE)
-						                    .addComponent(jComboBox2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						                    .addComponent(sluttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 						                    .addGap(7)
 						                    .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
 						                .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -266,13 +272,13 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(jPanel2Layout.createParallelGroup()
 						    .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						        .addComponent(jComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						        .addComponent(starttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 						        .addComponent(starttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 						    .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
 						        .addGap(14)
 						        .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						    .addComponent(jComboBox2, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						    .addComponent(sluttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 						    .addComponent(sluttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -309,9 +315,26 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == lagreButton){
-			kal kal = new kal();
-			kal.show();
-			hide();
+			boolean gyldigeFelt = true;
+			if (headerTextField.getText().equals("")){
+				gyldigeFelt = false;
+			}
+			else if (jTextArea1.getText().equals("")){
+				gyldigeFelt = false;
+			}
+			if (gyldigeFelt) {
+				try{
+					String[] dato = datoField.getText().replace("/", ".").split(".");
+					int year = Integer.parseInt(dato[2]);
+					int month = Integer.parseInt(dato[1]);
+					int day = Integer.parseInt(dato[0]);
+					Avtale tempAvtale = new Avtale(gammelAvtale.getAvtaleId(), headerTextField.getText(), jTextArea1.getText(), mainKal.getConnectedPerson(), Integer.parseInt((String) starttid.getSelectedItem()), Integer.parseInt((String)sluttid.getSelectedItem()), day, month, year );
+					mainKal = new kal();
+					dispose();
+				}
+				catch(Exception error){
+					error.printStackTrace();
+				}
 			// lagre endringene, også i kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){

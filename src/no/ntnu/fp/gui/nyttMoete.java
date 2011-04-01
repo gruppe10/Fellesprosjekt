@@ -372,20 +372,20 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		else if(evt.getSource() == visdelkalButton1){
 			deltkal deltkal = new deltkal();
 			deltkal.show();
-			hide();
+			dispose();
 			//vis deltakerens kalendere i din egen
 		}
 		else if(evt.getSource() == lagreButton){
 			kal kal = new kal();
 			kal.show();
-			hide();
+			dispose();
 			//legg til i kalenderen
 			//send moeteinnkallelse
 		}
 		else if(evt.getSource() == avbrytButton){
 			kal kal = new kal();
 			kal.show();
-			hide();
+			dispose();
 		}
 		
 	}
