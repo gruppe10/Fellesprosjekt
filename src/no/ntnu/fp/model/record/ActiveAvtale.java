@@ -44,10 +44,8 @@ public class ActiveAvtale extends ActiveModel{
 					);
 					ps2.setInt(1, avtale.getLederId());
 					ps2.setInt(2, avtale.getAvtaleId());
-				ps2.execute();
+				    ps2.execute();
 				}
-								
-				
 				connection.close();
 				}
 		}
