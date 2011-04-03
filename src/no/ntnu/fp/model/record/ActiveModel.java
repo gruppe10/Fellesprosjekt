@@ -2,14 +2,11 @@ package no.ntnu.fp.model.record;
 
 /*
  *   Methods:
-
-
  *   
- * 	 create(Object object)
- * 	 select(int id)
- * 	 update(Object object)
- * 	 delete(int id)	
- * 
+ *   connect()
+ *   formatDateFrom(Avtale avtale)
+ *   formatTimeFrom(Int int)
+ *   formatIntFrom(Date date)
  */
 
 import java.sql.*;
@@ -37,6 +34,30 @@ public class ActiveModel {
 			connection = null;
 			System.out.println("Kan ikke koble til database");
 		}	
+	}
+	
+	public static int getMaxIdForTabel(String tabelName){
+		int maxId = 0;
+		try{
+			connect(); 
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+	            "SELECT MAX ansattId as maxId" +
+	            "FROM ?"		    
+	            );
+				ps.setString(1,tabelName);
+	            ResultSet rs = ps.executeQuery();
+	            while(rs.next()){
+					maxId = rs.getInt("maxId");
+				}
+			}
+			connection.close();
+		}
+	    catch( SQLException e){
+	    	System.out.println("Kan ikke finne max id for Person");
+	    	System.out.println("ErrorMessage:" + e.getMessage());
+	    }
+	   return maxId;         
 	}
 	
 	@SuppressWarnings("deprecation")

@@ -3,12 +3,18 @@ package no.ntnu.fp.model.record;
 /*
  *   Methods:
 
+
  *   
- * 	 CreatePerson(Person person)
- * 	 SelectPerson(int ansattnummer)
- * 	 UpdatePerson(Person person)
- * 	 DeletePerson(int ansattnummer)	
- * 
+ * 	 createPerson(Person person)
+ * 	 selectPerson(int ansattnummer)
+ * 	 updatePerson(Person person)
+ * 	 deletePerson(int ansattnummer)	
+ *
+ *	 getMaxId()
+ *
+ *	 selectMoter(Int id)
+ *	 selectAvtaler(Int id)
+ *   
  */
 
 import java.sql.*;
@@ -43,27 +49,7 @@ public class ActivePerson extends ActiveModel{
 		}
 	}
 	
-	public static int getMaxId(){
-		int ansattNummer=0;
-		try{
-			connect(); 
-			if( connection != null){
-				PreparedStatement ps = connection.prepareStatement(
-	            "SELECT MAX ansattId" +
-	            "FROM Person"		    
-	            );
-	            ResultSet rs = ps.executeQuery();
-	            while(rs.next()){
-					ansattNummer = rs.getInt("ansattId");
-				}
-			}
-		}
-	    catch( SQLException e){
-	    	System.out.println("Kan ikke finne rom med id = " + ansattNummer);
-	    	System.out.println("ErrorMessage:" + e.getMessage());
-	    }
-	   return ansattNummer;         
-	}
+	
 
 	public static void updatePerson(Person person){
 		String navn = person.getName();

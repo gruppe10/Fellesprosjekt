@@ -2,13 +2,10 @@ package no.ntnu.fp.model.record;
 
 /*
  *   Methods:
-
  *   
- * 	 CreatePerson(Person person)
- * 	 SelectPerson(int ansattnummer)
- * 	 UpdatePerson(Person person)
- * 	 DeletePerson(int ansattnummer)	
- * 
+ * 	 CRUD-Rom;
+ * 	 selectLedigeTider()
+ * 	 Create, delete Reservasjon
  */
 
 import java.sql.*;
