@@ -24,14 +24,14 @@ public class Person implements Serializable{
 	
 	private String brukerNavn;
 	
-	private int ansattNummer;
+	private Integer ansattNummer;
 	
 	private String passord;
 	
 	private ArrayList<Avtale> avtaler;
 	
 	public void setAvtaler(ArrayList<Avtale> nAvtaler) {
-		avtaler=nAvtaler;
+		avtaler = nAvtaler;
 	}
 	
 	public void addAvtale(Avtale nyAvtale){
@@ -50,12 +50,12 @@ public class Person implements Serializable{
 		this.brukerNavn = brukerNavn;
 	}
 
-	public int getAnsattNummer() {
+	public Integer getAnsattNummer() {
 		return ansattNummer;
 	}
 
 	public void setAnsattNummer(int ansattNummer) {
-		this.ansattNummer = ansattNummer;
+		this.ansattNummer = (Integer)ansattNummer;
 	}
 
 	public String getPassord() {
@@ -151,7 +151,6 @@ public class Person implements Serializable{
 		this.name = name;
 		this.email = email;
 		this.dateOfBirth = dateOfBirth;
-		//this.ansattNummer = ActivePerson.getMaxId()+1;
 	}
 	
 	/**

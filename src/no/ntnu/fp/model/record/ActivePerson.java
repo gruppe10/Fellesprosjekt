@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Person;
 
+import org.apache.derby.impl.sql.compile.CreateAliasNode;
 import org.apache.derby.tools.sysinfo;
 
 public class ActivePerson extends ActiveModel{
@@ -35,13 +36,24 @@ public class ActivePerson extends ActiveModel{
 					"INSERT INTO Person(ansattId, navn, brukernavn, passord)" +
 					"VALUES ( ?, ?, ? ,? )" 
 				);
+				if (person.getAnsattNummer() != null){
+					int nextAvailableId = getMaxIdForTabel("Person");
+					person.setAnsattNummer(nextAvailableId);
+				}
 				ps.setInt(1, person.getAnsattNummer());
 				ps.setString(2, person.getName());
 				ps.setString(3, person.getBrukerNavn());
 				ps.setString(4, person.getPassord());
-				
 				ps.execute();
 				connection.close();
+				
+				//Needs handeler for BOTH avtale and mote
+				ArrayList<Avtale> avtaler = person.getAvtaler();
+				if(!avtaler.isEmpty()){
+					for (Avtale avtale : avtaler) {
+						ActiveHendelse.createAvtale(avtale);
+					}
+				}
 			}
 		}
 		catch(SQLException e){
@@ -71,6 +83,13 @@ public class ActivePerson extends ActiveModel{
 	            ps.setInt(4, ansattId);
 	            ps.executeUpdate();
 	            connection.close();
+	            
+	            ArrayList<Avtale> avtaler = person.getAvtaler();
+				if(!avtaler.isEmpty()){
+					for (Avtale avtale : avtaler) {
+						ActiveHendelse.updateAvtale(avtale);
+					}
+				}
         	}  
         }
 		catch (SQLException e){
@@ -84,6 +103,7 @@ public class ActivePerson extends ActiveModel{
 		String navn  = "";
 		String brukernavn = "";
 		String passord = "";
+		ArrayList<Avtale> avtaler = selectAvtaler(ansattId);
 		
 		try{
 			connect();
@@ -108,16 +128,25 @@ public class ActivePerson extends ActiveModel{
 			System.out.println("Kan ikke finner person med id = " + ansattId);
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
-		
 		person.setAnsattNummer(ansattId);
 		person.setName(navn);
 		person.setBrukerNavn(brukernavn);
 		person.setPassord(passord);
+		person.setAvtaler(avtaler);
 		
 		return person;
 	}
 		
 	public static void deletePerson(int ansattId) {
+		// Slette alle avtaler som bare hører til denne personen
+		// Dersom personen ikkje finnes eller ikke har avtaler, skjer det ingenting. 
+		Person person = selectPerson(ansattId);
+		for (Avtale avtale : person.getAvtaler()) {
+			int avtaleId = avtale.getAvtaleId(); 
+			ActiveHendelse.deleteAvtale(avtaleId);
+		}
+		
+		//sletter personen
 		try {
 			connect();
 			if( connection != null){
@@ -127,6 +156,7 @@ public class ActivePerson extends ActiveModel{
 				ps.setInt(1, ansattId);
 				ps.execute();	
 				connection.close();
+				
 			}
 		} 
 		catch (SQLException e) {
