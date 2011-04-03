@@ -32,6 +32,7 @@ CREATE TABLE Rom (
 CREATE TABLE ReserverteRom (
     romId INT,
     hendelseId INT,
+    PRIMARY KEY (romId, hendelseId),
     FOREIGN KEY(romId) REFERENCES Rom(romId),
     FOREIGN KEY(hendelseId) REFERENCES Hendelse(hendelseId)
 );
