@@ -69,9 +69,6 @@ public class KalenderPanel extends JPanel {
         table.setDragEnabled(false);
         table.getTableHeader().setReorderingAllowed(false);
      
-        
-        
-
         JScrollPane scrollPane = new JScrollPane(table);
         
         
@@ -110,7 +107,7 @@ public class KalenderPanel extends JPanel {
         timeRow.setCellRenderer(new KalPanRowHeaderRenderer(table));
         scrollPane.setRowHeaderView(timeRow);
         
-        infoBoks = new KalPanInfoBoks();
+        infoBoks = new KalPanInfoBoks(model.getKal());
         
         add(scrollPane);
         add(infoBoks);
@@ -203,7 +200,7 @@ public class KalenderPanel extends JPanel {
         
      //Create and set up the content pane.
        
-       	KalenderPanelModel model= new 	KalenderPanelModel(p, d);
+       	KalenderPanelModel model= new 	KalenderPanelModel(null, d);
         KalenderPanel newContentPane = new KalenderPanel(model);
         newContentPane.setOpaque(true); //content panes must be opaque
         newContentPane.setLayout(new BoxLayout(newContentPane, BoxLayout.Y_AXIS));
@@ -263,6 +260,10 @@ public class KalenderPanel extends JPanel {
     	else {
     		return model.getYearAtIndex(selectedCol);
     	}
+    }
+    
+    public Avtale getSelectedAvtale() {
+    	return model.getData()[selectedRow][selectedCol];
     }
 }
     

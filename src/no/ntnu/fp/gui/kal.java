@@ -157,7 +157,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	       
 	        
 			{
-				kalPanModel= new KalenderPanelModel(person, mainDate);
+				kalPanModel= new KalenderPanelModel(this, mainDate);
 				kalenderPanel1 = new KalenderPanel(kalPanModel);
 			}
 			{

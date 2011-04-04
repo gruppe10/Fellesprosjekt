@@ -35,17 +35,20 @@ class KalenderPanelModel extends AbstractTableModel {
 	    
 	    private ArrayList<Avtale> avtaleListe;
 	    private ArrayList<Avtale> ukuttaAvtaleListe;
+	    
+	    private kal kal;
 	   
 	
-	public KalenderPanelModel(Person p, Calendar inDate) {
+	public KalenderPanelModel(kal kal, Calendar inDate) {
 		
+		this.kal=kal;
 		Calendar date = inDate;
 		
 		setDayNames();
 		
 		setWeek(date);
         
-        ukuttaAvtaleListe= p.getAvtaler();
+        ukuttaAvtaleListe= kal.getConnectedPerson().getAvtaler();
         
         createAvtaleListe();
         
@@ -222,6 +225,10 @@ class KalenderPanelModel extends AbstractTableModel {
     
     protected int getYearAtIndex(int i) {
     	return dayYear[i];
+    }
+    
+    protected kal getKal() {
+    	return kal;
     }
     
     
