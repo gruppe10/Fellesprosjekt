@@ -72,7 +72,7 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 				endreMoete.show();
 			}
 			else {
-				endreAvtale endreAvtale = new endreAvtale(new Avtale());
+				endreAvtale endreAvtale = new endreAvtale(kal, a);
 				endreAvtale.show();
 			}
 		}
