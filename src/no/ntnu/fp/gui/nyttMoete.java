@@ -30,6 +30,7 @@ import javax.swing.SwingUtilities;
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.Rom;
 
 
 
@@ -71,6 +72,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JList deltakereList;
 	private JTextArea beskrivelseTextArea;
 	private JTextField datoField;
+	private Rom noRom;
 
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
@@ -183,9 +185,16 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				//skal fylles inn med de deltaker som blir valgt til dette moete
 			}
 			{
+				
+					//test test
+					Rom rom1 = new Rom("a1");
+					Rom rom2 = new Rom("a2");
+					Rom rom3 = new Rom("a3");
+			
+				noRom = new Rom("None");
 				ComboBoxModel MoeteromModel = 
 					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
+							new Rom[] { noRom, rom1, rom2, rom3});
 				Moeterom = new JComboBox();
 				Moeterom.setModel(MoeteromModel);
 				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
@@ -508,13 +517,24 @@ private void addMote() {
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
-		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, null, null);
 		
-		mainKal.getConnectedPerson().addAvtale(newAvtale);
+		if ((Rom)Moeterom.getSelectedItem()==noRom) {
+			Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, null, null);
+			mainKal.getConnectedPerson().addAvtale(newAvtale);
+			
+			mainKal.setConnectedPerson(person);
+			
+			mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
+		}
+		else {
+			Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, (Rom)Moeterom.getSelectedItem(), null);
+			mainKal.getConnectedPerson().addAvtale(newAvtale);
+			
+			mainKal.setConnectedPerson(person);
+			
+			mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
+		}
 		
-		mainKal.setConnectedPerson(person);
-		
-		mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
 		
 		
 		

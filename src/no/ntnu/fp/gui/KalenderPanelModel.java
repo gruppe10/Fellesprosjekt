@@ -236,10 +236,10 @@ class KalenderPanelModel extends AbstractTableModel {
     	
     	if (avtaleErIdenneUka(a)) {
         	avtaleListe.add(a);
+        	datoToIndex(a);
+        	avtaleListe.add(a);
+        	putAvtaleInTable(a, datoToIndexList.size()-1); 
         }
-    	datoToIndex(a);
-    	avtaleListe.add(a);
-    	putAvtaleInTable(a, datoToIndexList.size()-1); 
     	
     }
     
