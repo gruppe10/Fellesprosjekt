@@ -97,6 +97,8 @@ public class ActiveHendelse extends ActiveModel{
 				ps.execute();
 		
 				connection.close();
+				
+				createDeltagereMedStatus(mote);
 				}
 		}
 		catch(SQLException e){
@@ -123,6 +125,13 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(6, avtale.getAvtaleId());
 				ps.executeUpdate();
 				connection.close();
+				
+//				foreach OppdatereDeltager as nyDeltager{
+//					if (nyDeltager != deltaker){
+//						deleteDeltaker(gammelDeltaker);
+//						createDeltaker(nyDeltaker);
+//					}
+//        		}
 			}
 		}
 		catch(SQLException e){
