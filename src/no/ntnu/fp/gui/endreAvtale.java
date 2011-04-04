@@ -86,9 +86,15 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	public endreAvtale(kal kal, Avtale a) {
 		super();
 		
-		mainKal=kal;
 		
+		
+		mainKal=kal;
+		if (a instanceof KalPanAvtaleFiller) {
+			avtale=((KalPanAvtaleFiller) a).getAvtale();
+		}
+		else {
 		avtale=a;
+		}
 		
 		
 		defaultDato = avtale.getDatoDag();
