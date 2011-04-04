@@ -293,22 +293,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			nyttMoete nyttMoete = new nyttMoete(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
 			nyttMoete.show();
 		}
-		else if(evt.getSource() == endreAvtaleButton){
-			endreAvtale endreAvtale = new endreAvtale(new Avtale());
-			endreAvtale.show();
-		}
-		else if(evt.getSource() == endreMoeteButton){
-			endreMoete endreMoete = new endreMoete();
-			endreMoete.show();
-		}
-		else if(evt.getSource() == sletteAvtaleButton){
-			slett slett = new slett();
-			slett.show();
-		}
-		else if(evt.getSource() == avlysMoeteButton){
-			avlysMoete avlysMoete = new avlysMoete();
-			avlysMoete.show();
-		}
+		
 		
 	}
 	
