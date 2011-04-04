@@ -210,6 +210,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 								new String[] { "Item One", "Item Two" });
 					romComboBox1 = new JComboBox();
 					romComboBox1.setModel(romComboBox1Model);
+					romComboBox1.getSelectedItem();
 				}
 				{
 					romLabel1 = new JLabel();
@@ -422,7 +423,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
-		Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, null);
+		Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, romComboBox1.getSelectedItem());
 	
 		
 		person.addAvtale(newAvtale);

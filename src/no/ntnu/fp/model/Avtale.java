@@ -20,7 +20,7 @@ public class Avtale implements Serializable{
 	private int datoAar;
 	private Rom rom;
 	
-	public Avtale(String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom){
+	public Avtale(String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Object object){
 		this.navn = navn;
 		this.beskrivelse = beskrivelse;
 		this.initiativtaker = initiativtaker;
@@ -29,11 +29,11 @@ public class Avtale implements Serializable{
 		this.datoDag = datoDag;
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
-		this.rom=rom;
+		this.rom=object;
 		//KlientOS klient = new KlientOS(6789, "ip server");
 		//klient.sendObjectAndGetResponse(this);
 	}
-	public Avtale(int id, String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar){
+	public Avtale(int id, String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Object rom){
 		this.avtaleId = id;
 		this.navn = navn;
 		this.beskrivelse = beskrivelse;
