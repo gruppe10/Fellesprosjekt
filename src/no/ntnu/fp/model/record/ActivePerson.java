@@ -33,8 +33,6 @@ public class ActivePerson extends ActiveModel{
 			int nextAvailableId = nextAvailableIdFor("Person");
 			person.setAnsattNummer(nextAvailableId);
 		}
-		
-		
 		try{
 			connect();
 			if( connection != null){
@@ -62,8 +60,6 @@ public class ActivePerson extends ActiveModel{
 		}
 	}
 	
-	
-
 	public static void updatePerson(Person person){
 		String navn = person.getName();
 		String brukernavn = person.getBrukerNavn();
@@ -146,7 +142,6 @@ public class ActivePerson extends ActiveModel{
 			int avtaleId = avtale.getAvtaleId(); 
 			ActiveHendelse.deleteAvtale(avtaleId);
 		}
-		
 		//sletter personen
 		try {
 			connect();
@@ -156,8 +151,7 @@ public class ActivePerson extends ActiveModel{
 				);
 				ps.setInt(1, ansattId);
 				ps.execute();	
-				connection.close();
-				
+				connection.close();			
 			}
 		} 
 		catch (SQLException e) {
@@ -223,8 +217,7 @@ public class ActivePerson extends ActiveModel{
 					}
 				}
 				connection.close();	
-			}
-			
+			}	
 		}
 		catch(SQLException e){
 			System.out.println("Could not find any Meetings for Person with id:" + ansattId);

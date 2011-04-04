@@ -46,7 +46,23 @@ public class ObjectManager {
 			System.out.println("notisok");
 			return null;
 		}
-		else if( o instanceof Avtale){
+		else if( o instanceof Mote){
+			Mote mote =(Mote)content;
+			switch(action){
+			case UPDATE:
+				if(ActiveHendelse.exists(mote.getAvtaleId())){
+					ActiveHendelse.updateAvtale(mote);
+				}else{
+					ActiveHendelse.createAvtale(mote);
+				}
+				break;
+			case DESTROY:
+				ActiveHendelse.deleteAvtale(mote.getAvtaleId());
+				break;
+			case SELECT:
+				ActiveHendelse.selectAvtale(mote.getAvtaleId());
+				break;
+			}
 			System.out.println("avtale");
 			return null;
 		}

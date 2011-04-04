@@ -1,8 +1,7 @@
 package no.ntnu.fp.model.record;
 
 /*
- *   Methods:
- *   
+ *   Methods:    
  *   connect()
  *   formatDateFrom(Avtale avtale)
  *   formatTimeFrom(Int int)
@@ -10,7 +9,6 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
-
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
@@ -53,7 +51,6 @@ public class ActiveModel {
 	            while(rs.next()){
 					maxId = rs.getInt("maxId");
 				}
-
 	            ps.close();
 	            rs.close();   
 	            connection.close();
@@ -101,6 +98,5 @@ public class ActiveModel {
 		else {
 			return "Tabel Har feil Navn";
 		}
-	}
-	
+	}	
 }

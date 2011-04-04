@@ -38,8 +38,8 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid)" +
-					"VALUES ( ?, ?, ? ,? ,? ,? )" 
+					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, initiativtaker)" +
+					"VALUES ( ?, ?, ? ,? ,? ,? , ? )" 
 				);
 				ps.setInt(1, avtale.getAvtaleId());
 				ps.setString(2, avtale.getNavn());
@@ -47,6 +47,7 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
+				ps.setInt(7, avtale.getInitiativtaker().getAnsattNummer());
 				ps.execute();
 				
 				connection.close();
@@ -264,6 +265,9 @@ public class ActiveHendelse extends ActiveModel{
 	
 	public static void main(String args[]){
 		testCrud();
+		Avtale a = mockAvtale();
+		Person initiativTaker = ActivePerson.selectPerson(38);
+		a.setInitiativtaker(initiativTaker);
 	}
 	
 	

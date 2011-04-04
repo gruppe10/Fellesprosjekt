@@ -1,8 +1,7 @@
 package no.ntnu.fp.model.record;
 
 /*
- *   Methods:
- *   
+ *   Methods:  
  * 	 CRUD-Rom;
  * 	 selectLedigeTider()
  * 	 Create, delete Reservasjon
@@ -144,8 +143,7 @@ public class ActiveRom extends ActiveModel{
 		try{
 			connect();
 			if(connection != null){
-				PreparedStatement ps = connection.prepareStatement(
-						
+				PreparedStatement ps = connection.prepareStatement(			
 						" SELECT starttid,sluttid " +
 						" FROM  ReserverteRom, Hendelse  " +
 						" WHERE ReserverteRom.hendelseId = ? " +
