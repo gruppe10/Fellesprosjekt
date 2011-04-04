@@ -11,10 +11,10 @@ import Klient.KlientOS;
 public class Mote extends Avtale implements Serializable{
 	
 	
-	private static Map<Person, Boolean> deltakere = new HashMap<Person, Boolean>();
+	private static Map<Person, Status> deltakere = new HashMap<Person, Status>();
 	
 	public Mote(String navn, String beskrivelse, Person initiativtaker, int starttid, 
-			int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom, Map<Person, Boolean> deltakere){
+			int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom, Map<Person, Status> deltakere){
 		super(navn, beskrivelse, initiativtaker, starttid, sluttid, datoDag, datoMnd, datoAar, rom);
 		
 		this.deltakere = deltakere;
@@ -26,23 +26,23 @@ public class Mote extends Avtale implements Serializable{
 	}
 
 	
-	public static Map<Person, Boolean> getDeltakere() {
+	public static Map<Person, Status> getDeltakere() {
 		return deltakere;
 	}
 
 	public void leggtilDeltaker(Person deltaker){
-		deltakere.put(deltaker, true);
+		deltakere.put(deltaker, Status.IKKEMOTATT);
 	}
 	
 	public void slettDeltaker(Person deltaker){
 		deltakere.remove(deltaker);
 	}
 	
-	public boolean getStatus(Person deltaker){
+	public Status getStatus(Person deltaker){
 		return deltakere.get(deltaker);
 	}
 	
-	public void setStatus(Person deltaker, Boolean status){
+	public void setStatus(Person deltaker, Status status){
 		deltakere.put(deltaker, status);
 	}
 }
