@@ -245,7 +245,7 @@ public class ActiveHendelse extends ActiveModel{
 	}
 	
 	private static Status getStatusFor(int ansattId, int avtaleId) {
-		Status status = Status.IKKEMOTATT;
+		Status status = Status.IKKE_MOTTATT;
 		try{
 			connect();
 			if(connection != null){
