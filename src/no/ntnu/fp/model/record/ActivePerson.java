@@ -21,6 +21,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import no.ntnu.fp.model.Avtale;
+import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 
 import org.apache.derby.impl.sql.compile.CreateAliasNode;
@@ -52,6 +53,12 @@ public class ActivePerson extends ActiveModel{
 			if(avtaler != null){
 				for (Avtale avtale : avtaler) {
 					ActiveHendelse.createAvtale(avtale);
+				}
+			}
+			ArrayList<Mote> moter = person.getMoter();
+			if(moter != null){
+				for (Mote mote : moter) {
+					ActiveHendelse.createMote(mote);
 				}
 			}
 		}
@@ -179,6 +186,10 @@ public class ActivePerson extends ActiveModel{
 		Person person = selectPerson(ansattId);
 		for (Avtale avtale : person.getAvtaler()) {
 			int avtaleId = avtale.getAvtaleId(); 
+			ActiveHendelse.deleteAvtale(avtaleId);
+		}
+		for (Mote mote : person.getMoter()){
+			int avtaleId = mote.getAvtaleId(); 
 			ActiveHendelse.deleteAvtale(avtaleId);
 		}
 		//sletter personen

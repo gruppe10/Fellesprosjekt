@@ -30,6 +30,8 @@ public class Person implements Serializable{
 	
 	private ArrayList<Avtale> avtaler;
 	
+	private ArrayList<Mote> moter;
+	
 	public void setAvtaler(ArrayList<Avtale> nAvtaler) {
 		avtaler = nAvtaler;
 	}
@@ -40,6 +42,10 @@ public class Person implements Serializable{
 
 	public ArrayList<Avtale> getAvtaler() {
 		return avtaler;
+	}
+	
+	public ArrayList<Mote> getMoter() {
+		return moter;
 	}
 	
 	public String getBrukerNavn() {
@@ -368,4 +374,5 @@ public class Person implements Serializable{
 	public void setMoteStatus(boolean status){
 		ArrayList<Avtale> moter = finnMoter();
 	}
+
 }
