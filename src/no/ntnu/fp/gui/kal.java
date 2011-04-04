@@ -71,6 +71,9 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	* Auto-generated main method to display this JFrame
 	*/
 	public static void main(String[] args) {
+		
+		System.out.println("ss");
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				kal inst = new kal();
@@ -84,6 +87,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		super();
 		mainDate=Calendar.getInstance();
 			
+		System.out.println("ss");
 			//test test
 		 	person= new Person();
 	        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
@@ -326,11 +330,12 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == nyAvtaleButton){
-			nyAvtale nyAvtale = new nyAvtale(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), mainDate.get(Calendar.MONTH), mainDate.get(Calendar.YEAR));
+			nyAvtale nyAvtale = new nyAvtale(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
+			
 			nyAvtale.show();
 		}
 		else if(evt.getSource() == nyttMoeteButton){
-			nyttMoete nyttMoete = new nyttMoete();
+			nyttMoete nyttMoete = new nyttMoete(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
 			nyttMoete.show();
 		}
 		else if(evt.getSource() == endreAvtaleButton){
@@ -371,7 +376,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	mainDate.add(Calendar.WEEK_OF_YEAR, 1);
         	mainDate.add(Calendar.WEEK_OF_YEAR, -1); //wtf? well, if it works...
-        	
+        	System.out.println("Test");
         	mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
         	ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
         	

@@ -31,8 +31,8 @@ public class Avtale implements Serializable{
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
 		this.rom=rom;
-		KlientOS klient = new KlientOS(6789, "ip server");
-		klient.sendObjectAndGetResponse(this);
+		//KlientOS klient = new KlientOS(6789, "ip server");
+		//klient.sendObjectAndGetResponse(this);
 	}
 	public Avtale(int id, String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar){
 		this.avtaleId = id;
