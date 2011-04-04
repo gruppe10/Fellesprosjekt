@@ -63,7 +63,8 @@ public class ActivePerson extends ActiveModel{
 			}
 		}
 		catch(SQLException e){
-			System.out.println("Kan ikke lage person. Feilmelding:" + e.getMessage());
+			System.out.println("Kan ikke lage person. Feilmelding:");
+			System.out.println(e.getMessage());
 		}
 	}
 	
