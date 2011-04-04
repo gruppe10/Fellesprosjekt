@@ -16,6 +16,12 @@ package no.ntnu.fp.model.record;
  * 	 UpdateMote(Mote mote)
  * 	 SelectHendelse(int hendelseID)
  *	 DeleteHendelse(int ansattnummer)	
+ *
+ *	 getStatusFor(int id, int id)
+ *	 exists(int avtaleId)
+ *	
+ *	 createDeltakereMedStatus(Mote mote);
+ *	 selectDeltakereMedStatus(int hendelseId);
  * 
  */
 
@@ -70,12 +76,16 @@ public class ActiveHendelse extends ActiveModel{
 	
 	public static void createMote(Mote mote){
 		PreparedStatement ps = null;
+		if(mote.getAvtaleId() == null){
+			int nyId = nextAvailableIdFor("Hendelse");
+			mote.setAvtaleId(nyId);
+		}
 		try{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
 					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, LederId)" +
-					"VALUES ( ?, ?, ? ,? ,? ,? )" 
+					"VALUES ( ?, ?, ? ,? ,? ,?, ? )" 
 				);
 				ps.setInt(1, mote.getAvtaleId());
 				ps.setString(2, mote.getNavn());
@@ -160,21 +170,18 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Kan ikke finner person med id = " + avtaleId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		
 		avtale.setAvtaleId(avtaleId);
 		avtale.setNavn(navn);
 		avtale.setBeskrivelse(beskrivelse);
 		avtale.setDato(dd, mm, yyyy);
 		avtale.setSluttid(sluttid);
 		avtale.setStarttid(starttid);
-		
 		return avtale;
 	}
 		
 	public static void deleteAvtale(int avtaleId) {
 		try {
 			connect();
-			
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
 						"DELETE FROM Hendelse WHERE hendelseId = ?"
@@ -182,7 +189,6 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(1, avtaleId);
 				ps.execute();
 				connection.close();
-				
 				//Slett relaterte rader i Deltagere!
 			}
 		} 
@@ -315,113 +321,4 @@ public class ActiveHendelse extends ActiveModel{
 		}
 		return exists;
 	}
-	
-	public static void main(String args[]){
-		
-//		testCrud();
-//		Avtale a = mockAvtale();
-//		Person initiativTaker = ActivePerson.selectPerson(38);
-//		a.setInitiativtaker(initiativTaker);
-	}
-	
-	
-/******************************
-*  			Tester			  *
-******************************/
-	
-	private void testCreatePerson(){
-		Avtale avtale = mockAvtaleWithId(10001);
-
-		createAvtale(avtale);
-	}	
-	
-	private static Avtale mockAvtaleWithId(int id){
-		Avtale avtale = new Avtale();
-		Person sjef = new Person("Sjef", "sjef@mail.com", new Date(100, 15, 12)) ;
-		sjef.setBrukerNavn("sjef");
-		sjef.setPassord("passord");
-		
-		ActivePerson.createPerson(sjef);
-		System.out.println("Id:" + sjef.getAnsattNummer());
-		
-		avtale.setAvtaleId(id);
-		avtale.setNavn("Annet navn!");
-		avtale.setDato(01, 22, 2011);
-		avtale.setStarttid(12);
-		avtale.setSluttid(12);
-		avtale.setBeskrivelse("Dette er en avtale");
-		avtale.setInitiativtaker(sjef);
-		return avtale;
-	}
-	
-	private static Avtale mockAvtale(){
-		Person sjef = new Person("Sjef", "sjef@mail.com", new Date(100, 15, 12)) ;
-		sjef.setBrukerNavn("sjef");
-		sjef.setPassord("passord");
-		ActivePerson.createPerson(sjef);
-		System.out.println("Id:" + sjef.getAnsattNummer());
-		
-		Avtale avtale = new Avtale();
-		avtale.setInitiativtaker(sjef);
-		avtale.setNavn("Annet navn!");
-		avtale.setDato(01, 22, 2011);
-		avtale.setStarttid(12);
-		avtale.setSluttid(12);
-		avtale.setBeskrivelse("Dette er en avtale");
-		return avtale;
-	}
-	
-	private static void testUpdateAvtale(){
-		Avtale avtale = mockAvtaleWithId(10003);
-		avtale.setNavn("Avtale nr 1");
-		createAvtale(avtale);
-		System.out.println("Avtale 1 er lagret med navn:" + avtale.getNavn());
-		
-		avtale.setNavn("Avtale nr 2");
-		updateAvtale(avtale);
-		System.out.println("Avtale 2 er lagret med navn:" + avtale.getNavn());
-	}
-
-	private static void testSelectAvtale(){
-		int ansattnr = 10002;
-		Avtale avtale = selectAvtale(ansattnr);
-		System.out.println("Avtalen har navnet:" + avtale.getNavn() + ".");
-	}
-	
-	private static void testCrud(){
-		Avtale avtale = mockAvtale();
-		avtale.setNavn("Avtale 1");
-		createAvtale(avtale);
-		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + "og id:" + avtale.getAvtaleId());
-		
-		deleteAvtale(avtale.getAvtaleId());
-		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
-		
-		createAvtale(avtale);
-		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
-		
-		avtale = selectAvtale(avtale.getAvtaleId());
-		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
-		
-		avtale.setNavn("Avtale 2");
-		updateAvtale(avtale);
-		System.out.println("Oppdaterte avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
-		
-		avtale = selectAvtale(avtale.getAvtaleId());
-		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
-	}
-	
-	private void testCeateDeltagereMedStatus(){
-		Mote mote = (Mote)mockAvtale();
-		Person person = new Person("name","email", new Date(12,12,12));	
-		person.setBrukerNavn("ble");
-		person.setPassord("bla");
-		ActivePerson.createPerson(person);
-		mote.leggtilDeltaker(person);
-		createMote(mote);
-		System.out.println("testUtført");
-	}
-
-
-	
 }
