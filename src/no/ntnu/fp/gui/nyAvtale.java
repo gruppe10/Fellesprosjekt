@@ -447,7 +447,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 			mainKal.setConnectedPerson(person);
 			
 			mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
-			mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale);
+			//mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale);
 		}
 		
 		
