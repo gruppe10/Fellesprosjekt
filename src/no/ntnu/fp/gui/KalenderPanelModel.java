@@ -23,6 +23,9 @@ class KalenderPanelModel extends AbstractTableModel {
 	    private int avtaleLengde;
 	    
 	    private int[] dayDatos;
+	    private int[] dayMonth;
+	    private int[] dayYear;
+	    
 	    private ArrayList<Integer> datoToIndexList;
 	    
 	    private int timeIndexDiff=6;
@@ -126,8 +129,14 @@ class KalenderPanelModel extends AbstractTableModel {
 		dayDatos = new int[7];
 		
 		date.add(Calendar.DAY_OF_MONTH, -ukedagint);
+		
 		dayDatos[0]=date.get(Calendar.DAY_OF_MONTH);
+		dayMonth[0]=date.get(Calendar.MONTH);
+		dayYear[0]=date.get(Calendar.YEAR);
+		
+		
 		dayNames[0]=dayNames[0]+dayDatos[0];
+		
 		
 		startYear=date.get(Calendar.YEAR);
 		startMonth=date.get(Calendar.MONTH)+1;
@@ -135,7 +144,11 @@ class KalenderPanelModel extends AbstractTableModel {
         
         for (int i=1; i<7; i++) {
         	date.add(Calendar.DAY_OF_MONTH, 1);
+        	
         	dayDatos[i]=date.get(Calendar.DAY_OF_MONTH);
+        	dayMonth[i]=date.get(Calendar.MONTH);
+    		dayYear[i]=date.get(Calendar.YEAR);
+        	
             dayNames[i]=dayNames[i]+dayDatos[i];
         } //legger inn datoer i header
         
@@ -200,6 +213,15 @@ class KalenderPanelModel extends AbstractTableModel {
     protected int getDatoAtIndex(int i) {
     	return dayDatos[i];
     }
+    
+    protected int getMonthAtIndex(int i) {
+    	return dayMonth[i];
+    }
+    
+    protected int getYearAtIndex(int i) {
+    	return dayYear[i];
+    }
+    
     
     public void addAvtaleToPanel(Avtale a) {
     	

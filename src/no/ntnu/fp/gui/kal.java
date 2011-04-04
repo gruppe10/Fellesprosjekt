@@ -74,6 +74,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		
 		System.out.println("ss");
 		
+		System.out.println("ss");
+		
+		System.out.println("ss");
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				kal inst = new kal();

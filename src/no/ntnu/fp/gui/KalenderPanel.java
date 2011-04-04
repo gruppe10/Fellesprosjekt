@@ -246,5 +246,23 @@ public class KalenderPanel extends JPanel {
     		return model.getDatoAtIndex(selectedCol);
     	}
     }
+    
+    public int getSelectedMonth() {
+    	if (illegalSelection) {
+    		return model.getMonthAtIndex(0);
+    	}
+    	else {
+    		return model.getMonthAtIndex(selectedCol);
+    	}
+    }
+    
+    public int getSelectedYear() {
+    	if (illegalSelection) {
+    		return model.getYearAtIndex(0);
+    	}
+    	else {
+    		return model.getYearAtIndex(selectedCol);
+    	}
+    }
 }
     
