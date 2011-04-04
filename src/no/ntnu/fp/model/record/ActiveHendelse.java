@@ -188,13 +188,15 @@ public class ActiveHendelse extends ActiveModel{
 		}
 	}
 	
-	public static Map<Person, Boolean> selectDeltagere(int avtaleId) {
-		Map<Person, Boolean> deltakereMedStatus = new HashMap<Person, Boolean>();
-		Iterator it = deltakereMedStatus.entrySet().iterator();
+	public static Map<Person, Status> selectDeltagereMedStatus(int avtaleId) {
 		ArrayList<Person> deltakere = new ArrayList<Person>();
+		
+		Map<Person, Status> deltakereMedStatus = new HashMap<Person, Status>();
+		Iterator it = deltakereMedStatus.entrySet().iterator();
 		try{
 			connect();
 			if(connection != null){
+				//Hente ut alle deltakere og legge de til i deltakere arraylist-en
 				PreparedStatement ps = connection.prepareStatement(
 						"SELECT ansattId, status FROM Deltakere WHERE hendelseId = ?"
 				);
@@ -206,13 +208,16 @@ public class ActiveHendelse extends ActiveModel{
 					Person nyDeltager = ActivePerson.selectPerson(deltagerNr);
 					deltakere.add(nyDeltager);
 				};
+				connection.close();	
 				
+				//Lage hashmap med person og status
 				for (Person person : deltakere) {
 					//Hente ut status for hver person
+					Status status = getStatusFor(person.getAnsattNummer(), avtaleId);
 					
 					//legge til person og status til Mappet deltakereMedStatus
+					deltakereMedStatus.put(person, status);
 				}
-				connection.close();	
 			}
 		}
 		catch(SQLException e){
@@ -222,8 +227,38 @@ public class ActiveHendelse extends ActiveModel{
 		return deltakereMedStatus;
 	}
 	
-	public static void createDeltagere(Mote mote){
-		Map<Person, Boolean> deltakere = mote.getDeltakere();
+	private static Status getStatusFor(int ansattId, int avtaleId) {
+		Status status = Status.IKKEMOTATT;
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT status FROM Deltakere Where avtaleId = ? and ansattId = ?"
+				);
+				ps.setInt(1, avtaleId);
+				ps.setInt(2, ansattId);
+				ResultSet rs = ps.executeQuery();
+
+				while(rs.next()){
+					String s = rs.getString("status");
+					if (s == "AVSLATT"){
+						status = Status.AVSLATT;
+					}else if(s == "GODTATT"){
+						status = Status.GODTATT;
+					}
+				}
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Could not find Status for Deltager:" +ansattId + "for mote nr:" + avtaleId );
+			System.out.println("Details:" + e.getMessage());
+		}					
+		return status;
+	}
+
+	public static void createDeltagereMedStatus(Mote mote){
+		Map<Person, Status> deltakere = mote.getDeltakere();
 		Iterator it = deltakere.entrySet().iterator();
 		
 		try{
@@ -241,8 +276,6 @@ public class ActiveHendelse extends ActiveModel{
 					ps.setInt(2, mote.getAvtaleId());
 					ps.executeUpdate();
 				}
-				
-				
 				connection.close();
 			}
 		}
