@@ -7,7 +7,7 @@ import no.ntnu.fp.model.record.ActiveRom;
 
 public class Rom implements Serializable{
 	
-	private int romId;
+	private Integer romId;
 	private String navn;
 	private int str;
 	
@@ -27,7 +27,7 @@ public class Rom implements Serializable{
 //		Hent den nye id'en fra databasen (autogenereres der)
 	}
 
-	public int getRomId() {
+	public Integer getRomId() {
 		return romId;
 	}
 

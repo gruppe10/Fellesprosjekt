@@ -29,6 +29,12 @@ import org.apache.derby.tools.sysinfo;
 public class ActivePerson extends ActiveModel{
 	
 	public static void createPerson(Person person){
+		if(person.getAnsattNummer() == null){
+			int nextAvailableId = nextAvailableIdFor("Person");
+			person.setAnsattNummer(nextAvailableId);
+		}
+		
+		
 		try{
 			connect();
 			if( connection != null){
@@ -36,23 +42,18 @@ public class ActivePerson extends ActiveModel{
 					"INSERT INTO Person(ansattId, navn, brukernavn, passord)" +
 					"VALUES ( ?, ?, ? ,? )" 
 				);
-				if (person.getAnsattNummer() != null){
-					int nextAvailableId = getMaxIdForTabel("Person");
-					person.setAnsattNummer(nextAvailableId);
-				}
 				ps.setInt(1, person.getAnsattNummer());
 				ps.setString(2, person.getName());
 				ps.setString(3, person.getBrukerNavn());
 				ps.setString(4, person.getPassord());
 				ps.execute();
 				connection.close();
-				
-				//Needs handeler for BOTH avtale and mote
-				ArrayList<Avtale> avtaler = person.getAvtaler();
-				if(!avtaler.isEmpty()){
-					for (Avtale avtale : avtaler) {
-						ActiveHendelse.createAvtale(avtale);
-					}
+			}
+			//Needs handeler for BOTH avtale and mote
+			ArrayList<Avtale> avtaler = person.getAvtaler();
+			if(avtaler != null){
+				for (Avtale avtale : avtaler) {
+					ActiveHendelse.createAvtale(avtale);
 				}
 			}
 		}
@@ -171,7 +172,7 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT avtaleId FROM Deltakere WHERE ansattId = ?"
+						"SELECT hendelseId FROM Deltakere WHERE ansattId = ?"
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
@@ -197,7 +198,7 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						" SELECT avtaleId FROM Avtale WHERE LederID = ? "
+						"SELECT hendelseId FROM Hendelse WHERE LederID = ? "
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
@@ -221,8 +222,9 @@ public class ActivePerson extends ActiveModel{
 						hendelserUtenDeltagere.add(avtale);
 					}
 				}
+				connection.close();	
 			}
-			connection.close();	
+			
 		}
 		catch(SQLException e){
 			System.out.println("Could not find any Meetings for Person with id:" + ansattId);
@@ -232,6 +234,10 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static void main(String args[]){
+		Person person = mockPerson();
+		//person.setAnsattNummer(138);
+		createPerson(person);
+        
 		testCrud();
 		//testSelectAvtaler();
 	}
@@ -251,20 +257,19 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	private static void testCrud(){
-		int ansattId = 16;
-		Person person = mockPersonWithId(ansattId);
+		Person person = mockPerson();
 		
 		createPerson(person);
 		System.out.println("Lagrer personen " + person.getName() + " med id=" + person.getAnsattNummer());
-		
-		deletePerson(person.getAnsattNummer());
+	
+	    deletePerson(person.getAnsattNummer());
 		System.out.println("Sletter personen: "  + person.getName() + " med id=" + person.getAnsattNummer());
-		
+
 		person.setName("Dole");
 		createPerson(person);
 		System.out.println("Lagrer personen " + person.getName() + " med id=" + person.getAnsattNummer());
 		
-		Person nyPerson = selectPerson(ansattId);
+		Person nyPerson = selectPerson(person.getAnsattNummer());
 		System.out.println("Henter ut ny person: " + nyPerson.getName() + " med id=" + nyPerson.getAnsattNummer());
 		
 		nyPerson.setName("Doffen");
@@ -276,6 +281,15 @@ public class ActivePerson extends ActiveModel{
 	private static Person mockPersonWithId(int ansattId) {
 		Person person = new Person();
 		person.setAnsattNummer(ansattId);
+		person.setBrukerNavn("ole");
+		person.setName("Ole");
+		person.setPassord("laila");
+		
+		return person;
+	}
+	
+	private static Person mockPerson() {
+		Person person = new Person();
 		person.setBrukerNavn("ole");
 		person.setName("Ole");
 		person.setPassord("laila");

@@ -18,6 +18,10 @@ import org.apache.derby.tools.sysinfo;
 
 public class ActiveRom extends ActiveModel{
 	public static void createRom(Rom rom){
+		if(rom.getRomId() == null){
+			int nextAvailableId = nextAvailableIdFor("Rom");
+			rom.setRomId(nextAvailableId);
+		}
 		try{
 			connect();
 			if(connection != null){
@@ -207,8 +211,8 @@ public class ActiveRom extends ActiveModel{
 	
 	
 	public static void main(String args[]){
+		testCrud();
 		testCreateReservasjon();
-		System.out.println("TestUtført");
 	}
 
 	/******************************
@@ -222,10 +226,10 @@ public class ActiveRom extends ActiveModel{
 	}
 	
 	private static void testCrud(){
-		Rom rom = mockRomWith(1);
+		Rom rom = mockRom();
 		
-		deleteRom(rom.getRomId());
-		System.out.println("Slettet rom med navn " +rom.getNavn() + " som og har id: " + rom.getRomId());
+//		deleteRom(rom.getRomId());
+//		System.out.println("Slettet rom med navn " +rom.getNavn() + " som og har id: " + rom.getRomId());
 		
 		createRom(rom);
 		System.out.println("Laget rom med navn: " + rom.getNavn() + " som og har id: " + rom.getRomId());
@@ -240,9 +244,14 @@ public class ActiveRom extends ActiveModel{
 		System.out.println("Test Utført!");
 	}
 	
-	private static Rom mockRomWith(int romId) {
+	private static Rom mockRomWithId(int romId) {
 		Rom rom = new Rom("Kaare");
 		rom.setRomId(romId);
+		return rom;
+	}
+	
+	private static Rom mockRom() {
+		Rom rom = new Rom("Kaare");
 		return rom;
 	}
 

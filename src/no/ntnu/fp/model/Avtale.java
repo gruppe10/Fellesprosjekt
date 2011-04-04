@@ -10,7 +10,7 @@ import no.ntnu.fp.model.record.ActiveHendelse;
 
 public class Avtale implements Serializable{
 
-	private int avtaleId;
+	private Integer avtaleId;
 	private String navn;
 	private String beskrivelse;
 	private Person initiativtaker;
@@ -53,7 +53,7 @@ public class Avtale implements Serializable{
 		//Oppdater database!
 	}
 	
-	public int getAvtaleId(){
+	public Integer getAvtaleId(){
 		return avtaleId;
 	}
 	

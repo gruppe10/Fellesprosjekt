@@ -29,6 +29,10 @@ import org.apache.derby.tools.sysinfo;
 public class ActiveHendelse extends ActiveModel{
 	
 	public static void createAvtale(Avtale avtale){
+		if(avtale.getAvtaleId() == null){
+			int nextAvailableId = nextAvailableIdFor("Hendelse");
+			avtale.setAvtaleId((nextAvailableId));
+		}
 		PreparedStatement ps = null;
 		try{
 			connect();
@@ -260,12 +264,6 @@ public class ActiveHendelse extends ActiveModel{
 	
 	public static void main(String args[]){
 		testCrud();
-		if(exists(4)){
-			System.out.println("Den finnes!");
-		}else{
-			System.out.println("Finner den ikke!");
-		}
-		System.out.println("Test utført");
 	}
 	
 	
@@ -281,14 +279,22 @@ public class ActiveHendelse extends ActiveModel{
 	
 	private static Avtale mockAvtaleWithId(int id){
 		Avtale avtale = new Avtale();
-			
 		avtale.setAvtaleId(id);
 		avtale.setNavn("Annet navn!");
 		avtale.setDato(01, 22, 2011);
 		avtale.setStarttid(12);
 		avtale.setSluttid(12);
 		avtale.setBeskrivelse("Dette er en avtale");
-		
+		return avtale;
+	}
+	
+	private static Avtale mockAvtale(){
+		Avtale avtale = new Avtale();
+		avtale.setNavn("Annet navn!");
+		avtale.setDato(01, 22, 2011);
+		avtale.setStarttid(12);
+		avtale.setSluttid(12);
+		avtale.setBeskrivelse("Dette er en avtale");
 		return avtale;
 	}
 	
@@ -310,9 +316,8 @@ public class ActiveHendelse extends ActiveModel{
 	}
 	
 	private static void testCrud(){
-		Avtale avtale = mockAvtaleWithId(4);
+		Avtale avtale = mockAvtale();
 		avtale.setNavn("Avtale 1");
-		deleteAvtale(avtale.getAvtaleId());
 		createAvtale(avtale);
 		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + "og id:" + avtale.getAvtaleId());
 		
