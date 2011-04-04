@@ -1,4 +1,7 @@
 package no.ntnu.fp.gui;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -8,6 +11,9 @@ import javax.swing.LayoutStyle;
 
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+
+import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.record.ActivePerson;
 
 
 /**
@@ -22,9 +28,9 @@ import javax.swing.SwingUtilities;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class Notis extends javax.swing.JFrame {
+public class Notis extends javax.swing.JFrame implements ActionListener{
 	private JLabel titteljLabel1;
-	private JButton godtajButton1;
+	private JButton godtaButton;
 	private JButton AvslaButton1;
 	private JTextField jTextField1;
 
@@ -61,9 +67,9 @@ public class Notis extends javax.swing.JFrame {
 				jTextField1.setText("meldingTextField1");
 			}
 			{
-				godtajButton1 = new JButton();
-				godtajButton1.setText("Godta");
-				godtajButton1.setFont(new java.awt.Font("Tahoma",0,12));
+				godtaButton = new JButton();
+				godtaButton.setText("Godta");
+				godtaButton.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
 				AvslaButton1 = new JButton();
@@ -77,19 +83,19 @@ public class Notis extends javax.swing.JFrame {
 				.addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
 				.addGap(53)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-				    .addComponent(godtajButton1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(godtaButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(AvslaButton1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addContainerGap(68, 68));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap(56, 56)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-				        .addComponent(godtajButton1, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(godtaButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 				        .addGap(16)
 				        .addComponent(AvslaButton1, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 142, Short.MAX_VALUE))
 				    .addGroup(thisLayout.createSequentialGroup()
-				        .addPreferredGap(godtajButton1, titteljLabel1, LayoutStyle.ComponentPlacement.INDENT)
+				        .addPreferredGap(godtaButton, titteljLabel1, LayoutStyle.ComponentPlacement.INDENT)
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addGroup(thisLayout.createSequentialGroup()
 				                .addComponent(titteljLabel1, GroupLayout.PREFERRED_SIZE, 256, GroupLayout.PREFERRED_SIZE)
@@ -106,4 +112,15 @@ public class Notis extends javax.swing.JFrame {
 		}
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent evt) {
+		
+		if(evt.getSource() == godtaButton){
+			
+		}else if(evt.getSource() == AvslaButton1){
+			
+		}
+		
+	}
+	
 }
