@@ -127,11 +127,13 @@ class KalenderPanelModel extends AbstractTableModel {
 		int ukedagint=date.get(Calendar.DAY_OF_WEEK)-2;
 		
 		dayDatos = new int[7];
+		dayMonth = new int[7];
+		dayYear = new int[7];
 		
 		date.add(Calendar.DAY_OF_MONTH, -ukedagint);
 		
 		dayDatos[0]=date.get(Calendar.DAY_OF_MONTH);
-		dayMonth[0]=date.get(Calendar.MONTH);
+		dayMonth[0]=date.get(Calendar.MONTH)+1;
 		dayYear[0]=date.get(Calendar.YEAR);
 		
 		
@@ -146,7 +148,7 @@ class KalenderPanelModel extends AbstractTableModel {
         	date.add(Calendar.DAY_OF_MONTH, 1);
         	
         	dayDatos[i]=date.get(Calendar.DAY_OF_MONTH);
-        	dayMonth[i]=date.get(Calendar.MONTH);
+        	dayMonth[i]=date.get(Calendar.MONTH)+1;
     		dayYear[i]=date.get(Calendar.YEAR);
         	
             dayNames[i]=dayNames[i]+dayDatos[i];

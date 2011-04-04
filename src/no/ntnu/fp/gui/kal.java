@@ -72,11 +72,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	*/
 	public static void main(String[] args) {
 		
-		System.out.println("ss");
-		
-		System.out.println("ss");
-		
-		System.out.println("ss");
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -90,8 +85,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	public kal() {
 		super();
 		mainDate=Calendar.getInstance();
-			
-		System.out.println("ss");
+		
 			//test test
 		 	person= new Person();
 	        ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
@@ -380,7 +374,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	mainDate.add(Calendar.WEEK_OF_YEAR, 1);
         	mainDate.add(Calendar.WEEK_OF_YEAR, -1); //wtf? well, if it works...
-        	System.out.println("Test");
         	mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
         	ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
         	
