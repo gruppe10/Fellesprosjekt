@@ -86,9 +86,16 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	public endreAvtale(kal kal, Avtale a) {
 		super();
 		
+		
+		
 		mainKal=kal;
 		
+		if (a instanceof KalPanAvtaleFiller) {
+			avtale=((KalPanAvtaleFiller) a).getAvtale();
+		}
+		else {
 		avtale=a;
+		}
 		
 		
 		defaultDato = avtale.getDatoDag();
@@ -366,7 +373,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 			hide();
 		}
 		if(evt.getSource() == slettButton){
-			slett slett = new slett();
+			slett slett = new slett(mainKal, avtale);
 			slett.show();
 		}
 	}

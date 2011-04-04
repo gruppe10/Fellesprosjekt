@@ -50,8 +50,8 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JButton vensteButton;
 	private KalenderPanel kalenderPanel1;
 	private KalenderPanelModel kalPanModel;
-	private JScrollPane jScrollPane1;
-	private JList jList1;
+	private JScrollPane meldinger;
+	private JList notiser;
 	private JButton nyAvtaleButton;
 	private JLabel ulestLAbel;
 	private JPanel jPanel1;
@@ -193,15 +193,15 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				ulestLAbel.setFont(new java.awt.Font("Tahoma",0,14));
 			}
 			{
-				jScrollPane1 = new JScrollPane();
+				meldinger = new JScrollPane();
 				{
 					ListModel jList1Model = 
 						new DefaultComboBoxModel(
 								new String[] { "Item One", "Item Two" });
-					jList1 = new JList();
-					jScrollPane1.setViewportView(jList1);
-					jList1.setModel(jList1Model);
-					jList1.setPreferredSize(new java.awt.Dimension(155, 91));
+					notiser = new JList();
+					meldinger.setViewportView(notiser);
+					notiser.setModel(jList1Model);
+					notiser.setPreferredSize(new java.awt.Dimension(155, 91));
 				}
 			}
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
@@ -214,7 +214,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 39, Short.MAX_VALUE)
-				        .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(meldinger, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 				        .addGap(37))
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addGroup(thisLayout.createParallelGroup()
@@ -249,7 +249,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
 				                .addGap(65))
-				            .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))))
+				            .addComponent(meldinger, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))))
 				.addGap(22)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
@@ -334,6 +334,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	
 	public KalenderPanelModel getKalenderPanelModel() {
 		return kalPanModel;
+	}
+	
+	public KalenderPanel getKalenderPanel() {
+		return kalenderPanel1;
 	}
 
 	
