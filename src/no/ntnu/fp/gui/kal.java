@@ -271,7 +271,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 																							.addComponent(kalenderPanel1, GroupLayout.Alignment.LEADING, 0, 833, Short.MAX_VALUE))
 																							.addContainerGap());
 			pack();
-			this.setSize(1062, 475);
+			this.setSize(1030, 475);
 
 			vensteButton.addActionListener(new venstreButtonAction());
 			hoeyreButton.addActionListener(new hoeyreButtonAction());
