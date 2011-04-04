@@ -160,8 +160,6 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					ComboBoxModel jComboBox2Model = 
 						new DefaultComboBoxModel(
 								new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" });
-
-					
 					sluttid = new JComboBox();
 					sluttid.setModel(jComboBox2Model);
 					sluttid.getSelectedItem();
@@ -425,12 +423,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
 		Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, null);
-		
-		System.out.println(startTime);
-		System.out.println(sluttTime);
-		System.out.println(inDato);
-		System.out.println(inMnd);
-		System.out.println(inAar);
+	
 		
 		person.addAvtale(newAvtale);
 		

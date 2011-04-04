@@ -22,6 +22,13 @@ package no.ntnu.fp.model.record;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import no.ntnu.fp.model.*;
 
 import org.apache.derby.tools.sysinfo;
@@ -38,7 +45,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, initiativtaker)" +
+					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, lederId)" +
 					"VALUES ( ?, ?, ? ,? ,? ,? , ? )" 
 				);
 				ps.setInt(1, avtale.getAvtaleId());
@@ -65,7 +72,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid)" +
+					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, LederId)" +
 					"VALUES ( ?, ?, ? ,? ,? ,? )" 
 				);
 				ps.setInt(1, mote.getAvtaleId());
@@ -74,18 +81,9 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setDate(4, formatDateFrom(mote));
 				ps.setTime(5, formatTimeFrom(mote.getStarttid()));
 				ps.setTime(6, formatTimeFrom(mote.getSluttid()));
+				ps.setInt(7, mote.getInitiativtaker().getAnsattNummer());
 				ps.execute();
-				
-				if(mote.getInitiativtaker()!= null){
-					PreparedStatement ps2 = connection.prepareStatement(
-						"UPDATE Avtale(initiativTakerId)" +
-						"SET initiativtakerId = ?" +
-						"WHERE avtaleId = ?" 
-					);
-					ps2.setInt(1, mote.getInitiativtaker().getAnsattNummer());
-					ps2.setInt(2, mote.getAvtaleId());
-				    ps2.execute();
-				}
+		
 				connection.close();
 				}
 		}
@@ -174,6 +172,7 @@ public class ActiveHendelse extends ActiveModel{
 	public static void deleteAvtale(int avtaleId) {
 		try {
 			connect();
+			
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
 						"DELETE FROM Hendelse WHERE hendelseId = ?"
@@ -189,13 +188,15 @@ public class ActiveHendelse extends ActiveModel{
 		}
 	}
 	
-	public static ArrayList<Person> selectDeltagere(int avtaleId) {
-		ArrayList<Person> deltagere = new ArrayList<Person>();
+	public static Map<Person, Boolean> selectDeltagere(int avtaleId) {
+		Map<Person, Boolean> deltakereMedStatus = new HashMap<Person, Boolean>();
+		Iterator it = deltakereMedStatus.entrySet().iterator();
+		ArrayList<Person> deltakere = new ArrayList<Person>();
 		try{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT ansattId FROM Deltakere WHERE hendelseId = ?"
+						"SELECT ansattId, status FROM Deltakere WHERE hendelseId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ResultSet rs = ps.executeQuery();
@@ -203,32 +204,45 @@ public class ActiveHendelse extends ActiveModel{
 				while(rs.next()){
 					int deltagerNr = rs.getInt("ansattnr");
 					Person nyDeltager = ActivePerson.selectPerson(deltagerNr);
-					deltagere.add(nyDeltager);
+					deltakere.add(nyDeltager);
 				};
+				
+				for (Person person : deltakere) {
+					//Hente ut status for hver person
+					
+					//legge til person og status til Mappet deltakereMedStatus
+				}
+				connection.close();	
 			}
-			connection.close();	
 		}
 		catch(SQLException e){
 			System.out.println("Could not find any Participants for Meeting with id:" + avtaleId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		return deltagere;
+		return deltakereMedStatus;
 	}
 	
-	public static void updateDeltagere(ArrayList<Person> deltagere, int avtaleId){
+	public static void createDeltagere(Mote mote){
+		Map<Person, Boolean> deltakere = mote.getDeltakere();
+		Iterator it = deltakere.entrySet().iterator();
+		
 		try{
 			connect();
 			if(connection != null){
-				for (Person person : deltagere){
-							PreparedStatement ps = connection.prepareStatement(
-							"UPDATE Deltakere" +
-							"SET ansattId = ? " +
-							"WHERE Deltakere.hendelseId = ? "
-							);
-							ps.setInt(1, person.getAnsattNummer());
-							ps.setInt(2, avtaleId);
-						ps.executeUpdate();
+				
+				while(it.hasNext()){
+					Map.Entry pairs = (Map.Entry)it.next();
+					Person person = (Person) pairs.getValue();
+					
+					PreparedStatement ps = connection.prepareStatement(
+							"INSERT ansattNumer,avtaleId INTO Deltakere values(?, ?)"
+					);
+					ps.setInt(1, person.getAnsattNummer());
+					ps.setInt(2, mote.getAvtaleId());
+					ps.executeUpdate();
 				}
+				
+				
 				connection.close();
 			}
 		}
@@ -283,17 +297,32 @@ public class ActiveHendelse extends ActiveModel{
 	
 	private static Avtale mockAvtaleWithId(int id){
 		Avtale avtale = new Avtale();
+		Person sjef = new Person("Sjef", "sjef@mail.com", new Date(100, 15, 12)) ;
+		sjef.setBrukerNavn("sjef");
+		sjef.setPassord("passord");
+		
+		ActivePerson.createPerson(sjef);
+		System.out.println("Id:" + sjef.getAnsattNummer());
+		
 		avtale.setAvtaleId(id);
 		avtale.setNavn("Annet navn!");
 		avtale.setDato(01, 22, 2011);
 		avtale.setStarttid(12);
 		avtale.setSluttid(12);
 		avtale.setBeskrivelse("Dette er en avtale");
+		avtale.setInitiativtaker(sjef);
 		return avtale;
 	}
 	
 	private static Avtale mockAvtale(){
+		Person sjef = new Person("Sjef", "sjef@mail.com", new Date(100, 15, 12)) ;
+		sjef.setBrukerNavn("sjef");
+		sjef.setPassord("passord");
+		ActivePerson.createPerson(sjef);
+		System.out.println("Id:" + sjef.getAnsattNummer());
+		
 		Avtale avtale = new Avtale();
+		avtale.setInitiativtaker(sjef);
 		avtale.setNavn("Annet navn!");
 		avtale.setDato(01, 22, 2011);
 		avtale.setStarttid(12);
