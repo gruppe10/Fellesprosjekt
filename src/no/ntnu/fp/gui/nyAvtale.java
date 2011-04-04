@@ -426,6 +426,12 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		
 		Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, null);
 		
+		System.out.println(startTime);
+		System.out.println(sluttTime);
+		System.out.println(inDato);
+		System.out.println(inMnd);
+		System.out.println(inAar);
+		
 		person.addAvtale(newAvtale);
 		
 		mainKal.setConnectedPerson(person);
