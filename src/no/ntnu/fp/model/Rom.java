@@ -52,5 +52,9 @@ public class Rom implements Serializable{
 	
 	}
 	
+	public String toString() {
+		return navn;
+	}
+	
 	
 }
