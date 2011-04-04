@@ -149,7 +149,6 @@ public class ActiveHendelse extends ActiveModel{
 		int yyyy = 0000;
 		int starttid = 0;
 		int sluttid = 0;
-		
 		try{
 			connect();
 			if( connection != null){
@@ -157,7 +156,6 @@ public class ActiveHendelse extends ActiveModel{
 						"SELECT * FROM Hendelse WHERE hendelseId = ? "
 				);
 				ps.setInt(1, avtaleId);
-				
 				ResultSet rs = ps.executeQuery(); 
 				if (rs != null){
 					while(rs.next()){
@@ -257,7 +255,6 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(1, avtaleId);
 				ps.setInt(2, ansattId);
 				ResultSet rs = ps.executeQuery();
-
 				while(rs.next()){
 					String s = rs.getString("status");
 					if (s == "AVSLATT"){
@@ -281,7 +278,6 @@ public class ActiveHendelse extends ActiveModel{
 	public static void createDeltagereMedStatus(Mote mote){
 		Map<Person, Status> deltakere = mote.getDeltakere();
 		Iterator it = deltakere.entrySet().iterator();
-		
 		try{
 			connect();
 			if(connection != null){
@@ -311,7 +307,6 @@ public class ActiveHendelse extends ActiveModel{
 		try{
 			connect();
 			if(connection != null){
-
 				PreparedStatement ps = connection.prepareStatement(
 						"SELECT * FROM Hendelse " +
 						"WHERE hendelseId = ? "
