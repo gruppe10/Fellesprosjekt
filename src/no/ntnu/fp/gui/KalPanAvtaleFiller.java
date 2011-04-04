@@ -8,6 +8,7 @@ public class KalPanAvtaleFiller extends Avtale{
 	private Avtale avtale;
 	
 	public KalPanAvtaleFiller(Avtale a) {
+		avtale=a;
 		setStarttid(a.getStarttid());
 		setSluttid(a.getSluttid());
 		setDato(a.getDatoDag(), a.getDatoMnd(), a.getDatoAar());

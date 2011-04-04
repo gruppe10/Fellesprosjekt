@@ -1,7 +1,6 @@
 package no.ntnu.fp.model.record;
 
 /*	About:
- * 	
  * 	Hendelse er en generell databasetabell som inneholder BÅDE Avtaler og Moter
  * 	Forskjellen er at Moter også "snakker" med Deltager tabellen
  * 
@@ -21,6 +20,9 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +33,7 @@ import java.util.Set;
 
 import no.ntnu.fp.model.*;
 
-import org.apache.derby.tools.sysinfo;
+//import org.apache.derby.tools.sysinfo;
 
 public class ActiveHendelse extends ActiveModel{
 	
@@ -180,6 +182,8 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(1, avtaleId);
 				ps.execute();
 				connection.close();
+				
+				//Slett relaterte rader i Deltagere!
 			}
 		} 
 		catch (SQLException e) {
@@ -256,6 +260,8 @@ public class ActiveHendelse extends ActiveModel{
 		}					
 		return status;
 	}
+	
+
 
 	public static void createDeltagereMedStatus(Mote mote){
 		Map<Person, Status> deltakere = mote.getDeltakere();
@@ -270,7 +276,7 @@ public class ActiveHendelse extends ActiveModel{
 					Person person = (Person) pairs.getValue();
 					
 					PreparedStatement ps = connection.prepareStatement(
-							"INSERT ansattNumer,avtaleId INTO Deltakere values(?, ?)"
+							"INSERT ansattId,avtaleId INTO Deltakere values(?, ?)"
 					);
 					ps.setInt(1, person.getAnsattNummer());
 					ps.setInt(2, mote.getAvtaleId());
@@ -311,10 +317,11 @@ public class ActiveHendelse extends ActiveModel{
 	}
 	
 	public static void main(String args[]){
-		testCrud();
-		Avtale a = mockAvtale();
-		Person initiativTaker = ActivePerson.selectPerson(38);
-		a.setInitiativtaker(initiativTaker);
+		
+//		testCrud();
+//		Avtale a = mockAvtale();
+//		Person initiativTaker = ActivePerson.selectPerson(38);
+//		a.setInitiativtaker(initiativTaker);
 	}
 	
 	
@@ -402,6 +409,17 @@ public class ActiveHendelse extends ActiveModel{
 		
 		avtale = selectAvtale(avtale.getAvtaleId());
 		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
+	}
+	
+	private void testCeateDeltagereMedStatus(){
+		Mote mote = (Mote)mockAvtale();
+		Person person = new Person("name","email", new Date(12,12,12));	
+		person.setBrukerNavn("ble");
+		person.setPassord("bla");
+		ActivePerson.createPerson(person);
+		mote.leggtilDeltaker(person);
+		createMote(mote);
+		System.out.println("testUtført");
 	}
 
 

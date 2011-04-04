@@ -9,6 +9,7 @@ public class KalPanMoteFiller extends Mote{
 	private Avtale avtale;
 	
 	public KalPanMoteFiller(Avtale m) {
+		avtale=m;
 		setStarttid(m.getStarttid());
 		setSluttid(m.getSluttid());
 		setDato(m.getDatoDag(), m.getDatoMnd(), m.getDatoAar());
