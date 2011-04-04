@@ -21,6 +21,10 @@ import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorListener;
 
+import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.record.ActivePerson;
+
+
 /**
 * This code was edited or generated using CloudGarden's Jigloo
 * SWT/Swing GUI Builder, which is free for non-commercial
@@ -163,12 +167,16 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
+		String brukernavn = brukernavnField.getText();
+		Person bruker = ActivePerson.selectPersonByUsername(brukernavn);
+		
+		
 		if(evt.getSource() == loggInnButton){
-			kal kal = new kal();
+			kal kal = new kal(bruker);
 			kal.show();
 			dispose();
 		}
 		
 	}
-	
+
 }

@@ -138,15 +138,17 @@ public class ActiveRom extends ActiveModel{
 
 	
 	public static boolean[] selectLedigeTider(int romId, Date date){
-		boolean[] ledigeTider = new boolean[24];
+		boolean[] ledigeTider = new boolean[23];
 		try{
 			connect();
 			if(connection != null){
-				PreparedStatement ps = connection.prepareStatement(
-						" SELECT hendelseId as relaterteAvtaler " +
-						" FROM ReserverteRom" +
-						" WHERE Hendelse.hendelseId = ReserverteRom.hendelsesId" +
-						" AND ReserverteRom.romId = " + romId    	 
+				PreparedStatement ps = connection.prepareStatement(			
+						" SELECT starttid,sluttid " +
+						" FROM  Hendelse,ReserverteRom,Rom   " +
+						" WHERE ReserverteRom.?=Rom.?" +
+						" AND Hendelse.dato = ?" +
+						" AND ReserverteRom.hendelseId = ? " +
+						" AND Hendelse.hendelseId = ? " 
 				);
 				ResultSet rs = ps.executeQuery();
 				connection.close();

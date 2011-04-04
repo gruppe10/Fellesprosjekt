@@ -25,7 +25,8 @@ import javax.swing.SwingUtilities;
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
-import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.Rom;
+
 
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -61,6 +62,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel sluttidLabel;
 	private JLabel starttidLabel;
 	private JLabel headerLabel;
+	private Rom noRom;
 	
 	
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
@@ -205,9 +207,15 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					avbrytButton.addActionListener(this);
 				}
 				{
+						//test test
+						Rom rom1 = new Rom("a1");
+						Rom rom2 = new Rom("a2");
+						Rom rom3 = new Rom("a3");
+					
+					noRom = new Rom("None");
 					ComboBoxModel romComboBox1Model = 
 						new DefaultComboBoxModel(
-								new String[] { "Item One", "Item Two" });
+								new Rom[] { noRom, rom1, rom2, rom3});
 					romComboBox1 = new JComboBox();
 					romComboBox1.setModel(romComboBox1Model);
 					romComboBox1.getSelectedItem();
@@ -423,15 +431,25 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
-		Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, romComboBox1.getSelectedItem());
-	
+		if ((Rom)romComboBox1.getSelectedItem()==noRom) {
+			Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, null);
+			person.addAvtale(newAvtale);
+			
+			mainKal.setConnectedPerson(person);
+			
+			mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
+			mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale);
+		}
+		else {
+			Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, (Rom)romComboBox1.getSelectedItem());
+			person.addAvtale(newAvtale);
+			
+			mainKal.setConnectedPerson(person);
+			
+			mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
+			mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale);
+		}
 		
-		person.addAvtale(newAvtale);
-		
-		mainKal.setConnectedPerson(person);
-		
-		mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
-		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale);
 		
 		
 		
