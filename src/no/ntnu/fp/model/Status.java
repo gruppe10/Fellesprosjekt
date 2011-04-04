@@ -1,7 +1,7 @@
 package no.ntnu.fp.model;
 
 public enum Status {
-	GODTATT, AVSLATT, IKKEMOTATT;
+	GODTATT, AVSLATT, IKKE_MOTTATT;
 	
 	public String toString(){		
 		String str = "";
@@ -11,8 +11,8 @@ public enum Status {
 		else if(this == AVSLATT){
 			str = "AVSLATT";
 		}
-		else if(this == IKKEMOTATT){
-			str = "IKKEMOTATT";
+		else if(this == IKKE_MOTTATT){
+			str = "IKKE_MOTTATT";
 		}
 		return str;
 	}

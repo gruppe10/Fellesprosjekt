@@ -37,7 +37,7 @@ public class Mote extends Avtale implements Serializable{
 	}
 
 	public void leggtilDeltaker(Person deltaker){
-		deltakere.put(deltaker, Status.IKKEMOTATT);
+		deltakere.put(deltaker, Status.IKKE_MOTTATT);
 	}
 	
 	public void slettDeltaker(Person deltaker){
