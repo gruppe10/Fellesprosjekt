@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
-import Klient.KlientOS;
-
 public class Mote extends Avtale implements Serializable{
 	
 	
@@ -18,8 +14,12 @@ public class Mote extends Avtale implements Serializable{
 	public Mote(String navn, String headerTextField, String beskrivelse, Person initiativtaker, int starttid, 
 			int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom, Map<Person, Status> deltakere){
 		super(navn, beskrivelse, initiativtaker, starttid, sluttid, datoDag, datoMnd, datoAar, rom);
-		
 		this.deltakere = deltakere;
+		
+		for (Person deltaker : deltakere.keySet()){
+			sendInnkallelse(deltaker, this, "invitasjon");
+		}
+		
 	}
 	
 	public Mote (){
@@ -32,8 +32,8 @@ public class Mote extends Avtale implements Serializable{
 		return deltakere;
 	}
 	
-	public static void sendInnkallelse( String deltakere, String headerTextField, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom){
-		
+	public Notis sendInnkallelse(Person mottaker, Mote mote, String beskjed){
+		return new Notis(mottaker, mote, beskjed);
 	}
 
 	public void leggtilDeltaker(Person deltaker){
