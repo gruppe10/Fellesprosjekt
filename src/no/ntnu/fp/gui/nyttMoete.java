@@ -56,8 +56,8 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JButton visdelkalButton1;
 	private JList leggetildeltList1;
 	private JLabel sluttidLabel;
-	private JComboBox sutComboBox1;
-	private JComboBox stComboBox1;
+	private JComboBox sluttid;
+	private JComboBox starttid;
 	private JMenuItem jMenuItem1;
 	private JComboBox Moeterom;
 	private JButton avbrytButton;
@@ -156,17 +156,17 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				ComboBoxModel stComboBox1Model = 
 					new DefaultComboBoxModel(
 							new String[] { "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00" });
-				stComboBox1 = new JComboBox();
-				stComboBox1.setModel(stComboBox1Model);
-				stComboBox1.getSelectedItem();
+				starttid = new JComboBox();
+				starttid.setModel(stComboBox1Model);
+				starttid.getSelectedItem();
 			}
 			{
 				ComboBoxModel sutComboBox1Model = 
 					new DefaultComboBoxModel(
 							new String[] { "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00" });
-				sutComboBox1 = new JComboBox();
-				sutComboBox1.setModel(sutComboBox1Model);
-				sutComboBox1.getSelectedItem();
+				sluttid = new JComboBox();
+				sluttid.setModel(sutComboBox1Model);
+				sluttid.getSelectedItem();
 			}
 			{
 				sluttidLabel = new JLabel();
@@ -277,13 +277,13 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 																	.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 																	.addGroup(thisLayout.createParallelGroup()
 																			.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																					.addComponent(stComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+																					.addComponent(starttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																					.addComponent(starttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 																					.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 																							.addGap(0, 13, Short.MAX_VALUE)
 																							.addComponent(overlappingMessage, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
 																							.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																									.addComponent(sutComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+																									.addComponent(sluttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																									.addComponent(sluttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
 																									.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 																									.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -347,10 +347,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 																																											.addComponent(Moeterom, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																																											.addGap(40))
 																																											.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																													.addComponent(sutComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+																																													.addComponent(sluttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																																													.addGap(57))
 																																													.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																															.addComponent(stComboBox1, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+																																															.addComponent(starttid, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																																															.addGap(57))
 																																															.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 																																																	.addComponent(headerTextField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
@@ -492,7 +492,7 @@ private void addMote() {
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
-		Mote newAvtale= new Mote(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar);
+		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, null, null);
 		
 		mainKal.getConnectedPerson().addAvtale(newAvtale);
 		
