@@ -11,7 +11,7 @@ public class Mote extends Avtale implements Serializable{
 	
 	private static Map<Person, Status> deltakere = new HashMap<Person, Status>();
 	
-	public Mote(String navn, String headerTextField, String beskrivelse, Person initiativtaker, int starttid, 
+	public Mote(String navn, String beskrivelse, Person initiativtaker, int starttid, 
 			int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom, Map<Person, Status> deltakere){
 		super(navn, beskrivelse, initiativtaker, starttid, sluttid, datoDag, datoMnd, datoAar, rom);
 		this.deltakere = deltakere;
