@@ -28,10 +28,10 @@ import no.ntnu.fp.model.record.ActivePerson;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class Notis extends javax.swing.JFrame implements ActionListener{
+public class notis extends javax.swing.JFrame implements ActionListener{
 	private JLabel titteljLabel1;
 	private JButton godtaButton;
-	private JButton AvslaButton1;
+	private JButton avslaaButton;
 	private JTextField jTextField1;
 
 	/**
@@ -40,14 +40,14 @@ public class Notis extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Notis inst = new Notis();
+				notis inst = new notis();
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 	
-	public Notis() {
+	public notis() {
 		super();
 		initGUI();
 	}
@@ -72,9 +72,9 @@ public class Notis extends javax.swing.JFrame implements ActionListener{
 				godtaButton.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
-				AvslaButton1 = new JButton();
-				AvslaButton1.setText("Avslå");
-				AvslaButton1.setFont(new java.awt.Font("Tahoma",0,12));
+				avslaaButton = new JButton();
+				avslaaButton.setText("Avslå");
+				avslaaButton.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap(20, 20)
@@ -84,7 +84,7 @@ public class Notis extends javax.swing.JFrame implements ActionListener{
 				.addGap(53)
 				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 				    .addComponent(godtaButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-				    .addComponent(AvslaButton1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+				    .addComponent(avslaaButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addContainerGap(68, 68));
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 				.addContainerGap(56, 56)
@@ -92,7 +92,7 @@ public class Notis extends javax.swing.JFrame implements ActionListener{
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				        .addComponent(godtaButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 				        .addGap(16)
-				        .addComponent(AvslaButton1, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(avslaaButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 				        .addGap(0, 142, Short.MAX_VALUE))
 				    .addGroup(thisLayout.createSequentialGroup()
 				        .addPreferredGap(godtaButton, titteljLabel1, LayoutStyle.ComponentPlacement.INDENT)
@@ -117,8 +117,9 @@ public class Notis extends javax.swing.JFrame implements ActionListener{
 		
 		if(evt.getSource() == godtaButton){
 			
-		}else if(evt.getSource() == AvslaButton1){
-			
+			dispose();
+		}else if(evt.getSource() == avslaaButton){
+			dispose();
 		}
 		
 	}
