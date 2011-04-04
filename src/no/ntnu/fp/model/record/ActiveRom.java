@@ -63,7 +63,6 @@ public class ActiveRom extends ActiveModel{
 	    return romId;         
 	}
 	
-
 	public static void updateRom(Rom rom){
 		String navn = rom.getNavn();
 		int romId = rom.getRomId();
@@ -143,42 +142,30 @@ public class ActiveRom extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(			
-						" SELECT starttid,sluttid " +
-						" FROM  Hendelse,ReserverteRom,Rom   " +
-						" WHERE ReserverteRom.?=Rom.?" +
-						" AND Hendelse.dato = ?" +
-						" AND ReserverteRom.hendelseId = ? " +
-						" AND Hendelse.hendelseId = ? " 
+						" SELECT starttid, sluttid " +
+						" FROM  Hendelse, ReserverteRom, Rom   " +
+						" WHERE Hendelse.dato = ? " +
+						" AND ReserverteRom.hendelseId = Rom.hendelseId " +
+						" AND ReserverteRom.hendelseId = Hendelse.hendelseId " 
 				);
+				ps.setDate(1, date);
 				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					int starttid = formatIntFrom(rs.getTime(""));
+					int sluttid = formatIntFrom(rs.getTime(""));
+					
+					for(int i = starttid ; i <= sluttid; i++ ){
+						ledigeTider[i] = false;
+					}
+				}
 				connection.close();
-
-//				connect();
-//				ps = connection.prepareStatement(
-//						" SELECT starttid,sluttid " +
-//						" FROM  ReserverteRom, Hendelse  " +
-//						" WHERE ReserverteRom.hendelseId = ? " +
-//						" AND Hendelse.hendelseId = ? " +
-//						" AND Hendelse.dato = ?"
-//				);	
-//				while(rs.next()){
-//					int starttid = formatIntFrom(rs.getTime(""));
-//					int sluttid = formatIntFrom(rs.getTime(""));
-//					
-//					for(int i = starttid ; i <= sluttid; i++ ){
-//						ledigeTider[i] = false;
-//					}
-//				}
-				
 			}
 		}catch(SQLException e){
 			System.out.println("Kan ikke finne tider for rom med id:" + romId + "på datoen:" + date);
 			System.out.println("Detaljer:" + e.getMessage());
 		}
-		return ledigeTider;
-		
+		return ledigeTider;	
 	}
-	
 	
 	public static void createReservasjon(int romId, int avtaleId){
 		try{
