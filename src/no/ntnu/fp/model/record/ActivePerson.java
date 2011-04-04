@@ -133,6 +133,45 @@ public class ActivePerson extends ActiveModel{
 		
 		return person;
 	}
+	public static Person selectPersonByUsername(String brukernavn){
+		Person person = new Person();
+		String navn  = "";
+		String passord = "";
+		int ansattId = nextAvailableIdFor("Person");
+		
+		try{
+			connect();
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT Distinct FROM Person WHERE brukernavn = ? "
+				);
+				ps.setString(1, brukernavn);
+				
+				ResultSet rs = ps.executeQuery(); 
+				if (rs != null){
+					while(rs.next()){
+						navn = rs.getString("navn");
+						brukernavn = rs.getString("brukernavn");
+						passord = rs.getString("passord");
+						ansattId = rs.getInt("ansattId");
+					}
+				}
+				connection.close();
+			}
+		}
+		catch( SQLException e){
+			System.out.println("Kan ikke finner person med id = " + ansattId);
+			System.out.println("ErrorMessage:" + e.getMessage());
+		}
+		
+		person.setAnsattNummer(ansattId);
+		person.setName(navn);
+		person.setBrukerNavn(brukernavn);
+		person.setPassord(passord);
+		person.setAvtaler(selectAvtaler(ansattId));
+		
+		return person;
+	}
 		
 	public static void deletePerson(int ansattId) {
 		// Slette alle avtaler som bare hører til denne personen
