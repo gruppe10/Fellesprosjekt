@@ -64,7 +64,7 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 			avtale=((KalPanAvtaleFiller) a).getAvtale();
 		}
 		else if (a instanceof KalPanMoteFiller) {
-			avtale=((KalPanAvtaleFiller) a).getAvtale();
+			avtale=((KalPanMoteFiller) a).getAvtale();
 		}
 		else {
 		avtale=a;
