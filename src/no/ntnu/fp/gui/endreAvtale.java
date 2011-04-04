@@ -366,7 +366,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 			hide();
 		}
 		if(evt.getSource() == slettButton){
-			slett slett = new slett();
+			slett slett = new slett(mainKal, avtale);
 			slett.show();
 		}
 	}

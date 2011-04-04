@@ -16,7 +16,7 @@ import no.ntnu.fp.model.Mote;
 public class KalPanInfoBoks extends JPanel implements ActionListener{
 	
 	private JLabel avtaleNavn, avtaleBeskrivelse;
-	private JButton endre, slett;
+	private JButton endre, slett, avbud;
 	private Avtale a;
 	private kal kal;
 	
@@ -35,6 +35,11 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		endre.hide();
 		add(endre);
 		
+		avbud=new JButton("Meld avbud");
+		avbud.addActionListener(this);
+		avbud.hide();
+		add(avbud);
+		 
 		slett=new JButton("Avlys");
 		slett.addActionListener(this);
 		slett.hide();
@@ -54,7 +59,13 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		avtaleNavn.setText(a.getNavn()+":  ");
 		avtaleBeskrivelse.setText(a.getBeskrivelse());
 		endre.show();
-		slett.show();
+		
+		//if (kal.getConnectedPerson().getId()==a.getInitiativtaker().getId()) {
+			slett.show();
+		//}
+		//else {
+			avbud.show();
+		//}
 	}
 	
 	public void clear() {
@@ -62,6 +73,7 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		avtaleBeskrivelse.setText(" ");
 		slett.hide();
 		endre.hide();
+		avbud.hide();
 		
 	}
 	
@@ -78,6 +90,8 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		}
 		
 		else if (evt.getSource() == slett){
+			slett slett = new slett(kal, a);
+			slett.show();
 			
 		}
 	}

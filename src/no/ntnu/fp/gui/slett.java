@@ -16,6 +16,9 @@ import javax.swing.SwingUtilities;
 
 import no.ntnu.fp.gui.kal;
 
+import no.ntnu.fp.model.Avtale;
+import no.ntnu.fp.model.Person;
+
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -35,6 +38,9 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 	private JButton avbrytButton;
 	private JButton SlettButton;
 	private JLabel jLabel1;
+	
+	private kal mainKal;
+	private Avtale avtale;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -42,15 +48,19 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				slett inst = new slett();
-				inst.setLocationRelativeTo(null);
-				inst.setVisible(true);
+				//slett inst = new slett();
+				//inst.setLocationRelativeTo(null);
+				//inst.setVisible(true);
 			}
 		});
 	}
 	
-	public slett() {
+	public slett(kal kal, Avtale a) {
 		super();
+		
+		mainKal=kal;
+		avtale=a;
+		
 		initGUI();
 	}
 	
@@ -118,8 +128,9 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == SlettButton){
-			kal kal = new kal();
-			kal.show();
+			mainKal.getConnectedPerson().getAvtaler().remove(avtale);
+			mainKal.getKalenderPanelModel().removeAvtaleFromPanel(avtale);
+			mainKal.getKalenderPanel().getInfoBoks().clear();
 			hide();
 		// fjerne fra kalenderen
 		}

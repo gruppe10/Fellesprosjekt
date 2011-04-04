@@ -335,6 +335,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	public KalenderPanelModel getKalenderPanelModel() {
 		return kalPanModel;
 	}
+	
+	public KalenderPanel getKalenderPanel() {
+		return kalenderPanel1;
+	}
 
 	
 }
