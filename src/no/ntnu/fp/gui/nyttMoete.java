@@ -82,7 +82,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				nyttMoete inst = new nyttMoete(null, 0, 0, 0, 0);
+				nyttMoete inst = new nyttMoete(null, 6, 31, 3, 2011);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
@@ -241,7 +241,18 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			{
 				datoField = new JTextField();
-				datoField.setText("dd.mm.aaaa");
+				if (defaultDato<10 && defaultMonth<10){
+				datoField.setText("0"+defaultDato+".0"+defultMonth+"."+defaultYear);
+				}
+				else if (defaultDato<10){
+					datoField.setText("0"+defaultDato+"."+defaultMonth+"."+defaultYear);
+				}
+				else if (defaultMonth<10){
+					datoField.setText(defaultDato+".0"+defaultMonth+"."+defaultYear);
+				}
+				else {
+					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);
+				}
 				datoField.setFont(new java.awt.Font("Tahoma",2,11));
 			}
 			{
