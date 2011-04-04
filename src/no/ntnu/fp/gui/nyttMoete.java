@@ -415,7 +415,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			else {
 				addMote();
-				hide();
+				dispose();
 			}
 
 
