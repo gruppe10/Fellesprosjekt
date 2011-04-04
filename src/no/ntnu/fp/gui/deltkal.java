@@ -103,7 +103,7 @@ public class deltkal extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == tilbakeButton1){
-			nyttMoete nyttMoete = new nyttMoete();
+			nyttMoete nyttMoete = new nyttMoete(null, defaultCloseOperation, defaultCloseOperation, defaultCloseOperation, defaultCloseOperation);
 			nyttMoete.show();
 			hide();
 		}
