@@ -127,6 +127,8 @@ class KalenderPanelModel extends AbstractTableModel {
 		int ukedagint=date.get(Calendar.DAY_OF_WEEK)-2;
 		
 		dayDatos = new int[7];
+		dayMonth = new int[7];
+		dayYear = new int[7];
 		
 		date.add(Calendar.DAY_OF_MONTH, -ukedagint);
 		
