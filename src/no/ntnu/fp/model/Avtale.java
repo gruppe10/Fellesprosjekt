@@ -18,7 +18,6 @@ public class Avtale implements Serializable{
 	private int datoDag;
 	private int datoMnd;
 	private int datoAar;
-	private ArrayList<Person> deltakere;
 	private Rom rom;
 	
 	public Avtale(String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom){
