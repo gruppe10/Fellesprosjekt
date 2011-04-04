@@ -242,7 +242,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			{
 				datoField = new JTextField();
 				if (defaultDato<10 && defaultMonth<10){
-				datoField.setText("0"+defaultDato+".0"+defultMonth+"."+defaultYear);
+				datoField.setText("0"+defaultDato+".0"+defaultMonth+"."+defaultYear);
 				}
 				else if (defaultDato<10){
 					datoField.setText("0"+defaultDato+"."+defaultMonth+"."+defaultYear);
