@@ -273,8 +273,22 @@ public class ActiveHendelse extends ActiveModel{
 		return status;
 	}
 	
-
-
+	private static void setStatusFor(int ansattId, int avtaleId){
+		try {
+			connect();
+			PreparedStatement ps = connection.prepareStatement(
+					"SELECT status FROM Deltakere WHERE hendelseId = ? and ansattId = ?"
+			);
+			ps.setInt(1, avtaleId);
+			ps.setInt(2, ansattId);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			System.out.println("Could not set status for deltager:" +ansattId + "for mote nr:" + avtaleId );
+			System.out.println("Details:" + e.getMessage());
+		}
+	}
+	
 	public static void createDeltagereMedStatus(Mote mote){
 		Map<Person, Status> deltakere = mote.getDeltakere();
 		Iterator it = deltakere.entrySet().iterator();

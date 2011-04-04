@@ -20,6 +20,7 @@ CREATE TABLE Deltakere (
     ansattId INT,
     hendelseId INT,
     status VARCHAR(15) NOT NULL DEFAULT 'IKKE_MOTTATT',
+    PRIMARY KEY (ansattId, hendelseId),
     FOREIGN KEY (ansattId) REFERENCES Person(ansattId),
     FOREIGN KEY (hendelseId) REFERENCES Hendelse(hendelseId)
 );

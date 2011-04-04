@@ -139,7 +139,6 @@ public class ActiveRom extends ActiveModel{
 	
 	public static boolean[] selectLedigeTider(int romId, Date date){
 		boolean[] ledigeTider = new boolean[23];
-		
 		try{
 			connect();
 			if(connection != null){
@@ -150,22 +149,27 @@ public class ActiveRom extends ActiveModel{
 						" AND Hendelse.dato = ?" +
 						" AND ReserverteRom.hendelseId = ? " +
 						" AND Hendelse.hendelseId = ? " 
-								    	 
 				);
-				ps.setInt(1,romId);
-				ps.setInt(2, romId);
-				ps.setDate(3,date);
-				
 				ResultSet rs = ps.executeQuery();
-				while(rs.next()){
-					int starttid = formatIntFrom(rs.getTime(""));
-					int sluttid = formatIntFrom(rs.getTime(""));
-					
-					for(int i = starttid ; i <= sluttid; i++ ){
-						ledigeTider[i] = false;
-					}
-				}
 				connection.close();
+
+//				connect();
+//				ps = connection.prepareStatement(
+//						" SELECT starttid,sluttid " +
+//						" FROM  ReserverteRom, Hendelse  " +
+//						" WHERE ReserverteRom.hendelseId = ? " +
+//						" AND Hendelse.hendelseId = ? " +
+//						" AND Hendelse.dato = ?"
+//				);	
+//				while(rs.next()){
+//					int starttid = formatIntFrom(rs.getTime(""));
+//					int sluttid = formatIntFrom(rs.getTime(""));
+//					
+//					for(int i = starttid ; i <= sluttid; i++ ){
+//						ledigeTider[i] = false;
+//					}
+//				}
+				
 			}
 		}catch(SQLException e){
 			System.out.println("Kan ikke finne tider for rom med id:" + romId + "på datoen:" + date);
@@ -204,81 +208,4 @@ public class ActiveRom extends ActiveModel{
 			System.out.println("Detaljer:" + e.getMessage());
 		}
 	}
-	
-	
-	
-	public static void main(String args[]){
-		
-		Date testDate = new Date(2011, 2, 31);
-		selectLedigeTider(7,testDate);
-		testCrud();
-		testCreateReservasjon();
-	}
-
-	/******************************
-	*  			Tester			  *
-	******************************/
-	
-	private static void testCreateReservasjon(){
-		createReservasjon(1,2);
-		deleteReservasjon(1,2);
-		
-	}
-	
-	private static void testCrud(){
-		Rom rom = mockRom();
-		
-//		deleteRom(rom.getRomId());
-//		System.out.println("Slettet rom med navn " +rom.getNavn() + " som og har id: " + rom.getRomId());
-		
-		createRom(rom);
-		System.out.println("Laget rom med navn: " + rom.getNavn() + " som og har id: " + rom.getRomId());
-		
-		rom.setNavn("Arne");
-		updateRom(rom);
-		System.out.println("Oppdaterte rommets navn til:" + rom.getNavn() + " og id: " + rom.getRomId());
-		
-		rom = selectRom(rom.getRomId());
-		System.out.println("Hentet ut rom med navn: " + rom.getNavn() + " som og har id: " + rom.getRomId());
-		
-		System.out.println("Test Utført!");
-	}
-	
-	private static Rom mockRomWithId(int romId) {
-		Rom rom = new Rom("Kaare");
-		rom.setRomId(romId);
-		return rom;
-	}
-	
-	private static Rom mockRom() {
-		Rom rom = new Rom("Kaare");
-		return rom;
-	}
-
-	private static void testUpdateRom(){
-		int ansattnr = 10001;
-		String navn = "Martin";
-		String nyttNavn = "Per-Donald";
-		Person person = new Person();
-		person.setAnsattNummer(ansattnr);
-		
-		//Hente ut person 10001 som allerede ligger inne
-		Rom orginalRom = selectRom(person.getAnsattNummer());
-		System.out.println("Orginalt navn: " + orginalRom.getNavn());
-		
-		//oppdatere ny person
-		orginalRom.setNavn(nyttNavn);
-		updateRom(orginalRom);
-		Rom oppdatertPerson = selectRom(orginalRom.getRomId());
-		System.out.println("Nytt navn:" + oppdatertPerson.getNavn());
-	}
-	
-
-
-		
-//	private void testSelectPerson(){
-//		int romId = 113;
-//		Rom testRom  = selectRom(romId);
-//		System.out.println(testRom.getNavn());
-//	}
 }
