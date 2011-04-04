@@ -1,13 +1,22 @@
 package no.ntnu.fp.model.record;
 
-/*
+/*	About:
+ * 	
+ * 	Hendelse er en generell databasetabell som inneholder BÅDE Avtaler og Moter
+ * 	Forskjellen er at Moter også "snakker" med Deltager tabellen
+ * 
+ * 	Metodene er Objekt spesifikk, mens delete og select finner ut selv om det
+ *  er Avtale eller Mote som hentes ut
+ * 
+ * 	
  *   Methods:
-
  *   
  * 	 CreateAvtale(Avtale avtale)
- * 	 SelectPerson(int ansattnummer)
- * 	 UpdatePerson(Avtale Avtale)
- * 	 DeletePerson(int ansattnummer)	
+ * 	 CreateMote(Mote mote)
+ *   UpdateAvtale(Avtale Avtale)
+ * 	 UpdateMote(Mote mote)
+ * 	 SelectHendelse(int hendelseID)
+ *	 DeleteHendelse(int ansattnummer)	
  * 
  */
 
@@ -17,15 +26,19 @@ import no.ntnu.fp.model.*;
 
 import org.apache.derby.tools.sysinfo;
 
-public class ActiveAvtale extends ActiveModel{
+public class ActiveHendelse extends ActiveModel{
 	
 	public static void createAvtale(Avtale avtale){
+		if(avtale.getAvtaleId() == null){
+			int nextAvailableId = nextAvailableIdFor("Hendelse");
+			avtale.setAvtaleId((nextAvailableId));
+		}
 		PreparedStatement ps = null;
 		try{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Avtale(avtaleId, navn, beskrivelse, dato, starttid, sluttid)" +
+					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid)" +
 					"VALUES ( ?, ?, ? ,? ,? ,? )" 
 				);
 				ps.setInt(1, avtale.getAvtaleId());
@@ -36,14 +49,40 @@ public class ActiveAvtale extends ActiveModel{
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 				ps.execute();
 				
-				if(avtale.getInitiativtaker()!= null){
+				connection.close();
+				}
+		}
+		catch(SQLException e){
+			System.out.println("Kan ikke lagre avtalen");
+			System.out.println("Details:" + e.getMessage());
+		}
+	}
+	
+	public static void createMote(Mote mote){
+		PreparedStatement ps = null;
+		try{
+			connect();
+			if( connection != null){
+				ps = connection.prepareStatement(
+					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid)" +
+					"VALUES ( ?, ?, ? ,? ,? ,? )" 
+				);
+				ps.setInt(1, mote.getAvtaleId());
+				ps.setString(2, mote.getNavn());
+				ps.setString(3, mote.getBeskrivelse());
+				ps.setDate(4, formatDateFrom(mote));
+				ps.setTime(5, formatTimeFrom(mote.getStarttid()));
+				ps.setTime(6, formatTimeFrom(mote.getSluttid()));
+				ps.execute();
+				
+				if(mote.getInitiativtaker()!= null){
 					PreparedStatement ps2 = connection.prepareStatement(
 						"UPDATE Avtale(initiativTakerId)" +
 						"SET initiativtakerId = ?" +
 						"WHERE avtaleId = ?" 
 					);
-					ps2.setInt(1, avtale.getInitiativtaker().getAnsattNummer());
-					ps2.setInt(2, avtale.getAvtaleId());
+					ps2.setInt(1, mote.getInitiativtaker().getAnsattNummer());
+					ps2.setInt(2, mote.getAvtaleId());
 				    ps2.execute();
 				}
 				connection.close();
@@ -61,9 +100,9 @@ public class ActiveAvtale extends ActiveModel{
         	connect();
         	if( connection != null ){
 	            PreparedStatement ps = connection.prepareStatement(
-	            		"UPDATE Avtale " + 
+	            		"UPDATE Hendelse " + 
 	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-	                    "WHERE avtaleId = ? "
+	                    "WHERE hendelseId = ? "
 	            );
 				ps.setString(1, avtale.getNavn());
 				ps.setString(2, avtale.getBeskrivelse());
@@ -95,7 +134,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Avtale WHERE avtaleId = ? "
+						"SELECT * FROM Hendelse WHERE hendelseId = ? "
 				);
 				ps.setInt(1, avtaleId);
 				
@@ -136,7 +175,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"DELETE FROM Avtale WHERE avtaleId = ?"
+						"DELETE FROM Hendelse WHERE hendelseId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ps.execute();
@@ -155,7 +194,7 @@ public class ActiveAvtale extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT ansattId FROM Deltakere WHERE avtaleId = ?"
+						"SELECT ansattId FROM Deltakere WHERE hendelseId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ResultSet rs = ps.executeQuery();
@@ -183,7 +222,7 @@ public class ActiveAvtale extends ActiveModel{
 							PreparedStatement ps = connection.prepareStatement(
 							"UPDATE Deltakere" +
 							"SET ansattId = ? " +
-							"WHERE Deltakere.avtaleId = ? "
+							"WHERE Deltakere.hendelseId = ? "
 							);
 							ps.setInt(1, person.getAnsattNummer());
 							ps.setInt(2, avtaleId);
@@ -195,8 +234,32 @@ public class ActiveAvtale extends ActiveModel{
 		catch(SQLException e){
 			System.out.println("Could not find any Participants for Meeting with id:");
 			System.out.println("Details:" + e.getMessage());
-		}		
-				
+		}					
+	}
+	
+	public static boolean exists(int avtaleId) {
+		boolean exists = false;
+		try{
+			connect();
+			if(connection != null){
+
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM Hendelse " +
+						"WHERE hendelseId = ? "
+				);
+				ps.setInt(1, avtaleId);
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					exists = true;
+				}
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Participants for Meeting with id:");
+			System.out.println("Details:" + e.getMessage());
+		}
+		return exists;
 	}
 	
 	public static void main(String args[]){
@@ -216,14 +279,22 @@ public class ActiveAvtale extends ActiveModel{
 	
 	private static Avtale mockAvtaleWithId(int id){
 		Avtale avtale = new Avtale();
-			
 		avtale.setAvtaleId(id);
 		avtale.setNavn("Annet navn!");
 		avtale.setDato(01, 22, 2011);
 		avtale.setStarttid(12);
 		avtale.setSluttid(12);
 		avtale.setBeskrivelse("Dette er en avtale");
-		
+		return avtale;
+	}
+	
+	private static Avtale mockAvtale(){
+		Avtale avtale = new Avtale();
+		avtale.setNavn("Annet navn!");
+		avtale.setDato(01, 22, 2011);
+		avtale.setStarttid(12);
+		avtale.setSluttid(12);
+		avtale.setBeskrivelse("Dette er en avtale");
 		return avtale;
 	}
 	
@@ -245,26 +316,28 @@ public class ActiveAvtale extends ActiveModel{
 	}
 	
 	private static void testCrud(){
-		Avtale avtale = mockAvtaleWithId(4);
+		Avtale avtale = mockAvtale();
 		avtale.setNavn("Avtale 1");
-		deleteAvtale(avtale.getAvtaleId());
 		createAvtale(avtale);
-		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + "og id:" + avtale.getAvtaleId());
 		
 		deleteAvtale(avtale.getAvtaleId());
-		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		createAvtale(avtale);
-		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		avtale = selectAvtale(avtale.getAvtaleId());
-		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		avtale.setNavn("Avtale 2");
 		updateAvtale(avtale);
-		System.out.println("Oppdaterte avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Oppdaterte avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		avtale = selectAvtale(avtale.getAvtaleId());
-		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + ".");
+		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 	}
+
+
+	
 }

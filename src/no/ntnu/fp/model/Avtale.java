@@ -6,11 +6,11 @@ import java.util.Calendar;
 
 import Klient.KlientOS;
 
-import no.ntnu.fp.model.record.ActiveAvtale;
+import no.ntnu.fp.model.record.ActiveHendelse;
 
 public class Avtale implements Serializable{
 
-	private int avtaleId;
+	private Integer avtaleId;
 	private String navn;
 	private String beskrivelse;
 	private Person initiativtaker;
@@ -53,7 +53,7 @@ public class Avtale implements Serializable{
 		//Oppdater database!
 	}
 	
-	public int getAvtaleId(){
+	public Integer getAvtaleId(){
 		return avtaleId;
 	}
 	
@@ -134,6 +134,6 @@ public class Avtale implements Serializable{
 	
 	
 	public void selectDeltagere(){
-		deltakere = ActiveAvtale.selectDeltagere(avtaleId);
+		deltakere = ActiveHendelse.selectDeltagere(avtaleId);
 	}
 }

@@ -14,13 +14,13 @@ public class KalPanRenderer extends DefaultTableCellRenderer{
         (table, value, isSelected, hasFocus, row, column);
 		if( value instanceof Mote) {
 			
-			Color lyseblaa = new Color(110,150,250);
+			Color lyseblaa = new Color(130,180,250);
 			
 			cell.setBackground(lyseblaa);
 		}
 		else if( value instanceof Avtale ) {
 			
-			Color lysegronn = new Color(120,250,130);
+			Color lysegronn = new Color(140,250,160);
 			
 			cell.setBackground(lysegronn);
 		}

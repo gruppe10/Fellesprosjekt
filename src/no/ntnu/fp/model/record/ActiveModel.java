@@ -2,14 +2,11 @@ package no.ntnu.fp.model.record;
 
 /*
  *   Methods:
-
-
  *   
- * 	 create(Object object)
- * 	 select(int id)
- * 	 update(Object object)
- * 	 delete(int id)	
- * 
+ *   connect()
+ *   formatDateFrom(Avtale avtale)
+ *   formatTimeFrom(Int int)
+ *   formatIntFrom(Date date)
  */
 
 import java.sql.*;
@@ -36,7 +33,37 @@ public class ActiveModel {
 		catch(SQLException e){
 			connection = null;
 			System.out.println("Kan ikke koble til database");
+			System.out.println("Details:" + e.getMessage());
 		}	
+	}
+
+	
+	//Returnerer siste id i tabellen + 1 
+	public static int nextAvailableIdFor(String tabelName){
+		int maxId = 0;
+		String idName = getIdNameFor(tabelName);
+		try{
+			connect(); 
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT MAX(" + idName + ") " +
+						"as maxId FROM " + tabelName 		    
+	            );
+	            ResultSet rs = ps.executeQuery();
+	            while(rs.next()){
+					maxId = rs.getInt("maxId");
+				}
+
+	            ps.close();
+	            rs.close();   
+	            connection.close();
+			}
+		}
+	    catch( SQLException e){
+	    	System.out.println("Kan ikke finne max id for " + tabelName);
+	    	System.out.println("ErrorMessage:" + e.getMessage());
+	    }
+	    return maxId + 1;         
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -60,4 +87,20 @@ public class ActiveModel {
 		int i = time.getHours();
 		return i;
 	}
+	
+	private static String getIdNameFor(String tabelName){
+		if(tabelName == "Person"){
+			return "ansattId";
+		}
+		if (tabelName == "Hendelse"){
+			return "hendelseId";
+		}
+		if(tabelName == "Rom"){
+			return "romId";
+		}
+		else {
+			return "Tabel Har feil Navn";
+		}
+	}
+	
 }

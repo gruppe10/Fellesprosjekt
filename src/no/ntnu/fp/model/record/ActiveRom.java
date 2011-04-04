@@ -2,13 +2,10 @@ package no.ntnu.fp.model.record;
 
 /*
  *   Methods:
-
  *   
- * 	 CreatePerson(Person person)
- * 	 SelectPerson(int ansattnummer)
- * 	 UpdatePerson(Person person)
- * 	 DeletePerson(int ansattnummer)	
- * 
+ * 	 CRUD-Rom;
+ * 	 selectLedigeTider()
+ * 	 Create, delete Reservasjon
  */
 
 import java.sql.*;
@@ -21,6 +18,10 @@ import org.apache.derby.tools.sysinfo;
 
 public class ActiveRom extends ActiveModel{
 	public static void createRom(Rom rom){
+		if(rom.getRomId() == null){
+			int nextAvailableId = nextAvailableIdFor("Rom");
+			rom.setRomId(nextAvailableId);
+		}
 		try{
 			connect();
 			if(connection != null){
@@ -86,8 +87,6 @@ public class ActiveRom extends ActiveModel{
         }
 	}
 	
-	
-	
 	public static Rom selectRom(int romId){
 		Rom rom = new Rom("");
 		String navn  = "";
@@ -139,20 +138,19 @@ public class ActiveRom extends ActiveModel{
 	}
 
 	
-	public boolean[] selectLedigeTider(int romId, Date date){
+	public static boolean[] selectLedigeTider(int romId, Date date){
 		boolean[] ledigeTider = new boolean[24];
 		
 		try{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						" WITH reserverteTider as(			 " +
-						"	SELECT * from ReservertRom, Mote " +
-						"	WHERE ReservertRom.avtaleId = ?  " +
-						"	AND Mote.avtaleId = ? 			 " +
-						"	AND Mote.date = ?  			     " +
-						" )" +
-						" SELECT starttid,sluttid from reserverteTider" 
+						
+						" SELECT starttid,sluttid " +
+						" FROM  ReserverteRom, Hendelse  " +
+						" WHERE ReserverteRom.hendelseId = ? " +
+						" AND Hendelse.hendelseId = ? " +
+						" AND Hendelse.dato = ?"		    	 
 				);
 				ps.setInt(1,romId);
 				ps.setInt(2, romId);
@@ -182,7 +180,7 @@ public class ActiveRom extends ActiveModel{
 		try{
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO ReserverteRom(romId ,avtaleId) VALUES(?,?) "
+					"INSERT INTO ReserverteRom(romId ,hendelseId) VALUES(?,?) "
 			);
 			ps.setInt(1, romId);
 			ps.setInt(2,avtaleId);
@@ -197,7 +195,7 @@ public class ActiveRom extends ActiveModel{
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
 					"DELETE FROM ReserverteRom " +
-					"WHERE romId = ? AND avtaleId = ? " 
+					"WHERE romId = ? AND hendelseId = ? " 
 			);
 			ps.setInt(1, romId);
 			ps.setInt(2,avtaleId);
@@ -210,8 +208,11 @@ public class ActiveRom extends ActiveModel{
 	
 	
 	public static void main(String args[]){
+		
+		Date testDate = new Date(2011, 2, 31);
+		selectLedigeTider(7,testDate);
+		testCrud();
 		testCreateReservasjon();
-		System.out.println("TestUtført");
 	}
 
 	/******************************
@@ -225,10 +226,10 @@ public class ActiveRom extends ActiveModel{
 	}
 	
 	private static void testCrud(){
-		Rom rom = mockRomWith(1);
+		Rom rom = mockRom();
 		
-		deleteRom(rom.getRomId());
-		System.out.println("Slettet rom med navn " +rom.getNavn() + " som og har id: " + rom.getRomId());
+//		deleteRom(rom.getRomId());
+//		System.out.println("Slettet rom med navn " +rom.getNavn() + " som og har id: " + rom.getRomId());
 		
 		createRom(rom);
 		System.out.println("Laget rom med navn: " + rom.getNavn() + " som og har id: " + rom.getRomId());
@@ -243,9 +244,14 @@ public class ActiveRom extends ActiveModel{
 		System.out.println("Test Utført!");
 	}
 	
-	private static Rom mockRomWith(int romId) {
+	private static Rom mockRomWithId(int romId) {
 		Rom rom = new Rom("Kaare");
 		rom.setRomId(romId);
+		return rom;
+	}
+	
+	private static Rom mockRom() {
+		Rom rom = new Rom("Kaare");
 		return rom;
 	}
 

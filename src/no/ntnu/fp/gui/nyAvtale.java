@@ -46,8 +46,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel nyAvtaleLabel;
 	private JLabel datoLabel;
 	private JTextField headerTextField;
-	private JLabel jLabel2;
-	private JLabel jLabel1;
+	private JLabel overlappingMessage;
+	private JLabel inValidDateMessage;
 	private JLabel romLabel1;
 	private JComboBox romComboBox1;
 	private JComboBox sluttid;
@@ -61,6 +61,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel sluttidLabel;
 	private JLabel starttidLabel;
 	private JLabel headerLabel;
+	
 	
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
@@ -84,7 +85,6 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		super();
 		
 		mainKal=kal;
-		
 		
 		defaultStartTime = dStartTime;
 		defaultDato = dDato;
@@ -112,9 +112,9 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					nyAvtaleLabel.setFont(new java.awt.Font("Tahoma",1,16));
 				}
 				{
-					jLabel2 = new JLabel();
-					jLabel2.setText("b");
-					jLabel2.setFont(new java.awt.Font("Tahoma",2,12));
+					overlappingMessage = new JLabel();
+					overlappingMessage.setText("b");
+					overlappingMessage.setFont(new java.awt.Font("Tahoma",2,12));
 				}
 				{
 					datoLabel = new JLabel();
@@ -142,9 +142,9 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					beskrivelseLabel.setFont(new java.awt.Font("Tahoma",0,12));
 				}
 				{
-					jLabel1 = new JLabel();
-					jLabel1.setText("a");
-					jLabel1.setFont(new java.awt.Font("Tahoma",2,12));
+					inValidDateMessage = new JLabel();
+					inValidDateMessage.setText("a");
+					inValidDateMessage.setFont(new java.awt.Font("Tahoma",2,12));
 				}
 				{
 					ComboBoxModel jComboBox1Model = 
@@ -179,7 +179,13 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				}
 				{
 					datoField = new JTextField();
-					if (defaultMonth<10) {
+					if (defaultDato<10 && defaultMonth<10) {
+						datoField.setText("0"+defaultDato+".0"+defaultMonth+"."+defaultYear);
+						}
+					else if (defaultDato<10) {
+						datoField.setText("0"+defaultDato+"."+defaultMonth+"."+defaultYear);
+						}
+					else if (defaultMonth<10) {
 					datoField.setText(defaultDato+".0"+defaultMonth+"."+defaultYear);
 					}
 					else {
@@ -243,7 +249,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					                            .addGap(0, 0, Short.MAX_VALUE))
 					                        .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-					                            .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					                            .addComponent(overlappingMessage, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					                            .addGap(0, 34, Short.MAX_VALUE))))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addGroup(jPanel1Layout.createParallelGroup()
@@ -251,7 +257,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					                        .addComponent(romComboBox1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					                        .addComponent(headerTextField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
 					                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-					                    .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+					                    .addComponent(inValidDateMessage, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					                    .addGap(0, 8, Short.MAX_VALUE))
 					                .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					                    .addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
@@ -269,7 +275,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(datoField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					    .addComponent(inValidDateMessage, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(datoLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -282,7 +288,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					        .addComponent(starttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 					    .addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 					        .addGap(0, 13, Short.MAX_VALUE)
-					        .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
+					        .addComponent(overlappingMessage, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(sluttid, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					    .addComponent(sluttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -320,33 +326,25 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == lagreButton){
-			boolean gyldigeFelt = true;
-			if (headerTextField.getText().equals("")){
-				gyldigeFelt = false;
+			
+			
+			if (!isValidDate(datoField.getText())) {
+				inValidDateMessage.setText("invalid date");
+				overlappingMessage.setText("");
 			}
-			else if (jTextArea1.getText().equals("")){
-				gyldigeFelt = false;
+			else if (overlapping()){
+				inValidDateMessage.setText("");
+				overlappingMessage.setText("overlappende avtale");
 			}
-			if (gyldigeFelt) {
-				try{
-					String[] dato = datoField.getText().replace("/", ".").split(".");
-					int year = Integer.parseInt(dato[2]);
-					int month = Integer.parseInt(dato[1]);
-					int day = Integer.parseInt(dato[0]);
-					Avtale tempAvtale = new Avtale(headerTextField.getText(), jTextArea1.getText(), mainKal.getPerson(), Integer.parseInt((String) starttid.getSelectedItem()), Integer.parseInt((String)sluttid.getSelectedItem()), day, month, year );
-					dispose();
-				}
-				catch(Exception error){
-					error.printStackTrace();
-				}
-				
+			else {
+				addAvtale();
+				hide();
 			}
-			// må kunne lagre avtalen, og legge den til på rett sted i kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){
 			//kal kal = new kal();
 			//kal.show();
-			this.dispose();
+			hide();
 		}
 		
 	}
@@ -359,6 +357,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	    //set the format to use as a constructor argument
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	    
+	    
 	    if (inDate.trim().length() != dateFormat.toPattern().length())
 	      return false;
 
@@ -367,12 +366,78 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	    try {
 	      //parse the inDate parameter
 	      dateFormat.parse(inDate.trim());
+	      
 	    }
 	    catch (ParseException pe) {
 	      return false;
 	    }
+	    
 	    return true;
 	  }
+	
+	private boolean overlapping() {
+		
+		String[] a = datoField.getText().split("\\.");
+		
+		int inDato = Integer.valueOf(a[0]);
+		int inMnd = Integer.valueOf(a[1]);
+		int inAar = Integer.valueOf(a[2]);
+		
+		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
+		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		
+		
+		Person person= mainKal.getConnectedPerson();
+		ArrayList<Avtale> avtaler = person.getAvtaler();
+		
+		for (int i = 0; i<avtaler.size(); i++) {
+		 
+			Avtale current = avtaler.get(i);
+			
+			if (current.getDatoAar()==inAar) {
+				if (current.getDatoMnd()==inMnd) {
+					if (current.getDatoDag()==inDato) {
+						
+						if ((startTime>=current.getStarttid() && startTime <= current.getSluttid()-1) || (sluttTime>=current.getStarttid()+1 && sluttTime <= current.getSluttid()) || (sluttTime>=current.getSluttid() && startTime <= current.getStarttid()))  {
+							return true;
+						}
+					}
+				}
+			}
+			
+		}
+		return false;
+	}
+	
+	private void addAvtale() {
+		
+		String[] a = datoField.getText().split("\\.");
+		
+		int inDato = Integer.valueOf(a[0]);
+		int inMnd = Integer.valueOf(a[1]);
+		int inAar = Integer.valueOf(a[2]);
+		
+		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
+		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		
+		
+		Person person= mainKal.getConnectedPerson();
+		ArrayList<Avtale> avtaler = person.getAvtaler();
+		
+		Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar);
+		
+		person.addAvtale(newAvtale);
+		
+		mainKal.setConnectedPerson(person);
+		
+		mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
+		
+		
+		
+		
+	}
+
+
 
 
 }

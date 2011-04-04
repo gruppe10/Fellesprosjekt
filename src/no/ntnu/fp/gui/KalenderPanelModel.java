@@ -202,6 +202,7 @@ class KalenderPanelModel extends AbstractTableModel {
     }
     
     public void addAvtaleToPanel(Avtale a) {
+    	
     	if (avtaleErIdenneUka(a)) {
         	avtaleListe.add(a);
         }
