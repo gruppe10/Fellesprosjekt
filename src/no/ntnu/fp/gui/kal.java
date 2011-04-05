@@ -314,7 +314,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			mainDate.add(Calendar.WEEK_OF_YEAR, 1);
-			mainDate.add(Calendar.WEEK_OF_YEAR, -1); //wtf? well, if it works...
+			mainDate.add(Calendar.WEEK_OF_YEAR, -1); //wtf? well, if it works... <- Hahaha ^^,
 			mndLabel1.setText(""+(mainDate.get(Calendar.MONTH)+1));
 			ukeLabel.setText(""+(mainDate.get(Calendar.WEEK_OF_YEAR)));
 
