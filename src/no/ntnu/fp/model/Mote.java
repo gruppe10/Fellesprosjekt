@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Klient.KlientOS;
+
 public class Mote extends Avtale implements Serializable{
 	
 	
@@ -15,6 +17,9 @@ public class Mote extends Avtale implements Serializable{
 			int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom, Map<Person, Status> deltakere){
 		super(navn, beskrivelse, initiativtaker, starttid, sluttid, datoDag, datoMnd, datoAar, rom);
 		this.deltakere = deltakere;
+		
+		KlientOS klient = new KlientOS(6789, "ip server");
+		klient.sendObjectAndGetResponse(this);
 		
 		for (Person deltaker : deltakere.keySet()){
 			sendInnkallelse(deltaker, this, "invitasjon");

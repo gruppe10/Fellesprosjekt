@@ -435,19 +435,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				addMote();
 				dispose();
 			}
-			String tittel = headerTextField.getText();
-			String dato = datoField.getText();
-			String starttid = starttid.getSelectedItem();
-			String sluttid = sluttid.getSelectedItem();
-			String rom = (String) Moeterom.getSelectedItem();
-			String beskrivelse = beskrivelseTextArea.getText();
 			
-			String moeteInfo = tittel+","+dato+","+starttid+","+sluttid+","+rom+","+beskrivelse;
-			
-			Envelope toSend = new Envelope(Action.SELECT, moeteInfo);
-			Object o = KlientOS.sendObjectAndGetResponse(toSend);
-			
-			//hvordan hente ut deltakere og sende innkallelse til de ?
 
 
 		}
