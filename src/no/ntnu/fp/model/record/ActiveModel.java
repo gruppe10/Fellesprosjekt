@@ -8,7 +8,11 @@ package no.ntnu.fp.model.record;
  *   formatIntFrom(Date date)
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.sql.*;
+import java.util.Scanner;
 
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
@@ -27,7 +31,7 @@ public class ActiveModel {
 	
 	protected static void connect() throws SQLException{
 		try{
-			connection =  DriverManager.getConnection("jdbc:derby:" + db_url, admin_name, admin_pwd );
+			connection =  DriverManager.getConnection("jdbc:derby:" + db_url + ";create=true", admin_name, admin_pwd );
 		}
 		catch(SQLException e){
 			connection = null;
@@ -125,4 +129,25 @@ public class ActiveModel {
 			return "Tabel Har feil Navn";
 		}
 	}	
+	
+	protected static void createDB(){
+		try{
+			connect();
+			Statement s = connection.createStatement();
+			String sql = new String();
+			File file = new File("db-derby/create_db.sql");
+			
+			Scanner scanner = new Scanner(file, "UTF-8");
+			while(scanner.hasNext()){
+				sql += scanner.nextLine();
+			}
+			
+			s.execute(sql);
+			connection.close();
+			
+		}catch(Exception e ){
+			System.out.println("Fikk ikke laget db.");
+			System.out.println("Fordi " + e.getMessage());
+		}
+	}
 }
