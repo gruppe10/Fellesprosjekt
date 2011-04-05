@@ -33,8 +33,8 @@ public class Avtale implements Serializable{
 		this.datoDag = datoDag;
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
-		this.rom=rom;
-		KlientOS klient = new KlientOS(6789, "ip server");
+		this.rom = rom;
+		KlientOS klient = KlientOS.getInstance();
 		klient.sendObjectAndGetResponse(this);
 		
 	}
@@ -48,7 +48,7 @@ public class Avtale implements Serializable{
 		this.datoDag = datoDag;
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
-		KlientOS klient = new KlientOS(6789, "ip server");
+		KlientOS klient = KlientOS.getInstance();
 		klient.sendObjectAndGetResponse(this);
 	}
 	public Avtale(){
@@ -160,7 +160,7 @@ public class Avtale implements Serializable{
 		this.navn = navn;
 		this.beskrivelse = beskrivelse;
 		this.rom = moterom;
-		KlientOS klient = new KlientOS(6789, "ip server");
+		KlientOS klient = KlientOS.getInstance();
 		klient.sendObjectAndGetResponse(this);
 		
 	}

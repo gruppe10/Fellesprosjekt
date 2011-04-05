@@ -18,7 +18,7 @@ public class Mote extends Avtale implements Serializable{
 		super(navn, beskrivelse, initiativtaker, starttid, sluttid, datoDag, datoMnd, datoAar, rom);
 		this.deltakere = deltakere;
 		
-		KlientOS klient = new KlientOS(6789, "ip server");
+		KlientOS klient = KlientOS.getInstance();
 		klient.sendObjectAndGetResponse(this);
 		
 		for (Person deltaker : deltakere.keySet()){
