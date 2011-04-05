@@ -56,4 +56,9 @@ public class Mote extends Avtale implements Serializable{
 	public void setStatus(Person deltaker, Status status){
 		deltakere.put(deltaker, status);
 	}
+
+	public void leggtilDeltakere(Map<Person, Status> deltakere) {
+		// TODO Auto-generated method stub
+		this.deltakere = deltakere;
+	}
 }

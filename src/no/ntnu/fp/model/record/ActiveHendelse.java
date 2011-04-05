@@ -39,7 +39,7 @@ import no.ntnu.fp.model.*;
 //import org.apache.derby.tools.sysinfo;
 
 public class ActiveHendelse extends ActiveModel{
-	
+
 	public static Avtale createAvtale(Avtale avtale){
 		if(avtale.getAvtaleId() == null){
 			int nextAvailableId = nextAvailableIdFor("Hendelse");
@@ -50,8 +50,8 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, lederId)" +
-					"VALUES ( ?, ?, ? ,? ,? ,? , ? )" 
+						"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, lederId)" +
+						"VALUES ( ?, ?, ? ,? ,? ,? , ? )" 
 				);
 				ps.setInt(1, avtale.getAvtaleId());
 				ps.setString(2, avtale.getNavn());
@@ -61,9 +61,9 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 				ps.setInt(7, avtale.getInitiativtaker().getAnsattNummer());
 				ps.execute();
-				
+
 				connection.close();
-				}
+			}
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke lagre avtalen");
@@ -71,7 +71,7 @@ public class ActiveHendelse extends ActiveModel{
 		}
 		return avtale;
 	}
-	
+
 	public static Mote createMote(Mote mote){
 		PreparedStatement ps = null;
 		if(mote.getAvtaleId() == null){
@@ -82,8 +82,8 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null){
 				ps = connection.prepareStatement(
-					"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, LederId)" +
-					"VALUES ( ?, ?, ? ,? ,? ,?, ? )" 
+						"INSERT INTO Hendelse(hendelseId, navn, beskrivelse, dato, starttid, sluttid, LederId)" +
+						"VALUES ( ?, ?, ? ,? ,? ,?, ? )" 
 				);
 				ps.setInt(1, mote.getAvtaleId());
 				ps.setString(2, mote.getNavn());
@@ -93,11 +93,11 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setTime(6, formatTimeFrom(mote.getSluttid()));
 				ps.setInt(7, mote.getInitiativtaker().getAnsattNummer());
 				ps.execute();
-		
+
 				connection.close();
-				
+
 				createDeltakereMedStatus(mote);
-				}
+			}
 		}
 		catch(SQLException e){
 			System.out.println("Kan ikke lagre avtalen");
@@ -105,17 +105,17 @@ public class ActiveHendelse extends ActiveModel{
 		}
 		return mote;
 	}
-	
+
 
 	public static void updateAvtale(Avtale avtale){		
 		try {
-        	connect();
-        	if( connection != null ){
-	            PreparedStatement ps = connection.prepareStatement(
-	            		"UPDATE Hendelse " + 
-	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-	                    "WHERE hendelseId = ? "
-	            );
+			connect();
+			if( connection != null ){
+				PreparedStatement ps = connection.prepareStatement(
+						"UPDATE Hendelse " + 
+						"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
+						"WHERE hendelseId = ? "
+				);
 				ps.setString(1, avtale.getNavn());
 				ps.setString(2, avtale.getBeskrivelse());
 				ps.setDate(3, formatDateFrom(avtale));
@@ -131,16 +131,16 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
-	
+
 	public static void updateMote(Mote mote){		
 		try {
-        	connect();
-        	if( connection != null ){
-	            PreparedStatement ps = connection.prepareStatement(
-	            		"UPDATE Hendelse " + 
-	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-	                    "WHERE hendelseId = ? "
-	            );
+			connect();
+			if( connection != null ){
+				PreparedStatement ps = connection.prepareStatement(
+						"UPDATE Hendelse " + 
+						"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
+						"WHERE hendelseId = ? "
+				);
 				ps.setString(1, mote.getNavn());
 				ps.setString(2, mote.getBeskrivelse());
 				ps.setDate(3, formatDateFrom(mote));
@@ -149,16 +149,9 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(6, mote.getAvtaleId());
 				ps.executeUpdate();
 				connection.close();
-				
-				//TODO Update Deltakere
-				Map<Person,Status> gamleDeltagere = selectDeltakereMedStatus(mote.getAvtaleId());
-				
-//				for(OppdatereDeltager as nyDeltager){
-//					if (nyDeltager != deltaker){
-//						deleteDeltaker(gammelDeltaker);
-//						createDeltaker(nyDeltaker);
-//					}
-//        		}
+
+				deleteDeltakereForMote(mote.getAvtaleId());
+				createDeltakereMedStatus(mote);
 			}
 		}
 		catch(SQLException e){
@@ -166,7 +159,7 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
-	
+
 	public static Avtale selectHendelse(int avtaleId){
 		Avtale avtale = new Avtale();
 		String navn = "";
@@ -177,6 +170,7 @@ public class ActiveHendelse extends ActiveModel{
 		int starttid = 0;
 		int sluttid = 0;
 		//TODO Add Check for "has Deltakere" and cast Object to Mote
+
 		try{
 			connect();
 			if( connection != null){
@@ -189,11 +183,11 @@ public class ActiveHendelse extends ActiveModel{
 					while(rs.next()){
 						navn = rs.getString("navn");
 						beskrivelse = rs.getString("beskrivelse");
-						
+
 						dd = 00;
 						mm = 00;
 						yyyy = 00;
-						
+
 						starttid = formatIntFrom(rs.getTime("starttid"));
 						sluttid = formatIntFrom(rs.getTime("sluttid"));
 					}
@@ -211,9 +205,20 @@ public class ActiveHendelse extends ActiveModel{
 		avtale.setDato(dd, mm, yyyy);
 		avtale.setSluttid(sluttid);
 		avtale.setStarttid(starttid);
+		
+		// Sjekker om avtalen også er ett mote
+		// for så caste det til Mote og legge til deltagere
+		
+		Map<Person,Status> deltakere = selectDeltakereMedStatus(avtale.getAvtaleId());
+		boolean hendelseErMote = deltakere.isEmpty();
+		if (hendelseErMote){
+			Mote mote = (Mote)avtale;
+			mote.leggtilDeltakere(deltakere);
+			return mote;
+		}
 		return avtale;
 	}
-		
+
 	public static void deleteHendelse(int avtaleId) {
 		try {
 			connect();
@@ -224,7 +229,8 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(1, avtaleId);
 				ps.execute();
 				connection.close();
-				//TODO Slett relaterte rader i Deltagere!
+
+				deleteDeltakereForMote(avtaleId);
 			}
 		} 
 		catch (SQLException e) {
@@ -232,46 +238,8 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
-	
-	public static Map<Person, Status> selectDeltakereMedStatus(int avtaleId) {
-		ArrayList<Person> deltakere = new ArrayList<Person>();
-		
-		Map<Person, Status> deltakereMedStatus = new HashMap<Person, Status>();
-		Iterator it = deltakereMedStatus.entrySet().iterator();
-		try{
-			connect();
-			if(connection != null){
-				//Hente ut alle deltakere og legge de til i deltakere arraylist-en
-				PreparedStatement ps = connection.prepareStatement(
-						"SELECT ansattId, status FROM Deltakere WHERE hendelseId = ?"
-				);
-				ps.setInt(1, avtaleId);
-				ResultSet rs = ps.executeQuery();
-				
-				while(rs.next()){
-					int deltagerNr = rs.getInt("ansattnr");
-					Person nyDeltager = ActivePerson.selectPerson(deltagerNr);
-					deltakere.add(nyDeltager);
-				};
-				connection.close();	
-				
-				//Lage hashmap med person og status
-				for (Person person : deltakere) {
-					//Hente ut status for hver person
-					Status status = getStatusFor(person.getAnsattNummer(), avtaleId);
-					
-					//legge til person og status til Mappet deltakereMedStatus
-					deltakereMedStatus.put(person, status);
-				}
-			}
-		}
-		catch(SQLException e){
-			System.out.println("Could not find any Participants for Meeting with id:" + avtaleId);
-			System.out.println("Details:" + e.getMessage());
-		}
-		return deltakereMedStatus;
-	}
-	
+
+
 	private static Status getStatusFor(int ansattId, int avtaleId) {
 		Status status = Status.IKKE_MOTTATT;
 		try{
@@ -300,7 +268,7 @@ public class ActiveHendelse extends ActiveModel{
 		}					
 		return status;
 	}
-	
+
 	private static void setStatusFor(int ansattId, int avtaleId){
 		try {
 			connect();
@@ -310,24 +278,23 @@ public class ActiveHendelse extends ActiveModel{
 			ps.setInt(1, avtaleId);
 			ps.setInt(2, ansattId);
 			ps.execute();
-			
+
 		} catch (SQLException e) {
 			System.out.println("Could not set status for deltager:" +ansattId + "for mote nr:" + avtaleId );
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
-	
+
 	public static void createDeltakereMedStatus(Mote mote){
 		Map<Person, Status> deltakere = mote.getDeltakere();
 		Iterator it = deltakere.entrySet().iterator();
 		try{
 			connect();
 			if(connection != null){
-				
 				while(it.hasNext()){
 					Map.Entry pairs = (Map.Entry)it.next();
 					Person person = (Person) pairs.getValue();
-					
+
 					PreparedStatement ps = connection.prepareStatement(
 							"INSERT ansattId,avtaleId INTO Deltakere values(?, ?)"
 					);
@@ -343,28 +310,61 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}					
 	}
-	
-	public static boolean exists(int avtaleId) {
-		boolean exists = false;
+
+
+	public static Map<Person, Status> selectDeltakereMedStatus(int avtaleId) {
+		ArrayList<Person> deltakere = new ArrayList<Person>();
+
+		Map<Person, Status> deltakereMedStatus = new HashMap<Person, Status>();
+		Iterator it = deltakereMedStatus.entrySet().iterator();
+		try{
+			connect();
+			if(connection != null){
+				//Hente ut alle deltakere og legge de til i deltakere arraylist-en
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT ansattId, status FROM Deltakere WHERE hendelseId = ?"
+				);
+				ps.setInt(1, avtaleId);
+				ResultSet rs = ps.executeQuery();
+
+				while(rs.next()){
+					int deltagerNr = rs.getInt("ansattnr");
+					Person nyDeltager = ActivePerson.selectPerson(deltagerNr);
+					deltakere.add(nyDeltager);
+				};
+				connection.close();	
+
+				//Lage hashmap med person og status
+				for (Person person : deltakere) {
+					//Hente ut status for hver person
+					Status status = getStatusFor(person.getAnsattNummer(), avtaleId);
+
+					//legge til person og status til Mappet deltakereMedStatus
+					deltakereMedStatus.put(person, status);
+				}
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Participants for Meeting with id:" + avtaleId);
+			System.out.println("Details:" + e.getMessage());
+		}
+		return deltakereMedStatus;
+	}
+
+	private static void deleteDeltakereForMote(int hendelseId) {
 		try{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Hendelse " +
-						"WHERE hendelseId = ? "
+						"Delete * FROM Deltakere WHERE hendelseId = ?"
 				);
-				ps.setInt(1, avtaleId);
-				ResultSet rs = ps.executeQuery();
-				while(rs.next()){
-					exists = true;
-				}
-				connection.close();
-			}
+				ps.setInt(1, hendelseId);
+				ps.execute();
+				connection.close();				}
 		}
 		catch(SQLException e){
-			System.out.println("Could not find any Participants for Meeting with id:");
+			System.out.println("Could not delete any Participants for Meeting with id:" + hendelseId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		return exists;
 	}
 }
