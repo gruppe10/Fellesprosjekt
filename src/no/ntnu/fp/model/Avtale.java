@@ -36,7 +36,8 @@ public class Avtale implements Serializable{
 		this.rom = rom;
 		if (!(this instanceof Mote)) {
 			KlientOS klient = KlientOS.getInstance();
-			klient.sendObjectAndGetResponse(this);
+			Envelope e = new Envelope(Action.UPDATE, this);
+			klient.sendObjectAndGetResponse(e);
 		}
 		
 	}
@@ -166,7 +167,7 @@ public class Avtale implements Serializable{
 		this.rom = moterom;
 		if (!(this instanceof Mote)) {
 			KlientOS klient = KlientOS.getInstance();
-			klient.sendObjectAndGetResponse(this);
+			klient.sendObjectAndGetResponse(new Envelope(Action.UPDATE, this));
 		}
 		
 	}
