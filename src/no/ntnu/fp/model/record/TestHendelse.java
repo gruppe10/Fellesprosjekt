@@ -100,6 +100,7 @@ public class TestHendelse {
 	private static void testSelectAvtale(){
 		int ansattnr = 10002;
 		Avtale avtale = ActiveHendelse.selectHendelse(ansattnr);
+
 		System.out.println("Avtalen har navnet:" + avtale.getNavn() + ".");
 	}
 	
@@ -133,3 +134,4 @@ public class TestHendelse {
 		System.out.println("testUtført");
 	}
 }
+
