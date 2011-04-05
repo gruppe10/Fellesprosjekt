@@ -36,7 +36,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectHendelse(avtale.getAvtaleId());
+				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
 				break;
 			}
 			System.out.println("Recieved and handled Avtale");
@@ -61,7 +61,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				mote = (Mote) ActiveHendelse.selectHendelse(mote.getAvtaleId());
+				mote = (Mote) ActiveHendelse.selectMote(mote.getAvtaleId());
 				break;
 			}
 			System.out.println("Recieved and handled Møte");
