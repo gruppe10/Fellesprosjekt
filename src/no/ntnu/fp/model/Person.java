@@ -143,7 +143,6 @@ public class Person implements Serializable{
 		dateOfBirth = new Date();
 		id = System.currentTimeMillis();
 		propChangeSupp = new PropertyChangeSupport(this);
-		//this.ansattNummer = ActivePerson.getMaxId()+1;
 	}
 	
 	/**
