@@ -59,6 +59,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 	private JLabel passordLabel;
 	private JLabel kalendersystemLabel;
 	private JButton loggInnButton;
+	private KlientOS klient = KlientOS.getInstance();
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -175,15 +176,19 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 			String brukernavn = brukernavnField.getText();
 			String passord = passordField.getText();
 			String loginInfo = brukernavn+","+passord;
-
+			
+			
+			
 			Envelope e = new Envelope(Action.SELECT, loginInfo);
-			Boolean isApproved = (Boolean)KlientOS.sendObjectAndGetResponse(e);
+			Boolean isApproved = (Boolean)klient.sendObjectAndGetResponse(e);
 			
 			if(isApproved){
 				Person bruker = new Person();
 				bruker.setBrukerNavn(brukernavn);
+				klient.setLoginPerson(bruker);
+				
 				e = new Envelope(Action.SELECT, bruker);
-				Person user = (Person)KlientOS.sendObjectAndGetResponse(e);
+				Person user = (Person)klient.sendObjectAndGetResponse(e);
 				kal kal = new kal((Person)bruker);
 				kal.show();
 				dispose();
