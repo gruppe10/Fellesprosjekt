@@ -24,7 +24,7 @@ import no.ntnu.fp.model.Person;
 public class KlientOS extends TimerTask{
 	//Endre port og adresse til serveren her.
 	public static int port = 6789;
-	public static String serverAddress = "78.91.2.252";
+	public static String serverAddress = "127.0.0.1";
 	
 	
 	
