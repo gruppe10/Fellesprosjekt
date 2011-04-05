@@ -182,7 +182,7 @@ public class ActiveModel {
 					"FOREIGN KEY(hendelseId) REFERENCES Hendelse(hendelseId) ON DELETE CASCADE" +
 					")"
 			);
-
+			
 			connection.close();
 
 		}catch(Exception e ){

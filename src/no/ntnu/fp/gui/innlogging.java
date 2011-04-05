@@ -175,7 +175,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 		if(evt.getSource() == loggInnButton){
 			String brukernavn = brukernavnField.getText();
 			String passord = passordField.getText();
-			String loginInfo = brukernavn+","+passord;
+			String loginInfo = brukernavn + "," + passord;
 			
 			
 			
@@ -192,7 +192,11 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 				kal kal = new kal((Person)bruker);
 				kal.show();
 				dispose();
+			}else{
+				System.out.println("Faila å logge inn!");
+				//TODO Alert user of login error
 			}
+				
 			
 		}
 

@@ -7,11 +7,20 @@ import no.ntnu.fp.model.Person;
 
 public class TestPerson {
 	public static void main(String args[]){
+		Person person = mockPerson();
+		person.setBrukerNavn("jesus");
+		person.setPassord("dance");
+		ActivePerson.createPerson(person);
+		System.out.println("Mission accomplished!");
+		
+		Person p = ActivePerson.selectPersonByUsername("jesus");
+		System.out.println(p.getBrukerNavn() + p.getPassord());
+		
 		//Person person = mockPerson();
 		//person.setAnsattNummer(138);
 		//ActivePerson.createPerson(person);
         
-		testCrud();
+		//testCrud();
 		//testSelectAvtaler();
 	}
 	

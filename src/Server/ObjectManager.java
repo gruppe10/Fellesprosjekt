@@ -17,6 +17,8 @@ import no.ntnu.fp.model.record.*;
 public class ObjectManager {
 
 	public Object manageObject(Object o) {
+		System.out.println("Leave me alone!");
+
 		Envelope e = (Envelope)o;
 
 		Object content = e.getContent();
@@ -95,6 +97,7 @@ public class ObjectManager {
 			return null;
 		}
 		else if( content instanceof String){
+			System.out.println("EG FIKK EN StREng : OMg!");
 			String string = (String)content;
 			boolean approved = ActivePerson.checkPassord(string);
 			return approved;

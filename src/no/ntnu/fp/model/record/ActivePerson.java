@@ -151,7 +151,7 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT Distinct FROM Person WHERE brukernavn = ? "
+						"SELECT * FROM Person WHERE brukernavn = ? "
 				);
 				ps.setString(1, brukernavn);
 				
@@ -278,23 +278,30 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static boolean checkPassord(String innloggingsInfo){
-		String[] info = innloggingsInfo.split("\\,");
-		String brukernavn = info[0];
-		String passord = info[1];
+		String[] info = innloggingsInfo.split(",");
+		String brukernavn = info[0].trim();
+		String passord = info[1].trim();
+		
 		boolean godkjent = false;
 
 		try{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT passord FROM Person WHERE brukernavn = ? "
+						"SELECT distinct passord FROM Person WHERE brukernavn = ? "
 						);
 				ps.setString(1, brukernavn);
 				ResultSet rs = ps.executeQuery(); 
+				
 				if (rs != null){
 					while(rs.next()){
-						if(passord == rs.getString("passord"))
+						System.out.println(passord);
+						System.out.println(rs.getString("passord"));
+						
+						if(passord.equals(rs.getString("passord"))){
 							godkjent = true;
+							System.out.println("Aids");
+						}
 					}
 				}
 				connection.close();
@@ -306,6 +313,4 @@ public class ActivePerson extends ActiveModel{
 		}
 		return godkjent;
 	}
-
-	
 }
