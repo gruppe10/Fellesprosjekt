@@ -48,45 +48,44 @@ public class ObjectManager {
 			return null;
 		}
 		else if(content instanceof Mote){
-			Mote mote =(Mote)content;
+			Mote mote = (Mote)content;
 			switch(action){
 			case UPDATE:
-				if(ActiveHendelse.exists(mote.getAvtaleId())){
+				if(ActiveHendelse.exists("Hendelse", mote.getAvtaleId())){
 					ActiveHendelse.updateMote(mote);
 				}else{
-					ActiveHendelse.createMote(mote);
+					mote = ActiveHendelse.createMote(mote);
 				}
 				break;
 			case DESTROY:
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				return ActiveHendelse.selectHendelse(mote.getAvtaleId());
+				mote = (Mote) ActiveHendelse.selectHendelse(mote.getAvtaleId());
 				break;
 			}
 			System.out.println("Recieved and handled Møte");
-			return null;
+			return mote;
 		}
 		else if( content instanceof Person){	
 			Person person = (Person)content;
 			switch(action){
 			case UPDATE:
-				if(ActivePerson.exists(person.getAnsattNummer())){
+				if(ActivePerson.exists("Person", person.getAnsattNummer())){
 					ActivePerson.createPerson(person);
 				}else{
 					ActivePerson.updatePerson(person);
 				}
 				break;
 			case SELECT:
-				return ActivePerson.selectPerson(person.getAnsattNummer());
+				person = ActivePerson.selectPerson(person.getAnsattNummer());
 				break;
 			case DESTROY:
 				ActivePerson.deletePerson(person.getAnsattNummer());
 				break;
 			}
 			System.out.println("Recieved and handled person");
-			return null;
-
+			return person;
 		}
 		else if( content instanceof Rom){
 			System.out.println("rom");
@@ -99,6 +98,4 @@ public class ObjectManager {
 		}
 		return null;
 	}
-
 }
-
