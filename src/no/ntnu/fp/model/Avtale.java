@@ -137,7 +137,7 @@ public class Avtale implements Serializable{
 	
 	
 	public void selectDeltagereMedStatus(){
-		deltakereMedStatus = ActiveHendelse.selectDeltagereMedStatus(avtaleId);
+		deltakereMedStatus = ActiveHendelse.selectDeltakereMedStatus(avtaleId);
 	}
 	
 	public Rom getMoterom() {
