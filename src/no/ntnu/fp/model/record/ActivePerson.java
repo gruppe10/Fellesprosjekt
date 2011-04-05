@@ -301,9 +301,11 @@ public class ActivePerson extends ActiveModel{
 			}
 		}
 		catch( SQLException e){
-			System.out.println("Kan ikke finner person med id = " );
+			System.out.println("Kan ikke finne person med id = " );
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
 		return godkjent;
 	}
+
+	
 }
