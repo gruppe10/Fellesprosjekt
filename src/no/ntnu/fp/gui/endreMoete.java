@@ -56,7 +56,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JMenuItem jMenuItem1;
 	private JComboBox Moeterom;
 	private JLabel jLabel1;
-	private JList deljList1;
+	private JScrollPane muligeDeltakereScroll;
+	private JList muligeDeltakereList;
 	private DefaultListModel deljList1Model;
 	private JLabel slutttidLabel;
 	private JComboBox sluttidCombo;
@@ -134,13 +135,24 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			{
 //				Test
 				Person p2 = new Person();
+				p2.setName("Kåre");
 				Person p1 = new Person();
+				p1.setName("Ida");
 				
-				ListModel deljList1Model = 
-					new DefaultComboBoxModel(
-							new Person[] { p1, p2});
-				deljList1 = new JList();
-				deljList1.setModel(deljList1Model);
+				muligeDeltakereScroll = new JScrollPane();
+				{
+					deljList1Model = 
+						new DefaultListModel();
+					muligeDeltakereList = new JList();
+					deljList1Model.addElement(p1);
+					deljList1Model.addElement(p2);
+					muligeDeltakereScroll.setViewportView(muligeDeltakereList);
+					muligeDeltakereList.setModel(deljList1Model);
+					muligeDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+					
+				}
+				
+				
 			}
 			{
 				ComboBoxModel stjComboBox1Model = 
@@ -219,20 +231,18 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			{
 //				Test
 				Person p1 = new Person();
+				p1.setName("Bob");
 				Person p2 = new Person();
+				p2.setName("Liv");
 				
 				valgteDeltakere = new JScrollPane();
 				{
-					DefaultListModel deltakereListModel = 
+					deltakereListModel = 
 						new DefaultListModel();
 					deltakereList = new JList();
 					deltakereListModel.addElement(p1);
 					deltakereListModel.addElement(p2);
-					deltakereListModel.addElement(p2);
-					deltakereListModel.addElement(p2);
-					deltakereListModel.addElement(p2);
-					deltakereListModel.addElement(p2);
-					deltakereListModel.addElement(p2);
+					
 					valgteDeltakere.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereListModel);
 					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -296,7 +306,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 					.addComponent(nyttMoeteLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(thisLayout.createParallelGroup()
-						.addComponent(deljList1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(muligeDeltakereScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 							.addGap(17)
 							.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
@@ -415,7 +425,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 									.addComponent(valgteDeltakere, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 255, Short.MAX_VALUE))
 								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-									.addComponent(deljList1, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addComponent(muligeDeltakereScroll, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 255, Short.MAX_VALUE))
 								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 									.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
@@ -435,16 +445,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == fjernDeltakerButton){
-			DefaultListModel model = (DefaultListModel) deltakereList.getModel();
-			if(model.contains(deljList1.getSelectedValue())){
-				model.removeElement(deljList1.getSelectedValue());
+			if(deltakereListModel.contains(muligeDeltakereScroll.getSelectedValue())){
+				deltakereListModel.removeElement(muligeDeltakereScroll.getSelectedValue());
 				
 			}
 		}
 		else if(evt.getSource() == leggTilDeltakerButton){
-			DefaultListModel model = (DefaultListModel) deltakereList.getModel();
-			if(model.contains(deljList1.getSelectedValue())){
-				model.addElement(deljList1.getSelectedValue());
+			if(deltakereListModel.contains(muligeDeltakereScroll.getSelectedValue())){
+				deltakereListModel.addElement(muligeDeltakereScroll.getSelectedValue());
 			}	
 		}
 		
