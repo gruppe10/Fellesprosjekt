@@ -57,6 +57,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JComboBox Moeterom;
 	private JLabel jLabel1;
 	private JList deljList1;
+	private DefaultListModel deljList1Model;
 	private JLabel slutttidLabel;
 	private JComboBox sluttidCombo;
 	private JComboBox starttidCombo;
@@ -73,6 +74,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JLabel datoLabel;
 	private JLabel nyttMoeteLabel;
 	private JList deltakereList;
+	private DefaultListModel deltakereListModel;
 	private JScrollPane valgteDeltakere;
 	private JTextArea beskrivelseTextArea;
 	private Rom noRom;
@@ -224,9 +226,17 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 					DefaultListModel deltakereListModel = 
 						new DefaultListModel();
 					deltakereList = new JList();
+					deltakereListModel.addElement(p1);
+					deltakereListModel.addElement(p2);
+					deltakereListModel.addElement(p2);
+					deltakereListModel.addElement(p2);
+					deltakereListModel.addElement(p2);
+					deltakereListModel.addElement(p2);
+					deltakereListModel.addElement(p2);
 					valgteDeltakere.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereListModel);
 					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+					
 				}
 			}
 			{
@@ -295,7 +305,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 							.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(17))
-						.addComponent(valgteDeltakere, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(valgteDeltakere, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 						
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -402,7 +412,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 											.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
 											.addGap(0, 0, Short.MAX_VALUE))))
 								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-									.addComponent(valgteDeltakere, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addComponent(valgteDeltakere, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 255, Short.MAX_VALUE))
 								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 									.addComponent(deljList1, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
@@ -428,6 +438,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			DefaultListModel model = (DefaultListModel) deltakereList.getModel();
 			if(model.contains(deljList1.getSelectedValue())){
 				model.removeElement(deljList1.getSelectedValue());
+				
 			}
 		}
 		else if(evt.getSource() == leggTilDeltakerButton){

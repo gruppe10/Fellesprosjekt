@@ -341,7 +341,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 					Status cStatus=current.getDeltakere().get(person);
 					
 					if (cStatus==Status.IKKE_MOTTATT) {
-						//Do something
+						//make new notis, add to notiser (Innboksen)
 						
 					}
 				}
