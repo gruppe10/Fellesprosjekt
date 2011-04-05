@@ -70,8 +70,7 @@ public class ObjectManager {
 			System.out.println("moete");
 			return null;
 		}
-		else if( content instanceof Person){
-
+		else if( content instanceof Person){			
 			ActivePerson.createPerson((Person)o);
 
 			System.out.println("person");
@@ -80,6 +79,9 @@ public class ObjectManager {
 		else if( content instanceof Rom){
 			System.out.println("rom");
 			return null;
+		}
+		else if( content instanceof String){
+			
 		}
 
 		return null;
