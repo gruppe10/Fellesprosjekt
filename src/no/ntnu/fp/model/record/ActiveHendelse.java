@@ -26,9 +26,6 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,7 +40,7 @@ import no.ntnu.fp.model.*;
 
 public class ActiveHendelse extends ActiveModel{
 	
-	public static void createAvtale(Avtale avtale){
+	public static Avtale createAvtale(Avtale avtale){
 		if(avtale.getAvtaleId() == null){
 			int nextAvailableId = nextAvailableIdFor("Hendelse");
 			avtale.setAvtaleId((nextAvailableId));
@@ -72,9 +69,10 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Kan ikke lagre avtalen");
 			System.out.println("Details:" + e.getMessage());
 		}
+		return avtale;
 	}
 	
-	public static void createMote(Mote mote){
+	public static Mote createMote(Mote mote){
 		PreparedStatement ps = null;
 		if(mote.getAvtaleId() == null){
 			int nyId = nextAvailableIdFor("Hendelse");
@@ -105,6 +103,7 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Kan ikke lagre avtalen");
 			System.out.println("Details:" + e.getMessage());
 		}
+		return mote;
 	}
 	
 

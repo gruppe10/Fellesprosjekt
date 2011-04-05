@@ -28,7 +28,8 @@ public class ObjectManager {
 				if(ActiveHendelse.exists(avtale.getAvtaleId())){
 					ActiveHendelse.updateAvtale(avtale);
 				}else{
-					ActiveHendelse.createAvtale(avtale);
+					Avtale avtaleWithNewId = ActiveHendelse.createAvtale(avtale);
+					return avtaleWithNewId;
 				}
 				break;
 			case DESTROY:
@@ -60,7 +61,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectHendelse(mote.getAvtaleId());
+				return ActiveHendelse.selectHendelse(mote.getAvtaleId());
 				break;
 			}
 			System.out.println("Recieved and handled Møte");
@@ -77,7 +78,7 @@ public class ObjectManager {
 				}
 				break;
 			case SELECT:
-				ActivePerson.selectPerson(person.getAnsattNummer());
+				return ActivePerson.selectPerson(person.getAnsattNummer());
 				break;
 			case DESTROY:
 				ActivePerson.deletePerson(person.getAnsattNummer());
@@ -93,9 +94,9 @@ public class ObjectManager {
 		}
 		else if( content instanceof String){
 			String string = (String)content;
-			ActivePerson.checkPassord(string);
+			boolean approved = ActivePerson.checkPassord(string);
+			return approved;
 		}
-
 		return null;
 	}
 
