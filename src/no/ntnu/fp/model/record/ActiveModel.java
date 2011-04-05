@@ -27,9 +27,10 @@ public class ActiveModel {
 	
 	protected static void connect() throws SQLException{
 		try{
-			connection =  DriverManager.getConnection("jdbc:derby:" + db_url, admin_name, admin_pwd );
+			 Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+			connection =  DriverManager.getConnection("jdbc:derby:Kalender;create=false");
 		}
-		catch(SQLException e){
+		catch(Exception e){
 			connection = null;
 			System.out.println("Kan ikke koble til database");
 			System.out.println("Details:" + e.getMessage());
