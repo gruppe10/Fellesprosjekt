@@ -277,4 +277,33 @@ public class ActivePerson extends ActiveModel{
 		return hendelserUtenDeltagere;
 	}
 	
+	public static boolean checkPassord(String innloggingsInfo){
+		String[] info = innloggingsInfo.split("\\,");
+		String brukernavn = info[0];
+		String passord = info[1];
+		boolean godkjent = false;
+
+		try{
+			connect();
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT passord FROM Person WHERE brukernavn = ? "
+						);
+				ps.setString(1, brukernavn);
+				ResultSet rs = ps.executeQuery(); 
+				if (rs != null){
+					while(rs.next()){
+						if(passord == rs.getString("passord"))
+							godkjent = true;
+					}
+				}
+				connection.close();
+			}
+		}
+		catch( SQLException e){
+			System.out.println("Kan ikke finner person med id = " );
+			System.out.println("ErrorMessage:" + e.getMessage());
+		}
+		return godkjent;
+	}
 }
