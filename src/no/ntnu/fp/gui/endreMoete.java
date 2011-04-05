@@ -445,14 +445,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == fjernDeltakerButton){
-			if(deltakereListModel.contains(muligeDeltakereScroll.getSelectedValue())){
-				deltakereListModel.removeElement(muligeDeltakereScroll.getSelectedValue());
+			if(deltakereListModel.contains(muligeDeltakereList.getSelectedValue())){
+				deltakereListModel.removeElement(muligeDeltakereList.getSelectedValue());
 				
 			}
 		}
 		else if(evt.getSource() == leggTilDeltakerButton){
-			if(deltakereListModel.contains(muligeDeltakereScroll.getSelectedValue())){
-				deltakereListModel.addElement(muligeDeltakereScroll.getSelectedValue());
+			if(deltakereListModel.contains(muligeDeltakereList.getSelectedValue())){
+				deltakereListModel.addElement(muligeDeltakereList.getSelectedValue());
 			}	
 		}
 		
