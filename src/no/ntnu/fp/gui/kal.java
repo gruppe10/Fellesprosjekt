@@ -108,6 +108,9 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		super();
 		mainDate=Calendar.getInstance();
 		setConnectedPerson(bruker);
+		
+		updateInbox();
+		
 		avtaler = bruker.getAvtaler();
 		initGUI();
 	}
@@ -171,7 +174,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				jPanel1.setVisible(true);
 				{
 					nyttMoeteButton = new JButton();
-					nyttMoeteButton.setText("Nytt Møte");
+					nyttMoeteButton.setText("Nytt M\u00F8te");
 					nyttMoeteButton.setFont(new java.awt.Font("Tahoma",0,12));
 					nyttMoeteButton.addActionListener(this);
 				}
@@ -286,11 +289,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		if(evt.getSource() == nyAvtaleButton){
 			nyAvtale nyAvtale = new nyAvtale(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
 
-			nyAvtale.show();
+			nyAvtale.setVisible(true);
 		}
 		else if(evt.getSource() == nyttMoeteButton){
 			nyttMoete nyttMoete = new nyttMoete(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
-			nyttMoete.show();
+			nyttMoete.setVisible(true);
 		}
 
 
@@ -323,6 +326,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
+	
+	private void updateInbox() {
+		
+	}
+	
 	public Person getConnectedPerson() {
 		return person;
 	}

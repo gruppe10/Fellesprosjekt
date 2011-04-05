@@ -219,12 +219,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				
 				valgteDeltakere = new JScrollPane();
 				{
-					DefaultListModel deltakereListModel = 
-						new DefaultListModel();
+					
+					ListModel deltakereListModel = 
+						new DefaultComboBoxModel(new Person[] { p1, p2});
+					
 					deltakereList = new JList();
-					valgteDeltakere.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereListModel);
 					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+					valgteDeltakere.setViewportView(deltakereList);
 				}
 			}
 			{
