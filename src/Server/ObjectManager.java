@@ -78,7 +78,10 @@ public class ObjectManager {
 				}
 				break;
 			case SELECT:
-				person = ActivePerson.selectPerson(person.getAnsattNummer());
+				if(person.getAnsattNummer() != null)
+					person = ActivePerson.selectPerson(person.getAnsattNummer());
+				else if(person.getBrukerNavn() != null)
+					person = ActivePerson.selectPersonByUsername(person.getBrukerNavn());
 				break;
 			case DESTROY:
 				ActivePerson.deletePerson(person.getAnsattNummer());
