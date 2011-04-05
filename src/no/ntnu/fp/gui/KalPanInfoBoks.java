@@ -65,8 +65,8 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 			
 		//}
 		//else {
-			avbud.show();
-			slett.hide();
+			//avbud.show();
+			//slett.hide();
 		//}
 	}
 	
