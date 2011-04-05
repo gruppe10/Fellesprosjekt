@@ -176,12 +176,19 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 			String passord = passordField.getText();
 			String loginInfo = brukernavn+","+passord;
 
-			Envelope toSend = new Envelope(Action.SELECT, loginInfo);
-			Object bruker = KlientOS.sendObjectAndGetResponse(toSend);
+			Envelope e = new Envelope(Action.SELECT, loginInfo);
+			Boolean isApproved = (Boolean)KlientOS.sendObjectAndGetResponse(e);
 			
-			kal kal = new kal((Person)bruker);
-			kal.show();
-			dispose();
+			if(isApproved){
+				Person bruker = new Person();
+				bruker.setBrukerNavn(brukernavn);
+				e = new Envelope(Action.SELECT, bruker);
+				Person user = (Person)KlientOS.sendObjectAndGetResponse(e);
+				kal kal = new kal((Person)bruker);
+				kal.show();
+				dispose();
+			}
+			
 		}
 
 	}
