@@ -135,7 +135,8 @@ public class ActiveRom extends ActiveModel{
 		}
 	}
 
-	
+	// Lager en boolean array med 24 ruter
+	// rute nr 12 er true dersom den er ledig fra kl 12 til 13
 	public static boolean[] selectLedigeTider(int romId, Date date){
 		boolean[] ledigeTider = new boolean[23];
 		try{
@@ -145,10 +146,13 @@ public class ActiveRom extends ActiveModel{
 						" SELECT starttid, sluttid " +
 						" FROM  Hendelse, ReserverteRom, Rom   " +
 						" WHERE Hendelse.dato = ? " +
-						" AND ReserverteRom.hendelseId = Rom.hendelseId " +
+						" AND Rom.romId = ? " +
+						" And reserverteRom.romId = ?" + 
 						" AND ReserverteRom.hendelseId = Hendelse.hendelseId " 
 				);
 				ps.setDate(1, date);
+				ps.setInt(2, romId);
+				ps.setInt(3, romId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int starttid = formatIntFrom(rs.getTime(""));
