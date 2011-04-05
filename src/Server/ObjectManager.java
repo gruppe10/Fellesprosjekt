@@ -25,7 +25,7 @@ public class ObjectManager {
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case UPDATE:
-				if(ActiveHendelse.exists(avtale.getAvtaleId())){
+				if(ActiveHendelse.exists("Hendelse",avtale.getAvtaleId())){
 					ActiveHendelse.updateAvtale(avtale);
 				}else{
 					Avtale avtaleWithNewId = ActiveHendelse.createAvtale(avtale);
@@ -36,16 +36,16 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectHendelse(avtale.getAvtaleId());
+				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
 				break;
 			}
 			System.out.println("Recieved and handled Avtale");
 		}
-		else if( o instanceof Notis){
+		else if(content instanceof Notis){
 			//TODO kode for håndtering av sending av notis til db-lagres ikke i databasen
 			//deltaker har status
 			System.out.println("notisok");
-			return null;
+			return "notis mottatt";
 		}
 		else if(content instanceof Mote){
 			Mote mote = (Mote)content;
@@ -61,7 +61,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				mote = (Mote) ActiveHendelse.selectHendelse(mote.getAvtaleId());
+				mote = (Mote) ActiveHendelse.selectMote(mote.getAvtaleId());
 				break;
 			}
 			System.out.println("Recieved and handled Møte");
@@ -78,7 +78,10 @@ public class ObjectManager {
 				}
 				break;
 			case SELECT:
-				person = ActivePerson.selectPerson(person.getAnsattNummer());
+				if(person.getAnsattNummer() != null)
+					person = ActivePerson.selectPerson(person.getAnsattNummer());
+				else if(person.getBrukerNavn() != null)
+					person = ActivePerson.selectPersonByUsername(person.getBrukerNavn());
 				break;
 			case DESTROY:
 				ActivePerson.deletePerson(person.getAnsattNummer());

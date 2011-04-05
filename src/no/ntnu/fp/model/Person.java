@@ -138,10 +138,11 @@ public class Person implements Serializable{
 	public Person() {
 		name = "";
 		email = "";
+		avtaler = new ArrayList<Avtale>();
+		moter = new ArrayList<Mote>();
 		dateOfBirth = new Date();
 		id = System.currentTimeMillis();
 		propChangeSupp = new PropertyChangeSupport(this);
-		//this.ansattNummer = ActivePerson.getMaxId()+1;
 	}
 	
 	/**

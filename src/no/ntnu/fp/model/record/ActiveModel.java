@@ -13,7 +13,7 @@ import java.sql.*;
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
-import org.apache.derby.tools.sysinfo;
+//import org.apache.derby.tools.sysinfo;
 
 
 import no.ntnu.fp.model.record.*;

@@ -1,6 +1,8 @@
 package Klient;
 
-public class Envelope {
+import java.io.Serializable;
+
+public class Envelope implements Serializable{
 	private Action action;
 	private Object content;
 	

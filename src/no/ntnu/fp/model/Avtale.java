@@ -33,9 +33,9 @@ public class Avtale implements Serializable{
 		this.datoDag = datoDag;
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
-		this.rom=rom;
-		KlientOS klient = new KlientOS(6789, "ip server");
-		klient.sendObjectAndGetResponse(this);
+		this.rom = rom;
+		//KlientOS klient = KlientOS.getInstance();
+		//klient.sendObjectAndGetResponse(this);
 		
 	}
 	public Avtale(int id, String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Object rom){
@@ -48,7 +48,7 @@ public class Avtale implements Serializable{
 		this.datoDag = datoDag;
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
-		KlientOS klient = new KlientOS(6789, "ip server");
+		KlientOS klient = KlientOS.getInstance();
 		klient.sendObjectAndGetResponse(this);
 	}
 	public Avtale(){
@@ -149,6 +149,20 @@ public class Avtale implements Serializable{
 
 	public void setMoterom(Rom moterom) {
 		this.rom = moterom;
+	}
+	
+	public void update(int starttid,int sluttid, int dag, int mnd, int aar, String navn, String beskrivelse, Rom moterom) {
+		this.starttid = starttid;
+		this.sluttid = sluttid;
+		datoDag=dag;
+		datoMnd=mnd;
+		datoAar=aar;
+		this.navn = navn;
+		this.beskrivelse = beskrivelse;
+		this.rom = moterom;
+		KlientOS klient = KlientOS.getInstance();
+		klient.sendObjectAndGetResponse(this);
+		
 	}
 
 }
