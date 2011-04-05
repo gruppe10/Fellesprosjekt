@@ -40,29 +40,6 @@ public class ActiveRom extends ActiveModel{
 		}
 	}
 	
-	public static int getMaxId(){
-		int romId = 0;
-		try{
-			connect(); 
-			if( connection != null){
-	            PreparedStatement ps = connection.prepareStatement(
-	            "SELECT MAX romId" +
-	            "FROM Rom"		    
-	            );
-	            ResultSet rs = ps.executeQuery();
-	            while(rs.next()){
-					romId = rs.getInt("romId");
-				}
-			}
-			connection.close();
-		}
-	    catch( SQLException e){
-	    	System.out.println("Kan ikke finne rom med id = " + romId);
-	    	System.out.println("ErrorMessage:" + e.getMessage());
-	    }
-	    return romId;         
-	}
-	
 	public static void updateRom(Rom rom){
 		String navn = rom.getNavn();
 		int romId = rom.getRomId();
