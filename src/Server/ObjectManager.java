@@ -25,7 +25,7 @@ public class ObjectManager {
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case UPDATE:
-				if(ActiveHendelse.exists(avtale.getAvtaleId())){
+				if(ActiveHendelse.exists("Hendelse",avtale.getAvtaleId())){
 					ActiveHendelse.updateAvtale(avtale);
 				}else{
 					Avtale avtaleWithNewId = ActiveHendelse.createAvtale(avtale);
