@@ -68,7 +68,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JLabel starttidLabel;
 	private JLabel deltakereLabel;
 	private JLabel headerLabel;
-	private JButton fjenDeltakerButton;
+	private JButton fjernDeltakerButton;
 	private JList deltakereList;
 	private JTextArea beskrivelseTextArea;
 	private JTextField datoField;
@@ -125,10 +125,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				beskrivelseTextArea.getText();
 			}
 			{
-				fjenDeltakerButton = new JButton();
-				fjenDeltakerButton.setText("Fjern deltaker");
-				fjenDeltakerButton.setFont(new java.awt.Font("Tahoma",0,12));
-				fjenDeltakerButton.addActionListener(this);
+				fjernDeltakerButton = new JButton();
+				fjernDeltakerButton.setText("Fjern deltaker");
+				fjernDeltakerButton.setFont(new java.awt.Font("Tahoma",0,12));
+				fjernDeltakerButton.addActionListener(this);
 			}
 			{
 				overlappingMessage = new JLabel();
@@ -284,7 +284,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				    .addComponent(deltakereList, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(visdelkalButton1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				.addComponent(fjenDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 				.addGroup(thisLayout.createParallelGroup()
 				    .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -351,7 +351,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 				                .addGap(51)))
-				        .addComponent(fjenDeltakerButton, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
 				        .addGroup(thisLayout.createParallelGroup()
 				            .addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 				                .addComponent(inValidDateMessage, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE)
@@ -407,15 +407,15 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent evt) {
-		if(evt.getSource() == fjenDeltakerButton){
-			//			Kalle på this.slettDeltaker(deltaker)
+		if(evt.getSource() == fjernDeltakerButton){
+			//			Kalle på this.slettDeltaker(deltaker), samt oppdater status i db
 			//fjerne deltaker
 		}
 		else if(evt.getSource() == visdelkalButton1){
 			deltkal deltkal = new deltkal();
 			deltkal.show();
 			dispose();
-			//vis deltakerens kalendere i din egen
+			//vis deltakerens kalendere i din egen. Her må man vel ta i betraktning at man har markert en bestemt person?
 		}
 		else if(evt.getSource() == lagreButton){
 
