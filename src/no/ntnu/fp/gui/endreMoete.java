@@ -7,6 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 import javax.swing.ComboBoxModel;
@@ -33,6 +37,7 @@ import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
+import no.ntnu.fp.model.Status;
 
 
 /**
@@ -306,7 +311,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 					.addComponent(nyttMoeteLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(thisLayout.createParallelGroup()
-						.addComponent(muligeDeltakereScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(muligeDeltakereScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 							.addGap(17)
 							.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
@@ -425,7 +430,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 									.addComponent(valgteDeltakere, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 255, Short.MAX_VALUE))
 								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-									.addComponent(muligeDeltakereScroll, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addComponent(muligeDeltakereScroll, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 255, Short.MAX_VALUE))
 								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 									.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
@@ -435,7 +440,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 					.addContainerGap(31, 31));
 			
 			pack();
-			this.setSize(554, 427);
+			this.setSize(500, 670);
 		} catch (Exception e) {
 			//add your error handling code here
 			e.printStackTrace();
@@ -445,13 +450,15 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == fjernDeltakerButton){
-			if(deltakereListModel.contains(muligeDeltakereList.getSelectedValue())){
-				deltakereListModel.removeElement(muligeDeltakereList.getSelectedValue());
+			if(deltakereListModel.contains(deltakereList.getSelectedValue())){
+				deltakereListModel.removeElement(deltakereList.getSelectedValue());
 				
 			}
 		}
 		else if(evt.getSource() == leggTilDeltakerButton){
-			if(deltakereListModel.contains(muligeDeltakereList.getSelectedValue())){
+		
+			if(!deltakereListModel.contains(muligeDeltakereList.getSelectedValue())){
+				
 				deltakereListModel.addElement(muligeDeltakereList.getSelectedValue());
 			}	
 		}
@@ -560,9 +567,11 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
+		
+		Map<Person, Status> deltakere = new HashMap<Person, Status>();
 
-//		mote.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelseTextArea.getText(), 
-//				Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem(), valgteDeltakere.getInputContext() );
+	mote.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelseTextArea.getText(), 
+			Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem(), deltakere);
 
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(mote);
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(mote); 
