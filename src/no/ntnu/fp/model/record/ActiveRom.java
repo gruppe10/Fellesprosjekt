@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
 
-import org.apache.derby.tools.sysinfo;
+//import org.apache.derby.tools.sysinfo;
 
 public class ActiveRom extends ActiveModel{
 	public static void createRom(Rom rom){

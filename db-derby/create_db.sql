@@ -22,7 +22,7 @@ CREATE TABLE Deltakere (
     status VARCHAR(15) NOT NULL DEFAULT 'IKKE_MOTTATT',
     PRIMARY KEY (ansattId, hendelseId),
     FOREIGN KEY (ansattId) REFERENCES Person(ansattId),
-    FOREIGN KEY (hendelseId) REFERENCES Hendelse(hendelseId)
+    FOREIGN KEY (hendelseId) REFERENCES Hendelse(hendelseId) ON DELETE CASCADE
 );
 
 CREATE TABLE Rom (
@@ -35,5 +35,5 @@ CREATE TABLE ReserverteRom (
     hendelseId INT,
     PRIMARY KEY (romId, hendelseId),
     FOREIGN KEY(romId) REFERENCES Rom(romId),
-    FOREIGN KEY(hendelseId) REFERENCES Hendelse(hendelseId)
+    FOREIGN KEY(hendelseId) REFERENCES Hendelse(hendelseId) ON DELETE CASCADE
 );
