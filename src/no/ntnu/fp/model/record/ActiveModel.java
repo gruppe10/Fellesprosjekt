@@ -83,7 +83,7 @@ public class ActiveModel {
 			}
 		}
 		catch(SQLException e){
-			System.out.println("Could not find any Persons with id: " + personId);
+			System.out.println("Could not find anything with id: " + id);
 			System.out.println("Details:" + e.getMessage());
 		}
 		return exists;
