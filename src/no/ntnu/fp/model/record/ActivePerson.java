@@ -48,7 +48,7 @@ public class ActivePerson extends ActiveModel{
 				ps.execute();
 				connection.close();
 			}
-			//Needs handeler for BOTH avtale and mote
+			//TODO Needs handeler for BOTH avtale and mote
 			ArrayList<Avtale> avtaler = person.getAvtaler();
 			if(avtaler != null){
 				for (Avtale avtale : avtaler) {
@@ -223,7 +223,7 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int moteId = rs.getInt("avtaleId");
-					Avtale nyttMote = ActiveHendelse.selectHendelse(moteId);
+					Avtale nyttMote = ActiveHendelse.selectMote(moteId);
 					moter.add(nyttMote);
 				};
 			}
@@ -249,7 +249,7 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int hendelseId = rs.getInt("avtaleId");
-					Avtale nyHendelse = ActiveHendelse.selectHendelse(hendelseId);
+					Avtale nyHendelse = ActiveHendelse.selectAvtale(hendelseId);
 					hendelser.add(nyHendelse);
 				};
 				ps.close();
@@ -263,7 +263,7 @@ public class ActivePerson extends ActiveModel{
 					ResultSet rs2 = ps2.executeQuery();
 					while(rs2.next()){
 						int avtaleId = rs2.getInt("avtaleId");
-						Avtale avtale = ActiveHendelse.selectHendelse(avtaleId);
+						Avtale avtale = ActiveHendelse.selectAvtale(avtaleId);
 						hendelserUtenDeltagere.add(avtale);
 					}
 				}

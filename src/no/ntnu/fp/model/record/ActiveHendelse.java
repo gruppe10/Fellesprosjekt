@@ -1,28 +1,20 @@
 package no.ntnu.fp.model.record;
 
-/*	About:
- * 	Hendelse er en generell databasetabell som inneholder BÅDE Avtaler og Moter
- * 	Forskjellen er at Moter også "snakker" med Deltager tabellen
- * 
- * 	Metodene er Objekt spesifikk, mens delete og select finner ut selv om det
- *  er Avtale eller Mote som hentes ut
- * 
- * 	
+/* ******** ABOUT *********	
  *   Methods:
  *   
  * 	 CreateAvtale(Avtale avtale)
+ *   UpdateAvtale(Avtale avtale)
  * 	 CreateMote(Mote mote)
- *   UpdateAvtale(Avtale Avtale)
  * 	 UpdateMote(Mote mote)
  * 	 SelectHendelse(int hendelseID)
  *	 DeleteHendelse(int ansattnummer)	
  *
  *	 getStatusFor(int id, int id)
- *	 exists(int avtaleId)
  *	
- *	 createDeltakereMedStatus(Mote mote);
- *	 selectDeltakereMedStatus(int hendelseId);
- * 
+ *	 createDeltakereMedStatus(Mote mote)
+ *	 selectDeltakereMedStatus(int hendelseId)
+ *   deleteDeltakereForMote(int hendelseId)
  */
 
 import java.sql.*;
@@ -71,12 +63,80 @@ public class ActiveHendelse extends ActiveModel{
 		}
 		return avtale;
 	}
+	
+	public static Avtale selectAvtale(int avtaleId){
+		Avtale hendelse = new Avtale();
+		String navn = "";
+		String beskrivelse = "";
+		int dd = 00;
+		int mm = 00;
+		int yyyy = 0000;
+		int starttid = 0;
+		int sluttid = 0;
 
+		try{
+			connect();
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM Hendelse WHERE hendelseId = ? "
+				);
+				ps.setInt(1, avtaleId);
+				ResultSet rs = ps.executeQuery(); 
+				if (rs != null){
+					while(rs.next()){
+						navn = rs.getString("navn");
+						beskrivelse = rs.getString("beskrivelse");
+						starttid = formatIntFrom(rs.getTime("starttid"));
+						sluttid = formatIntFrom(rs.getTime("sluttid"));
+					}
+				}
+				connection.close();
+			}
+		}
+		catch( SQLException e){
+			System.out.println("Kan ikke finner person med id = " + avtaleId);
+			System.out.println("Details:" + e.getMessage());
+		}
+		hendelse.setAvtaleId(avtaleId);
+		hendelse.setNavn(navn);
+		hendelse.setBeskrivelse(beskrivelse);
+		hendelse.setDato(dd, mm, yyyy);
+		hendelse.setSluttid(sluttid);
+		hendelse.setStarttid(starttid);
+		return hendelse;
+	}
+
+	public static void updateAvtale(Avtale avtale){		
+		try {
+			connect();
+			if( connection != null ){
+				PreparedStatement ps = connection.prepareStatement(
+						"UPDATE Hendelse " + 
+						"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
+						"WHERE hendelseId = ? "
+				);
+				ps.setString(1, avtale.getNavn());
+				ps.setString(2, avtale.getBeskrivelse());
+				ps.setDate(3, formatDateFrom(avtale));
+				ps.setTime(4, formatTimeFrom(avtale.getStarttid()));
+				ps.setTime(5, formatTimeFrom(avtale.getSluttid()));
+				ps.setInt(6, avtale.getAvtaleId());
+				ps.executeUpdate();
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Kan ikke oppdatere avtalen");
+			System.out.println("Details:" + e.getMessage());
+		}
+	}
+	
 	public static Mote createMote(Mote mote){
 		PreparedStatement ps = null;
 		if(mote.getAvtaleId() == null){
 			int nyId = nextAvailableIdFor("Hendelse");
 			mote.setAvtaleId(nyId);
+			System.out.println("nyId =" + nyId);
 		}
 		try{
 			connect();
@@ -104,32 +164,6 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Details:" + e.getMessage());
 		}
 		return mote;
-	}
-
-
-	public static void updateAvtale(Avtale avtale){		
-		try {
-			connect();
-			if( connection != null ){
-				PreparedStatement ps = connection.prepareStatement(
-						"UPDATE Hendelse " + 
-						"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-						"WHERE hendelseId = ? "
-				);
-				ps.setString(1, avtale.getNavn());
-				ps.setString(2, avtale.getBeskrivelse());
-				ps.setDate(3, formatDateFrom(avtale));
-				ps.setTime(4, formatTimeFrom(avtale.getStarttid()));
-				ps.setTime(5, formatTimeFrom(avtale.getSluttid()));
-				ps.setInt(6, avtale.getAvtaleId());
-				ps.executeUpdate();
-				connection.close();
-			}
-		}
-		catch(SQLException e){
-			System.out.println("Kan ikke oppdatere avtalen");
-			System.out.println("Details:" + e.getMessage());
-		}
 	}
 
 	public static void updateMote(Mote mote){		
@@ -160,8 +194,8 @@ public class ActiveHendelse extends ActiveModel{
 		}
 	}
 
-	public static Avtale selectHendelse(int avtaleId){
-		Avtale avtale = new Avtale();
+	public static Mote selectMote(int avtaleId){
+		Mote hendelse = new Mote();
 		String navn = "";
 		String beskrivelse = "";
 		int dd = 00;
@@ -169,8 +203,8 @@ public class ActiveHendelse extends ActiveModel{
 		int yyyy = 0000;
 		int starttid = 0;
 		int sluttid = 0;
-		//TODO Add Check for "has Deltakere" and cast Object to Mote
 
+		Map<Person,Status> deltakere = selectDeltakereMedStatus(avtaleId);
 		try{
 			connect();
 			if( connection != null){
@@ -183,11 +217,6 @@ public class ActiveHendelse extends ActiveModel{
 					while(rs.next()){
 						navn = rs.getString("navn");
 						beskrivelse = rs.getString("beskrivelse");
-
-						dd = 00;
-						mm = 00;
-						yyyy = 00;
-
 						starttid = formatIntFrom(rs.getTime("starttid"));
 						sluttid = formatIntFrom(rs.getTime("sluttid"));
 					}
@@ -199,42 +228,34 @@ public class ActiveHendelse extends ActiveModel{
 			System.out.println("Kan ikke finner person med id = " + avtaleId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		avtale.setAvtaleId(avtaleId);
-		avtale.setNavn(navn);
-		avtale.setBeskrivelse(beskrivelse);
-		avtale.setDato(dd, mm, yyyy);
-		avtale.setSluttid(sluttid);
-		avtale.setStarttid(starttid);
+		hendelse.setAvtaleId(avtaleId);
+		hendelse.setNavn(navn);
+		hendelse.setBeskrivelse(beskrivelse);
+		hendelse.setDato(dd, mm, yyyy);
+		hendelse.setSluttid(sluttid);
+		hendelse.setStarttid(starttid);
+		hendelse.leggtilDeltakere(deltakere);
 		
-		// Sjekker om avtalen også er ett mote
-		// for så caste det til Mote og legge til deltagere
-		
-		Map<Person,Status> deltakere = selectDeltakereMedStatus(avtale.getAvtaleId());
-		boolean hendelseErMote = deltakere.isEmpty();
-		if (hendelseErMote){
-			Mote mote = (Mote)avtale;
-			mote.leggtilDeltakere(deltakere);
-			return mote;
-		}
-		return avtale;
+		return hendelse;
 	}
 
 	public static void deleteHendelse(int avtaleId) {
 		try {
+			if(hendelseIsAMote(avtaleId)){
+				deleteDeltakereForMote(avtaleId);
+			}
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"DELETE FROM Hendelse WHERE hendelseId = ?"
+						"DELETE FROM Hendelse WHERE hendelseId = ? "
 				);
 				ps.setInt(1, avtaleId);
 				ps.execute();
-				connection.close();
-
-				deleteDeltakereForMote(avtaleId);
+				connection.close();	
 			}
 		} 
 		catch (SQLException e) {
-			System.out.println("Failed to delete Avtale \n");
+			System.out.println("Failed to delete Avtale");
 			System.out.println("Details:" + e.getMessage());
 		}
 	}
@@ -293,21 +314,25 @@ public class ActiveHendelse extends ActiveModel{
 			if(connection != null){
 				while(it.hasNext()){
 					Map.Entry pairs = (Map.Entry)it.next();
-					Person person = (Person) pairs.getValue();
+					Person person = (Person) pairs.getKey();
+					Status status = (Status) pairs.getValue();
 
 					PreparedStatement ps = connection.prepareStatement(
-							"INSERT ansattId,avtaleId INTO Deltakere values(?, ?)"
+							"INSERT INTO Deltakere(ansattId, hendelseId, status) VALUES(?, ?, ?)"
 					);
 					ps.setInt(1, person.getAnsattNummer());
 					ps.setInt(2, mote.getAvtaleId());
+					ps.setString(3, status.toString());
+					
 					ps.executeUpdate();
 				}
 				connection.close();
 			}
 		}
 		catch(SQLException e){
-			System.out.println("Could not find any Participants for Meeting with id:");
+			System.out.println("Could not create Participants for Meeting with id:" + mote.getAvtaleId());
 			System.out.println("Details:" + e.getMessage());
+			System.out.println(e.getStackTrace().toString());
 		}					
 	}
 
@@ -328,7 +353,7 @@ public class ActiveHendelse extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 
 				while(rs.next()){
-					int deltagerNr = rs.getInt("ansattnr");
+					int deltagerNr = rs.getInt("ansattId");
 					Person nyDeltager = ActivePerson.selectPerson(deltagerNr);
 					deltakere.add(nyDeltager);
 				};
@@ -360,11 +385,35 @@ public class ActiveHendelse extends ActiveModel{
 				);
 				ps.setInt(1, hendelseId);
 				ps.execute();
-				connection.close();				}
+				connection.close();				
+			}
 		}
 		catch(SQLException e){
 			System.out.println("Could not delete any Participants for Meeting with id:" + hendelseId);
 			System.out.println("Details:" + e.getMessage());
 		}
+	}
+	
+	public static boolean hendelseIsAMote(int hendelseId){
+		boolean isMote = false;
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM Deltakere" +
+						"WHERE hendelseId = ? "
+				);
+				ps.setInt(1, hendelseId);
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					isMote = true;
+				}
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			//
+		}
+		return isMote;
 	}
 }
