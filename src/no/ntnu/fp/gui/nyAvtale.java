@@ -352,17 +352,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				hide();
 			}
 			
-			String tittel = headerTextField.getText();
-			String dato = datoField.getText();
-			String starttid = starttid.getSelectedItem();
-			String sluttid = sluttid.getSelectedItem();
-			String rom = (String) romComboBox1.getSelectedItem();
-			String beskrivelse = jTextArea1.getText();
 			
-			String moeteInfo = tittel+","+dato+","+starttid+","+sluttid+","+rom+","+beskrivelse;
-			
-			Envelope toSend = new Envelope(Action.SELECT, moeteInfo);
-			Object o = KlientOS.sendObjectAndGetResponse(toSend);
 		}
 		else if(evt.getSource() == avbrytButton){
 			//kal kal = new kal();
