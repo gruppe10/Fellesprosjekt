@@ -293,10 +293,13 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 											.addGroup(thisLayout.createSequentialGroup()
 													.addGap(0, 0, Short.MAX_VALUE)
 													.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																	.addGap(19))
+													.addGap(19))
 																	.addComponent(valgteDeltakere, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
 																	.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+																	.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 																	.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+																	.addComponent(leggTilDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+																	.addGap(20))
 																	.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 																			.addComponent(datoField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																			.addComponent(datoLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -402,6 +405,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 																																																									.addGap(0, 255, Short.MAX_VALUE))
 																																																									.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 																																																											.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+																																																											.addComponent(leggTilDeltakerButton,GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																																																											.addGap(0, 272, Short.MAX_VALUE)))
 																																																											.addGap(7)))
 																																																											.addContainerGap(31, 31));
@@ -449,7 +453,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		}
 		else if(evt.getSource() == avlysButton){
 			slett slett = new slett(mainKal, mote);
-			slett.show();
+			slett.setVisible(true);
 		}
 	}
 
@@ -533,8 +537,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 
-		mote.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelseTextArea.getText(), 
-				Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem(), valgteDeltakere.getInputContext() );
+//		mote.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelseTextArea.getText(), 
+//				Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem(), valgteDeltakere.getInputContext() );
 
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(mote);
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(mote); 
