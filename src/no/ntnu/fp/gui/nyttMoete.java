@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -58,8 +59,9 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JLabel leggTilDeltakerLabel;
 	private JLabel overlappingMessage;
 	private JLabel inValidDateMessage;
-	private JButton visdelkalButton1;
-	private JList leggetildeltList1;
+	private JScrollPane leggetildeltScroll;
+	private JList leggetilDeltList;
+	private DefaultListModel leggetilDeltModel;
 	private JLabel sluttidLabel;
 	private JComboBox sluttid;
 	private JComboBox starttid;
@@ -73,7 +75,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JLabel deltakereLabel;
 	private JLabel headerLabel;
 	private JButton fjernDeltakerButton;
+	private JButton leggtilDeltakerButton;
+	private JScrollPane deltakereScroll;
 	private JList deltakereList;
+	private DefaultListModel deltakereModel;
 	private JTextArea beskrivelseTextArea;
 	private JTextField datoField;
 	private Rom noRom;
@@ -135,6 +140,13 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				fjernDeltakerButton.addActionListener(this);
 			}
 			{
+				leggtilDeltakerButton = new JButton();
+				leggtilDeltakerButton.setText("Legg til deltaker");
+				leggtilDeltakerButton.setFont(new java.awt.Font("Tahoma",0,12));
+				leggtilDeltakerButton.addActionListener(this);
+			}
+			
+			{
 				overlappingMessage = new JLabel();
 				overlappingMessage.setText("");
 				overlappingMessage.setFont(new java.awt.Font("Tahoma",2,12));
@@ -144,20 +156,28 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				inValidDateMessage.setText("");
 				inValidDateMessage.setFont(new java.awt.Font("Tahoma",2,12));
 			}
+			
 			{
-				visdelkalButton1 = new JButton();
-				visdelkalButton1.setText("Vis deltakeres kalendere");
-				visdelkalButton1.setFont(new java.awt.Font("Tahoma",0,12));
-				visdelkalButton1.addActionListener(this);
+//				Test
+				Person p2 = new Person();
+				p2.setName("Kåre");
+				Person p1 = new Person();
+				p1.setName("Ida");
+				
+				leggetildeltScroll = new JScrollPane();
+				{
+					leggetilDeltModel = new DefaultListModel();
+					leggetilDeltList = new JList();
+					leggetilDeltModel.addElement(p1);
+					leggetilDeltModel.addElement(p2);
+					leggetildeltScroll.setViewportView(leggetilDeltList);
+					leggetilDeltList.setModel(leggetilDeltModel);
+					leggetilDeltList.setFont(new java.awt.Font("Tahoma",2,11));
+					
+				}
+				
 			}
-			{
-				ListModel leggetildeltList1Model = 
-					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
-				leggetildeltList1 = new JList();
-				leggetildeltList1.setModel(leggetildeltList1Model);
-				//legge inn alle deltaker i databasen
-			}
+
 			{
 				ComboBoxModel stComboBox1Model = 
 					new DefaultComboBoxModel(
@@ -180,14 +200,25 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				sluttidLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
-				ListModel deltakereListModel = 
-					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
-				deltakereList = new JList();
-				deltakereList.setModel(deltakereListModel);
-				deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
-				//skal fylles inn med de deltaker som blir valgt til dette moete
+//				Test
+				Person p2 = new Person();
+				p2.setName("Bob");
+				Person p1 = new Person();
+				p1.setName("Nora");
+				
+				deltakereScroll = new JScrollPane();
+				{
+					deltakereModel = new DefaultListModel();
+					deltakereList = new JList();
+					deltakereModel.addElement(p1);
+					deltakereModel.addElement(p2);
+					deltakereScroll.setViewportView(deltakereList);
+					deltakereList.setModel(deltakereModel);
+					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+				}
+				
 			}
+				
 			{
 
 				//test test
@@ -276,7 +307,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 					.addComponent(nyttMoeteLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(thisLayout.createParallelGroup()
-						.addComponent(leggetildeltList1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(leggetildeltScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 							.addGap(17)
 							.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
@@ -285,10 +316,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 							.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(17))
-						.addComponent(deltakereList, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-						.addComponent(visdelkalButton1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(deltakereScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 					.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(leggtilDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 					.addGroup(thisLayout.createParallelGroup()
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -358,6 +389,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 									.addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 									.addGap(51)))
 								.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
+								.addComponent(leggtilDeltakerButton, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE)
 								.addGroup(thisLayout.createParallelGroup()
 									.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 										.addComponent(inValidDateMessage, GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE)
@@ -365,7 +397,6 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 									.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 										.addPreferredGap(inValidDateMessage, avbrytButton, LayoutStyle.ComponentPlacement.INDENT)
 										.addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-										.addComponent(visdelkalButton1, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE)
 										.addGap(0, 0, Short.MAX_VALUE))))
 							.addGroup(thisLayout.createSequentialGroup()
 								.addGroup(thisLayout.createParallelGroup()
@@ -396,10 +427,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 									.addComponent(datoField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 75, Short.MAX_VALUE))
 								.addGroup(thisLayout.createSequentialGroup()
-									.addComponent(deltakereList, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
+									.addComponent(deltakereScroll, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 0, Short.MAX_VALUE))
 								.addGroup(thisLayout.createSequentialGroup()
-									.addComponent(leggetildeltList1, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
+									.addComponent(leggetildeltScroll, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 0, Short.MAX_VALUE)))
 							.addGap(196)))
 						.addContainerGap(28, 28));
@@ -414,14 +445,14 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == fjernDeltakerButton){
-			//			Kalle på this.slettDeltaker(deltaker), samt oppdater status i db
-			//fjerne deltaker
+			if(deltakereModel.contains(deltakereList.getSelectedValue())){
+				deltakereModel.removeElement(deltakereList.getSelectedValue());
+			}
 		}
-		else if(evt.getSource() == visdelkalButton1){
-			deltkal deltkal = new deltkal();
-			deltkal.show();
-			dispose();
-			//vis deltakerens kalendere i din egen. Her må man vel ta i betraktning at man har markert en bestemt person?
+		else if(evt.getSource() == leggtilDeltakerButton){
+			if(!deltakereModel.contains(leggetilDeltList.getSelectedValue())){
+				deltakereModel.addElement(leggetilDeltList.getSelectedValue());
+			}
 		}
 		else if(evt.getSource() == lagreButton){
 
@@ -442,8 +473,6 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 
 		}
 		else if(evt.getSource() == avbrytButton){
-			kal kal = new kal();
-			kal.show();
 			dispose();
 		}
 
