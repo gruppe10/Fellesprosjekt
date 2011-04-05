@@ -3,6 +3,7 @@ package no.ntnu.fp.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 import Klient.KlientOS;
 
@@ -19,6 +20,7 @@ public class Avtale implements Serializable{
 	private int datoMnd;
 	private int datoAar;
 	private Rom rom;
+	private Map<Person,Status> deltakereMedStatus;
 	
 	public Avtale(String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Rom rom){
 		this.navn = navn;
@@ -134,8 +136,8 @@ public class Avtale implements Serializable{
 	}
 	
 	
-	public void selectDeltagere(){
-		deltakere = ActiveHendelse.selectDeltagere(avtaleId);
+	public void selectDeltagereMedStatus(){
+		deltakereMedStatus = ActiveHendelse.selectDeltagereMedStatus(avtaleId);
 	}
 	
 	public Rom getMoterom() {
