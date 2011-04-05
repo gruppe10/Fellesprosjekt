@@ -1,5 +1,6 @@
 package no.ntnu.fp.gui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -46,11 +48,11 @@ import no.ntnu.fp.model.Rom;
 public class endreMoete extends javax.swing.JFrame implements ActionListener{
 
 	private JButton fjernDeltakerButton;
+	private JButton leggTilDeltakerButton;
 	private JTextField datoField;
 	private JTextField headerTextField;
 	private JMenuItem jMenuItem1;
 	private JComboBox Moeterom;
-	private JToggleButton viskalenderButton;
 	private JLabel jLabel1;
 	private JList deljList1;
 	private JLabel slutttidLabel;
@@ -69,7 +71,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JLabel datoLabel;
 	private JLabel nyttMoeteLabel;
 	private JList deltakereList;
-	private JScrollPane jScrollPane3;
+	private JScrollPane valgteDeltakere;
 	private JTextArea beskrivelseTextArea;
 	private Rom noRom;
 	private JLabel overlappingMessage;
@@ -110,6 +112,12 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				fjernDeltakerButton.addActionListener(this);
 			}
 			{
+				leggTilDeltakerButton = new JButton();
+				leggTilDeltakerButton.setText("Legg til deltaker");
+				leggTilDeltakerButton.setFont(new java.awt.Font("Tahoma",0,12));
+				leggTilDeltakerButton.addActionListener(this);
+			}
+			{
 				jLabel2 = new JLabel();
 				jLabel2.setText("");
 				jLabel2.setFont(new java.awt.Font("Tahoma",2,12));
@@ -120,9 +128,13 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				jLabel1.setFont(new java.awt.Font("Tahoma",2,12));
 			}
 			{
+//				Test
+				Person p2 = new Person();
+				Person p1 = new Person();
+				
 				ListModel deljList1Model = 
 					new DefaultComboBoxModel(
-							new String[] { "Item One", "Item Two" });
+							new Person[] { p1, p2});
 				deljList1 = new JList();
 				deljList1.setModel(deljList1Model);
 			}
@@ -170,12 +182,6 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				}
 			}
 			{
-				viskalenderButton = new JToggleButton();
-				viskalenderButton.setText("Vis deltakeres kalendere");
-				viskalenderButton.setFont(new java.awt.Font("Tahoma",0,12));
-				viskalenderButton.addActionListener(this);
-			}
-			{
 				avlysButton = new JButton();
 				avlysButton.setText("Avlys");
 				avlysButton.setFont(new java.awt.Font("Tahoma",0,12));
@@ -207,13 +213,16 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				beskrivelseTextArea.getText();
 			}
 			{
-				jScrollPane3 = new JScrollPane();
+//				Test
+				Person p1 = new Person();
+				Person p2 = new Person();
+				
+				valgteDeltakere = new JScrollPane();
 				{
-					ListModel deltakereListModel = 
-						new DefaultComboBoxModel(
-								new String[] { "Item One", "Item Two" });
+					DefaultListModel deltakereListModel = 
+						new DefaultListModel();
 					deltakereList = new JList();
-					jScrollPane3.setViewportView(deltakereList);
+					valgteDeltakere.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereListModel);
 					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
 				}
@@ -283,12 +292,9 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 											.addGap(8))
 											.addGroup(thisLayout.createSequentialGroup()
 													.addGap(0, 0, Short.MAX_VALUE)
-													.addComponent(viskalenderButton, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)))
-													.addGroup(thisLayout.createParallelGroup()
-															.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																	.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+													.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																	.addGap(19))
-																	.addComponent(jScrollPane3, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
+																	.addComponent(valgteDeltakere, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
 																	.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 																	.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																	.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -335,10 +341,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 									.addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 									.addGroup(thisLayout.createParallelGroup()
 											.addGroup(thisLayout.createSequentialGroup()
-													.addComponent(viskalenderButton, GroupLayout.PREFERRED_SIZE, 211, GroupLayout.PREFERRED_SIZE)
-													.addGap(0, 0, Short.MAX_VALUE))
-													.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-															.addGap(17)
+													
 															.addComponent(avlysButton, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
 															.addGap(0, 128, Short.MAX_VALUE))))
 															.addGroup(thisLayout.createSequentialGroup()
@@ -392,7 +395,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 																																																					.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
 																																																					.addGap(0, 0, Short.MAX_VALUE))))
 																																																					.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																																							.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+																																																							.addComponent(valgteDeltakere, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
 																																																							.addGap(0, 255, Short.MAX_VALUE))
 																																																							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 																																																									.addComponent(deljList1, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
@@ -413,14 +416,18 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == fjernDeltakerButton){
-			//fjern deltaker fra listen av deltakere
+			DefaultListModel model = (DefaultListModel) deltakereList.getModel();
+			if(model.contains(deljList1.getSelectedValue())){
+				model.removeElement(deljList1.getSelectedValue());
+			}
 		}
-		else if(evt.getSource() == viskalenderButton){
-			deltkal deltkal = new deltkal();
-			deltkal.show();
-			hide();
-			//vise når de andre deltakere ikke har tid
+		else if(evt.getSource() == leggTilDeltakerButton){
+			DefaultListModel model = (DefaultListModel) deltakereList.getModel();
+			if(model.contains(deljList1.getSelectedValue())){
+				model.addElement(deljList1.getSelectedValue());
+			}	
 		}
+		
 		else if(evt.getSource() == lagreButton){
 			
 			if(!isValidDate(datoField.getText())){
@@ -527,7 +534,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 
 		mote.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelseTextArea.getText(), 
-				Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem());
+				Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem(), valgteDeltakere.getInputContext() );
 
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(mote);
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(mote); 
