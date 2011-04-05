@@ -33,10 +33,10 @@ public class ObjectManager {
 				}
 				break;
 			case DESTROY:
-				ActiveHendelse.deleteAvtale(avtale.getAvtaleId());
+				ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
+				ActiveHendelse.selectHendelse(avtale.getAvtaleId());
 				break;
 			}
 		}
@@ -51,16 +51,16 @@ public class ObjectManager {
 			switch(action){
 			case UPDATE:
 				if(ActiveHendelse.exists(mote.getAvtaleId())){
-					ActiveHendelse.updateAvtale(mote);
+					ActiveHendelse.updateMote(mote);
 				}else{
-					ActiveHendelse.createAvtale(mote);
+					ActiveHendelse.createMote(mote);
 				}
 				break;
 			case DESTROY:
-				ActiveHendelse.deleteAvtale(mote.getAvtaleId());
+				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectAvtale(mote.getAvtaleId());
+				ActiveHendelse.selectHendelse(mote.getAvtaleId());
 				break;
 			}
 			System.out.println("avtale");
