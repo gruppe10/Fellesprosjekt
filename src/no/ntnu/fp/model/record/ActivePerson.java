@@ -187,11 +187,11 @@ public class ActivePerson extends ActiveModel{
 		Person person = selectPerson(ansattId);
 		for (Avtale avtale : person.getAvtaler()) {
 			int avtaleId = avtale.getAvtaleId(); 
-			ActiveHendelse.deleteAvtale(avtaleId);
+			ActiveHendelse.deleteHendelse(avtaleId);
 		}
 		for (Mote mote : person.getMoter()){
 			int avtaleId = mote.getAvtaleId(); 
-			ActiveHendelse.deleteAvtale(avtaleId);
+			ActiveHendelse.deleteHendelse(avtaleId);
 		}
 		//sletter personen
 		try {
