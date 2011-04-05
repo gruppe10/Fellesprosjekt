@@ -223,7 +223,7 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int moteId = rs.getInt("avtaleId");
-					Avtale nyttMote = ActiveHendelse.selectAvtale(moteId);
+					Avtale nyttMote = ActiveHendelse.selectHendelse(moteId);
 					moter.add(nyttMote);
 				};
 			}
@@ -249,7 +249,7 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int hendelseId = rs.getInt("avtaleId");
-					Avtale nyHendelse = ActiveHendelse.selectAvtale(hendelseId);
+					Avtale nyHendelse = ActiveHendelse.selectHendelse(hendelseId);
 					hendelser.add(nyHendelse);
 				};
 				ps.close();
@@ -263,7 +263,7 @@ public class ActivePerson extends ActiveModel{
 					ResultSet rs2 = ps2.executeQuery();
 					while(rs2.next()){
 						int avtaleId = rs2.getInt("avtaleId");
-						Avtale avtale = ActiveHendelse.selectAvtale(avtaleId);
+						Avtale avtale = ActiveHendelse.selectHendelse(avtaleId);
 						hendelserUtenDeltagere.add(avtale);
 					}
 				}

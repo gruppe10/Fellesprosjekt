@@ -22,6 +22,10 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import Klient.Action;
+import Klient.Envelope;
+import Klient.KlientOS;
+
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
@@ -347,6 +351,18 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				addAvtale();
 				hide();
 			}
+			
+			String tittel = headerTextField.getText();
+			String dato = datoField.getText();
+			String starttid = starttid.getSelectedItem();
+			String sluttid = sluttid.getSelectedItem();
+			String rom = (String) romComboBox1.getSelectedItem();
+			String beskrivelse = jTextArea1.getText();
+			
+			String moeteInfo = tittel+","+dato+","+starttid+","+sluttid+","+rom+","+beskrivelse;
+			
+			Envelope toSend = new Envelope(Action.SELECT, moeteInfo);
+			Object o = KlientOS.sendObjectAndGetResponse(toSend);
 		}
 		else if(evt.getSource() == avbrytButton){
 			//kal kal = new kal();

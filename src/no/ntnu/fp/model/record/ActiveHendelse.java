@@ -98,7 +98,7 @@ public class ActiveHendelse extends ActiveModel{
 		
 				connection.close();
 				
-				createDeltagereMedStatus(mote);
+				createDeltakereMedStatus(mote);
 				}
 		}
 		catch(SQLException e){
@@ -125,8 +125,36 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(6, avtale.getAvtaleId());
 				ps.executeUpdate();
 				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Kan ikke oppdatere avtalen");
+			System.out.println("Details:" + e.getMessage());
+		}
+	}
+	
+	public static void updateMote(Mote mote){		
+		try {
+        	connect();
+        	if( connection != null ){
+	            PreparedStatement ps = connection.prepareStatement(
+	            		"UPDATE Hendelse " + 
+	            		"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
+	                    "WHERE hendelseId = ? "
+	            );
+				ps.setString(1, mote.getNavn());
+				ps.setString(2, mote.getBeskrivelse());
+				ps.setDate(3, formatDateFrom(mote));
+				ps.setTime(4, formatTimeFrom(mote.getStarttid()));
+				ps.setTime(5, formatTimeFrom(mote.getSluttid()));
+				ps.setInt(6, mote.getAvtaleId());
+				ps.executeUpdate();
+				connection.close();
 				
-//				foreach OppdatereDeltager as nyDeltager{
+				//TODO Update Deltakere
+				Map<Person,Status> gamleDeltagere = selectDeltakereMedStatus(mote.getAvtaleId());
+				
+//				for(OppdatereDeltager as nyDeltager){
 //					if (nyDeltager != deltaker){
 //						deleteDeltaker(gammelDeltaker);
 //						createDeltaker(nyDeltaker);
@@ -140,7 +168,7 @@ public class ActiveHendelse extends ActiveModel{
 		}
 	}
 	
-	public static Avtale selectAvtale(int avtaleId){
+	public static Avtale selectHendelse(int avtaleId){
 		Avtale avtale = new Avtale();
 		String navn = "";
 		String beskrivelse = "";
@@ -149,6 +177,7 @@ public class ActiveHendelse extends ActiveModel{
 		int yyyy = 0000;
 		int starttid = 0;
 		int sluttid = 0;
+		//TODO Add Check for "has Deltakere" and cast Object to Mote
 		try{
 			connect();
 			if( connection != null){
@@ -186,7 +215,7 @@ public class ActiveHendelse extends ActiveModel{
 		return avtale;
 	}
 		
-	public static void deleteAvtale(int avtaleId) {
+	public static void deleteHendelse(int avtaleId) {
 		try {
 			connect();
 			if( connection != null){
@@ -196,7 +225,7 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setInt(1, avtaleId);
 				ps.execute();
 				connection.close();
-				//Slett relaterte rader i Deltagere!
+				//TODO Slett relaterte rader i Deltagere!
 			}
 		} 
 		catch (SQLException e) {
@@ -205,7 +234,7 @@ public class ActiveHendelse extends ActiveModel{
 		}
 	}
 	
-	public static Map<Person, Status> selectDeltagereMedStatus(int avtaleId) {
+	public static Map<Person, Status> selectDeltakereMedStatus(int avtaleId) {
 		ArrayList<Person> deltakere = new ArrayList<Person>();
 		
 		Map<Person, Status> deltakereMedStatus = new HashMap<Person, Status>();
@@ -289,7 +318,7 @@ public class ActiveHendelse extends ActiveModel{
 		}
 	}
 	
-	public static void createDeltagereMedStatus(Mote mote){
+	public static void createDeltakereMedStatus(Mote mote){
 		Map<Person, Status> deltakere = mote.getDeltakere();
 		Iterator it = deltakere.entrySet().iterator();
 		try{

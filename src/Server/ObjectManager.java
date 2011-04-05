@@ -21,7 +21,6 @@ public class ObjectManager {
 
 		Object content = e.getContent();
 		Action action = e.getAction();
-
 		if( content instanceof Avtale){
 			Avtale avtale =(Avtale)content;
 			switch(action){
@@ -33,12 +32,13 @@ public class ObjectManager {
 				}
 				break;
 			case DESTROY:
-				ActiveHendelse.deleteAvtale(avtale.getAvtaleId());
+				ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
+				ActiveHendelse.selectHendelse(avtale.getAvtaleId());
 				break;
 			}
+			System.out.println("Recieved and handled Avtale");
 		}
 		else if( o instanceof Notis){
 			//kode for håndtering av sending av notis til db-lagres ikke i databasen
@@ -46,42 +46,54 @@ public class ObjectManager {
 			System.out.println("notisok");
 			return null;
 		}
-		else if( o instanceof Mote){
+		else if(content instanceof Mote){
 			Mote mote =(Mote)content;
 			switch(action){
 			case UPDATE:
 				if(ActiveHendelse.exists(mote.getAvtaleId())){
-					ActiveHendelse.updateAvtale(mote);
+					ActiveHendelse.updateMote(mote);
 				}else{
-					ActiveHendelse.createAvtale(mote);
+					ActiveHendelse.createMote(mote);
 				}
 				break;
 			case DESTROY:
-				ActiveHendelse.deleteAvtale(mote.getAvtaleId());
+				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectAvtale(mote.getAvtaleId());
+				ActiveHendelse.selectHendelse(mote.getAvtaleId());
 				break;
 			}
-			System.out.println("avtale");
+			System.out.println("Recieved and handled Møte");
 			return null;
 		}
-		else if( content instanceof Mote){
-			System.out.println("moete");
+		else if( content instanceof Person){	
+			Person person = (Person)content;
+			switch(action){
+			case UPDATE:
+				if(ActivePerson.exists(person.getAnsattNummer())){
+					ActivePerson.createPerson(person);
+				}else{
+					ActivePerson.updatePerson(person);
+				}
+				break;
+			case SELECT:
+				ActivePerson.selectPerson(person.getAnsattNummer());
+				break;
+			case DESTROY:
+				ActivePerson.deletePerson(person.getAnsattNummer());
+				break;
+			}
+			System.out.println("Recieved and handled person");
 			return null;
-		}
-		else if( content instanceof Person){			
-			ActivePerson.createPerson((Person)o);
 
-			System.out.println("person");
-			return null;
 		}
 		else if( content instanceof Rom){
 			System.out.println("rom");
 			return null;
 		}
 		else if( content instanceof String){
-			
+			String string = (String)content;
+			ActivePerson.checkPassord(string);
 		}
 
 		return null;

@@ -99,7 +99,8 @@ public class TestHendelse {
 
 	private static void testSelectAvtale(){
 		int ansattnr = 10002;
-		Avtale avtale = ActiveHendelse.selectAvtale(ansattnr);
+		Avtale avtale = ActiveHendelse.selectHendelse(ansattnr);
+
 		System.out.println("Avtalen har navnet:" + avtale.getNavn() + ".");
 	}
 	
@@ -109,20 +110,20 @@ public class TestHendelse {
 		ActiveHendelse.createAvtale(avtale);
 		System.out.println("Lagret avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() + "og id:" + avtale.getAvtaleId());
 		
-		ActiveHendelse.deleteAvtale(avtale.getAvtaleId());
+		ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 		System.out.println("Slette avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		ActiveHendelse.createAvtale(avtale);
 		System.out.println("Lagret på nytt avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
-		avtale = ActiveHendelse.selectAvtale(avtale.getAvtaleId());
+		avtale = ActiveHendelse.selectHendelse(avtale.getAvtaleId());
 		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
 		avtale.setNavn("Avtale 2");
 		ActiveHendelse.updateAvtale(avtale);
 		System.out.println("Oppdaterte avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 		
-		avtale = ActiveHendelse.selectAvtale(avtale.getAvtaleId());
+		avtale = ActiveHendelse.selectHendelse(avtale.getAvtaleId());
 		System.out.println("Hentet ut avtale med navn: " + avtale.getNavn() + ", beskrivelse lik: " + avtale.getBeskrivelse() +  "og id:" + avtale.getAvtaleId());
 	}
 	
@@ -133,3 +134,4 @@ public class TestHendelse {
 		System.out.println("testUtført");
 	}
 }
+
