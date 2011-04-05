@@ -445,7 +445,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			String moeteInfo = tittel+","+dato+","+starttid+","+sluttid+","+rom+","+beskrivelse;
 			
 			Envelope toSend = new Envelope(Action.SELECT, moeteInfo);
-			Object bruker = KlientOS.sendObjectAndGetResponse(toSend);
+			Object o = KlientOS.sendObjectAndGetResponse(toSend);
 			
 			//hvordan hente ut deltakere og sende innkallelse til de ?
 
