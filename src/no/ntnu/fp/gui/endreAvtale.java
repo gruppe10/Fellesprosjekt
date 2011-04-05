@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.Rom;
 
 import Klient.KlientOS;
 
@@ -60,8 +61,9 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel sluttidLabel;
 	private JLabel beskrivelseLabel;
 	private JButton lagreButton;
-	private JTextArea jTextArea1;
+	private JTextArea beskrivelse;
 	private JTextField datoField;
+	private Rom noRom;
 	
 
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
@@ -137,11 +139,21 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						overlappingMessage.setFont(new java.awt.Font("Tahoma",2,12));
 					}
 					{
+						
+						
+						//test test
+						Rom rom1 = new Rom("a1");
+						Rom rom2 = new Rom("a2");
+						Rom rom3 = new Rom("a3");
+
+						noRom = new Rom("None");
+						
 						ComboBoxModel romComboBox3Model = 
 							new DefaultComboBoxModel(
-									new String[] { "Item One", "Item Two" });
+									new Rom[] { noRom, rom1, rom2, rom3});
 						romComboBox3 = new JComboBox();
 						romComboBox3.setModel(romComboBox3Model);
+						romComboBox3.getSelectedItem();
 					}
 					{
 						romLabel3 = new JLabel();
@@ -195,10 +207,10 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						beskrivelseLabel.setFont(new java.awt.Font("Tahoma",0,12));
 					}
 					{
-						jTextArea1 = new JTextArea();
-						jTextArea1.setText(avtale.getBeskrivelse());
-						jTextArea1.setFont(new java.awt.Font("Tahoma",2,11));
-						jTextArea1.getText();
+						beskrivelse = new JTextArea();
+						beskrivelse.setText(avtale.getBeskrivelse());
+						beskrivelse.setFont(new java.awt.Font("Tahoma",2,11));
+						beskrivelse.getText();
 					}
 					{
 						avbrytButton = new JButton();
@@ -249,7 +261,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						                    .addGap(7)
 						                    .addComponent(overlappingMessage, 0, 174, Short.MAX_VALUE))
 						                .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-						                    .addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
+						                    .addComponent(beskrivelse, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
 						                    .addComponent(slettButton, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
 						                    .addGap(0, 63, Short.MAX_VALUE))
 						                .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -313,7 +325,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 						.addGroup(jPanel2Layout.createParallelGroup()
 						    .addGroup(jPanel2Layout.createSequentialGroup()
-						        .addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+						        .addComponent(beskrivelse, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 						        .addGap(0, 0, Short.MAX_VALUE))
 						    .addGroup(GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
 						        .addGap(0, 29, Short.MAX_VALUE)
@@ -355,14 +367,12 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 			}
 			else {
 				changeAvtale();
-				hide();
+				dispose();
 			}
 
 		}
 		else if(evt.getSource() == avbrytButton){
-			kal kal = new kal();
-			kal.show();
-			hide();
+			dispose();
 		}
 		if(evt.getSource() == slettButton){
 			slett slett = new slett(mainKal, avtale);
@@ -451,17 +461,11 @@ private boolean overlapping() {
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
-		avtale.setNavn(headerTextField.getText());
-		avtale.setBeskrivelse(jTextArea1.getText());
-		avtale.setStarttid(startTime);
-		avtale.setSluttid(sluttTime);
-		avtale.setDato(inDato, inMnd, inAar);
-
+		avtale.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelse.getText(), 
+				romComboBox3.getSelectedItem()==noRom? null: (Rom)romComboBox3.getSelectedItem());
 		
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(avtale);
-		
-		
-		
+		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(avtale); 
 		
 	}
 
