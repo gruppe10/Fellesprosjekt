@@ -7,9 +7,9 @@ import no.ntnu.fp.model.Person;
 
 public class TestPerson {
 	public static void main(String args[]){
-		Person person = mockPerson();
+		//Person person = mockPerson();
 		//person.setAnsattNummer(138);
-		ActivePerson.createPerson(person);
+		//ActivePerson.createPerson(person);
         
 		testCrud();
 		//testSelectAvtaler();
