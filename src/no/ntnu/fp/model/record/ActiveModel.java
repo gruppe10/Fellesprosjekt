@@ -9,6 +9,7 @@ package no.ntnu.fp.model.record;
  */
 
 import java.sql.*;
+
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
@@ -61,6 +62,31 @@ public class ActiveModel {
 	    	System.out.println("ErrorMessage:" + e.getMessage());
 	    }
 	    return maxId + 1;         
+	}
+	
+	public static boolean exists(String tableName, int id) {
+		boolean exists = false;
+		String idName = getIdNameFor(tableName);
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM " + tableName +
+						"WHERE " + idName + " = ? "
+				);
+				ps.setInt(1, id);
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					exists = true;
+				}
+				connection.close();
+			}
+		}
+		catch(SQLException e){
+			System.out.println("Could not find any Persons with id: " + personId);
+			System.out.println("Details:" + e.getMessage());
+		}
+		return exists;
 	}
 	
 	@SuppressWarnings("deprecation")
