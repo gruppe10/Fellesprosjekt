@@ -68,7 +68,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
-
+		 
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
