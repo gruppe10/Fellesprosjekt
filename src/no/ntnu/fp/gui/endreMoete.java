@@ -7,6 +7,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+
+
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -54,7 +56,9 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JMenuItem jMenuItem1;
 	private JComboBox Moeterom;
 	private JLabel jLabel1;
-	private JList deljList1;
+	private JScrollPane muligeDeltakereScroll;
+	private JList muligeDeltakereList;
+	private DefaultListModel deljList1Model;
 	private JLabel slutttidLabel;
 	private JComboBox sluttidCombo;
 	private JComboBox starttidCombo;
@@ -71,6 +75,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private JLabel datoLabel;
 	private JLabel nyttMoeteLabel;
 	private JList deltakereList;
+	private DefaultListModel deltakereListModel;
 	private JScrollPane valgteDeltakere;
 	private JTextArea beskrivelseTextArea;
 	private Rom noRom;
@@ -130,13 +135,24 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			{
 //				Test
 				Person p2 = new Person();
+				p2.setName("Kåre");
 				Person p1 = new Person();
+				p1.setName("Ida");
 				
-				ListModel deljList1Model = 
-					new DefaultComboBoxModel(
-							new Person[] { p1, p2});
-				deljList1 = new JList();
-				deljList1.setModel(deljList1Model);
+				muligeDeltakereScroll = new JScrollPane();
+				{
+					deljList1Model = 
+						new DefaultListModel();
+					muligeDeltakereList = new JList();
+					deljList1Model.addElement(p1);
+					deljList1Model.addElement(p2);
+					muligeDeltakereScroll.setViewportView(muligeDeltakereList);
+					muligeDeltakereList.setModel(deljList1Model);
+					muligeDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+					
+				}
+				
+				
 			}
 			{
 				ComboBoxModel stjComboBox1Model = 
@@ -215,16 +231,22 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			{
 //				Test
 				Person p1 = new Person();
+				p1.setName("Bob");
 				Person p2 = new Person();
+				p2.setName("Liv");
 				
 				valgteDeltakere = new JScrollPane();
 				{
-					DefaultListModel deltakereListModel = 
+					deltakereListModel = 
 						new DefaultListModel();
 					deltakereList = new JList();
+					deltakereListModel.addElement(p1);
+					deltakereListModel.addElement(p2);
+					
 					valgteDeltakere.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereListModel);
 					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+					
 				}
 			}
 			{
@@ -282,133 +304,136 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(nyttMoeteLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					.addGap(16)
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(thisLayout.createParallelGroup()
-							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-									.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(25))
-									.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-											.addComponent(deljList1, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
-											.addGap(8))
-											.addGroup(thisLayout.createSequentialGroup()
-													.addGap(0, 0, Short.MAX_VALUE)
-													.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-													.addGap(19))
-																	.addComponent(valgteDeltakere, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE))
-																	.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-																	.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																	.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																	.addComponent(leggTilDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																	.addGap(20))
-																	.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																			.addComponent(datoField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																			.addComponent(datoLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																			.addComponent(jLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-																			.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
-																			.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																					.addComponent(headerTextField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																					.addComponent(headerLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-																					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-																					.addGroup(thisLayout.createParallelGroup()
-																							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																									.addComponent(starttidCombo, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																									.addComponent(starttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-																									.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																											.addGap(0, 17, GroupLayout.PREFERRED_SIZE)
-																											.addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
-																											.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																													.addComponent(sluttidCombo, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
-																													.addComponent(slutttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-																													.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 1, GroupLayout.PREFERRED_SIZE)
-																													.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																															.addComponent(Moeterom, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																															.addComponent(moeteromLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-																															.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-																															.addGroup(thisLayout.createParallelGroup()
-																																	.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																			.addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																																			.addGap(29))
-																																			.addComponent(beskrivelseTextArea, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
-																																			.addGap(0, 23, GroupLayout.PREFERRED_SIZE)
-																																			.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-																																					.addComponent(lagreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																																					.addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																																					.addComponent(avlysButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-																																					.addContainerGap(16, 16));
+						.addComponent(muligeDeltakereScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+							.addGap(17)
+							.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+					.addGroup(thisLayout.createParallelGroup()
+						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+							.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(17))
+						.addComponent(valgteDeltakere, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+						
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(leggTilDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGap(20))
+					.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(datoField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(datoLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
+					.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(headerTextField, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(headerLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					.addGroup(thisLayout.createParallelGroup()
+						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+							.addComponent(starttidCombo, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(starttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+							.addGap(0, 17, GroupLayout.PREFERRED_SIZE)
+							.addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(sluttidCombo, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+						.addComponent(slutttidLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED, 1, GroupLayout.PREFERRED_SIZE)
+					.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(Moeterom, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(moeteromLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+					.addGroup(thisLayout.createParallelGroup()
+						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+							.addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(29))
+						.addComponent(beskrivelseTextArea, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+					.addGap(0, 23, GroupLayout.PREFERRED_SIZE)
+					.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(lagreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(avbrytButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(avlysButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(16, 16));
+			
+			
 			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(thisLayout.createParallelGroup()
-							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-									.addComponent(lagreButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-									.addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+							.addComponent(lagreButton, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+							.addComponent(avbrytButton, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+							.addGroup(thisLayout.createParallelGroup()
+								.addGroup(thisLayout.createSequentialGroup()
+										
+									.addComponent(avlysButton, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+									.addGap(0, 128, Short.MAX_VALUE))))
+						.addGroup(thisLayout.createSequentialGroup()
+							.addGroup(thisLayout.createParallelGroup()
+								.addComponent(nyttMoeteLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+									.addGap(34))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(moeteromLabel, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+									.addGap(41))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(slutttidLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addGap(71))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(starttidLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+									.addGap(63))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(headerLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+									.addGap(63))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+									.addGap(76))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+									.addGap(37))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
+									.addGap(12)))
+							.addGroup(thisLayout.createParallelGroup()
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(beskrivelseTextArea, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
+									.addGap(0, 244, Short.MAX_VALUE))
+								.addGroup(thisLayout.createSequentialGroup()
 									.addGroup(thisLayout.createParallelGroup()
-											.addGroup(thisLayout.createSequentialGroup()
-													
-															.addComponent(avlysButton, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-															.addGap(0, 128, Short.MAX_VALUE))))
-															.addGroup(thisLayout.createSequentialGroup()
-																	.addGroup(thisLayout.createParallelGroup()
-																			.addComponent(nyttMoeteLabel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-																			.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																					.addComponent(beskrivelseLabel, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
-																					.addGap(34))
-																					.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																							.addComponent(moeteromLabel, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-																							.addGap(41))
-																							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																									.addComponent(slutttidLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																									.addGap(71))
-																									.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																											.addComponent(starttidLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-																											.addGap(63))
-																											.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																													.addComponent(headerLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-																													.addGap(63))
-																													.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																															.addComponent(datoLabel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-																															.addGap(76))
-																															.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																	.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-																																	.addGap(37))
-																																	.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																			.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE)
-																																			.addGap(12)))
-																																			.addGroup(thisLayout.createParallelGroup()
-																																					.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																							.addComponent(beskrivelseTextArea, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-																																							.addGap(0, 244, Short.MAX_VALUE))
-																																							.addGroup(thisLayout.createSequentialGroup()
-																																									.addGroup(thisLayout.createParallelGroup()
-																																											.addComponent(headerTextField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-																																											.addComponent(Moeterom, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																																											.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																													.addComponent(sluttidCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																																													.addGap(19))
-																																													.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																															.addComponent(starttidCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																																															.addGap(19))
-																																															.addComponent(datoField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
-																																															.addGroup(thisLayout.createParallelGroup()
-																																																	.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																																			.addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 303, GroupLayout.PREFERRED_SIZE)
-																																																			.addGap(0, 13, Short.MAX_VALUE))
-																																																			.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																																					.addPreferredGap(jLabel2, jLabel1, LayoutStyle.ComponentPlacement.INDENT)
-																																																					.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
-																																																					.addGap(0, 0, Short.MAX_VALUE))))
-																																																					.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																																							.addComponent(valgteDeltakere, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-																																																							.addGap(0, 255, Short.MAX_VALUE))
-																																																							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																																									.addComponent(deljList1, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-																																																									.addGap(0, 255, Short.MAX_VALUE))
-																																																									.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																																																											.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
-																																																											.addComponent(leggTilDeltakerButton,GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-																																																											.addGap(0, 272, Short.MAX_VALUE)))
-																																																											.addGap(7)))
-																																																											.addContainerGap(31, 31));
+										.addComponent(headerTextField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+										.addComponent(Moeterom, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+											.addComponent(sluttidCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addGap(19))
+										.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+											.addComponent(starttidCombo, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addGap(19))
+										.addComponent(datoField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
+									.addGroup(thisLayout.createParallelGroup()
+										.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+											.addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 303, GroupLayout.PREFERRED_SIZE)
+											.addGap(0, 13, Short.MAX_VALUE))
+										.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+											.addPreferredGap(jLabel2, jLabel1, LayoutStyle.ComponentPlacement.INDENT)
+											.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
+											.addGap(0, 0, Short.MAX_VALUE))))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(valgteDeltakere, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
+									.addGap(0, 255, Short.MAX_VALUE))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(muligeDeltakereScroll, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+									.addGap(0, 255, Short.MAX_VALUE))
+								.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
+									.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+									.addComponent(leggTilDeltakerButton,GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addGap(0, 272, Short.MAX_VALUE)))
+							.addGap(7)))
+					.addContainerGap(31, 31));
+			
 			pack();
 			this.setSize(554, 427);
 		} catch (Exception e) {
@@ -420,15 +445,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == fjernDeltakerButton){
-			DefaultListModel model = (DefaultListModel) deltakereList.getModel();
-			if(model.contains(deljList1.getSelectedValue())){
-				model.removeElement(deljList1.getSelectedValue());
+			if(deltakereListModel.contains(muligeDeltakereList.getSelectedValue())){
+				deltakereListModel.removeElement(muligeDeltakereList.getSelectedValue());
+				
 			}
 		}
 		else if(evt.getSource() == leggTilDeltakerButton){
-			DefaultListModel model = (DefaultListModel) deltakereList.getModel();
-			if(model.contains(deljList1.getSelectedValue())){
-				model.addElement(deljList1.getSelectedValue());
+			if(deltakereListModel.contains(muligeDeltakereList.getSelectedValue())){
+				deltakereListModel.addElement(muligeDeltakereList.getSelectedValue());
 			}	
 		}
 		
