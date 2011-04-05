@@ -42,7 +42,7 @@ public class ObjectManager {
 			System.out.println("Recieved and handled Avtale");
 		}
 		else if( o instanceof Notis){
-			//kode for håndtering av sending av notis til db-lagres ikke i databasen
+			//TODO kode for håndtering av sending av notis til db-lagres ikke i databasen
 			//deltaker har status
 			System.out.println("notisok");
 			return null;
