@@ -198,6 +198,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				starttid = new JComboBox();
 				starttid.setModel(stComboBox1Model);
 				starttid.getSelectedItem();
+				starttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 			}
 			{
 				ComboBoxModel sutComboBox1Model = 
@@ -206,6 +207,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				sluttid = new JComboBox();
 				sluttid.setModel(sutComboBox1Model);
 				sluttid.getSelectedItem();
+				sluttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 			}
 			{
 				sluttidLabel = new JLabel();
@@ -559,6 +561,11 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 
 		Map<Person, Status> deltakere = new HashMap<Person, Status>();
+		
+		for (int i=0; i<deltakereModel.size(); i++) {
+			deltakere.put((Person)deltakereModel.get(i), Status.IKKE_MOTTATT);
+		}
+	
 
 		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, 
 				((Rom)Moeterom.getSelectedItem()==noRom)? null : (Rom)Moeterom.getSelectedItem(), deltakere);

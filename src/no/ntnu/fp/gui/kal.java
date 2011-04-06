@@ -435,7 +435,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			ArrayList<Person> fPersons = new ArrayList<Person>();
 			for (int i = 0; i<deltakereModel.size(); i++) {
 				fPersons.add((Person)deltakereModel.get(i));
-				kalPanModel.morePersons(mainDate, fPersons);
+				kalPanModel.morePersons(fPersons);
 			}
 		}
 		

@@ -582,6 +582,11 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
 		Map<Person, Status> deltakere = new HashMap<Person, Status>();
+		
+		for (int i=0; i<deltakereListModel.size(); i++) {
+			deltakere.put((Person)deltakereListModel.get(i), Status.IKKE_MOTTATT);
+			
+		}
 
 	mote.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelseTextArea.getText(), 
 			Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem(), deltakere);

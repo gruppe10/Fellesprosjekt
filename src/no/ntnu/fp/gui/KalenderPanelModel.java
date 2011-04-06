@@ -277,9 +277,8 @@ class KalenderPanelModel extends AbstractTableModel {
     	fireTableStructureChanged() ;
     }
     
-    public void morePersons(Calendar nD, ArrayList<Person> persons) {
-    	setDayNames();
-    	setWeek(nD);
+    public void morePersons(ArrayList<Person> persons) {
+    	
     	
     	ukuttaAvtaleListe= kal.getConnectedPerson().getAvtaler();
         
