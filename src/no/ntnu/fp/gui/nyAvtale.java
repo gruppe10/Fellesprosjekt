@@ -437,6 +437,10 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		Person person= mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 
+		System.out.println(inDato);
+		System.out.println(inMnd);
+		System.out.println(inAar);
+		
 		Avtale newAvtale= new Avtale(headerTextField.getText(),jTextArea1.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, 
 				((Rom)romComboBox1.getSelectedItem()==noRom)? null : (Rom)romComboBox1.getSelectedItem());
 		person.addAvtale(newAvtale);
