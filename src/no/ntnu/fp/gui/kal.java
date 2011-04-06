@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.Status;
 
 
 /**
@@ -67,7 +68,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
-
+		 
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -107,7 +108,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	public kal(Person bruker){
 		super();
 		mainDate=Calendar.getInstance();
-		setConnectedPerson(bruker);
+		person=bruker;
 		
 		updateInbox();
 		
@@ -328,6 +329,29 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 
 	
 	private void updateInbox() {
+		ArrayList<Avtale> moter=person.getAvtaler();
+		
+		
+		for (int i=0; i<moter.size(); i++) {
+			Avtale a=moter.get(i);
+			if (a instanceof Mote) {
+				if (a.getInitiativtaker()!=person) {
+					
+					Mote current = (Mote)a;
+					Status cStatus=current.getDeltakere().get(person);
+					
+					if (cStatus==Status.IKKE_MOTTATT) {
+						//make new notis, add to notiser (Innboksen)
+						
+					}
+				}
+				else if (a.getInitiativtaker()==person) {
+					
+				}
+		
+			}
+		}
+		
 		
 	}
 	

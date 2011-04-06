@@ -34,8 +34,11 @@ public class Avtale implements Serializable{
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
 		this.rom = rom;
-		//KlientOS klient = KlientOS.getInstance();
-		//klient.sendObjectAndGetResponse(this);
+		if (!(this instanceof Mote)) {
+			KlientOS klient = KlientOS.getInstance();
+			Envelope e = new Envelope(Action.UPDATE, this);
+			klient.sendObjectAndGetResponse(e);
+		}
 		
 	}
 	public Avtale(int id, String navn, String beskrivelse, Person initiativtaker, int starttid, int sluttid, int datoDag, int datoMnd, int datoAar, Object rom){
@@ -48,8 +51,10 @@ public class Avtale implements Serializable{
 		this.datoDag = datoDag;
 		this.datoMnd = datoMnd;
 		this.datoAar = datoAar;
-		KlientOS klient = KlientOS.getInstance();
-		klient.sendObjectAndGetResponse(this);
+		if (!(this instanceof Mote)) {
+			KlientOS klient = KlientOS.getInstance();
+			klient.sendObjectAndGetResponse(this);
+		}
 	}
 	public Avtale(){
 		starttid = sluttid = 0;
@@ -160,8 +165,10 @@ public class Avtale implements Serializable{
 		this.navn = navn;
 		this.beskrivelse = beskrivelse;
 		this.rom = moterom;
-		KlientOS klient = KlientOS.getInstance();
-		klient.sendObjectAndGetResponse(this);
+		if (!(this instanceof Mote)) {
+			KlientOS klient = KlientOS.getInstance();
+			klient.sendObjectAndGetResponse(new Envelope(Action.UPDATE, this));
+		}
 		
 	}
 

@@ -17,6 +17,8 @@ import no.ntnu.fp.model.record.*;
 public class ObjectManager {
 
 	public Object manageObject(Object o) {
+		System.out.println("Leave me alone!");
+
 		Envelope e = (Envelope)o;
 
 		Object content = e.getContent();
@@ -25,8 +27,10 @@ public class ObjectManager {
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case UPDATE:
-				if(ActiveHendelse.exists("Hendelse",avtale.getAvtaleId())){
-					ActiveHendelse.updateAvtale(avtale);
+				if(avtale.getAvtaleId() != null){
+					if(ActiveHendelse.exists("Hendelse",avtale.getAvtaleId())){
+						ActiveHendelse.updateAvtale(avtale);
+					}
 				}else{
 					Avtale avtaleWithNewId = ActiveHendelse.createAvtale(avtale);
 					return avtaleWithNewId;
@@ -71,10 +75,12 @@ public class ObjectManager {
 			Person person = (Person)content;
 			switch(action){
 			case UPDATE:
-				if(ActivePerson.exists("Person", person.getAnsattNummer())){
-					ActivePerson.createPerson(person);
-				}else{
-					ActivePerson.updatePerson(person);
+				if(person.getAnsattNummer() != null){
+					if(ActiveModel.exists("Person", person.getAnsattNummer()))
+						ActivePerson.updatePerson(person);
+					}
+				else{
+					return ActivePerson.createPerson(person);
 				}
 				break;
 			case SELECT:
@@ -95,6 +101,7 @@ public class ObjectManager {
 			return null;
 		}
 		else if( content instanceof String){
+			System.out.println("EG FIKK EN StREng : OMg!");
 			String string = (String)content;
 			boolean approved = ActivePerson.checkPassord(string);
 			return approved;

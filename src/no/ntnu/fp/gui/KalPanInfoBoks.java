@@ -61,13 +61,14 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		endre.show();
 		slett.show();
 		
-		//if (kal.getConnectedPerson().getId()==a.getInitiativtaker().getId()) {
-			
-		//}
-		//else {
-			avbud.show();
-			slett.hide();
-		//}
+		if (a instanceof Mote) {
+			if (kal.getConnectedPerson()==a.getInitiativtaker()) {
+				}
+			else {
+				avbud.show();
+				slett.hide();
+			}
+		}
 	}
 	
 	public void clear() {
