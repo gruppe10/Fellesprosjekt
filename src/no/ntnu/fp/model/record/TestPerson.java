@@ -11,8 +11,7 @@ public class TestPerson {
 	}
 	
 	public static void testSelectNotiser(){
-		
-		ActivePerson.selectNotiser(int 1);
+		ActivePerson.selectNotiser(1);
 	}
 
 	public void testPersonAvtaleConsistency(){

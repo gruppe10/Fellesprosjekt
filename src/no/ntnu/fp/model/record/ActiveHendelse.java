@@ -51,7 +51,6 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
-				System.out.println("jeg er "+avtale.getInitiativtaker() );
 				ps.setInt(7, avtale.getInitiativtaker().getAnsattNummer());
 				
 				Person initiativtaker = avtale.getInitiativtaker();
@@ -98,7 +97,7 @@ public class ActiveHendelse extends ActiveModel{
 						System.out.println(starttid);
 						sluttid = formatIntFrom(rs.getTime("sluttid"));
 						System.out.println(sluttid);
-						dato = rs.getDate("date");
+						dato = rs.getDate("dato");
 					}
 				}
 				connection.close();
