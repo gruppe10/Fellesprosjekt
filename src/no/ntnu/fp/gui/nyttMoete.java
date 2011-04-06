@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -36,6 +38,7 @@ import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
+import no.ntnu.fp.model.Status;
 
 
 
@@ -553,9 +556,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		Person person = mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 
+		Map<Person, Status> deltakere = new HashMap<Person, Status>();
 
 		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, 
-				((Rom)Moeterom.getSelectedItem()==noRom)? null : (Rom)Moeterom.getSelectedItem(), null);
+				((Rom)Moeterom.getSelectedItem()==noRom)? null : (Rom)Moeterom.getSelectedItem(), deltakere);
 		
 		person.addAvtale(newAvtale);
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
