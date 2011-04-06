@@ -12,9 +12,10 @@ public class TestPerson {
 	
 	public static void testSelectNotiser(){
 		
+		ActivePerson.selectNotiser(int 1);
 	}
 
-	public void testPersonAvtaleCOnsistency(){
+	public void testPersonAvtaleConsistency(){
 		Person person = ActivePerson.selectPersonByUsername("navn");
 
 		Avtale avtale = new Avtale();

@@ -25,6 +25,7 @@ import Klient.Action;
 import Klient.Envelope;
 import Klient.KlientOS;
 
+import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.record.ActivePerson;
 
@@ -195,6 +196,10 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 				
 				e = new Envelope(Action.SELECT, bruker);
 				Person user = (Person)klient.sendObjectAndGetResponse(e);
+				for(Avtale avtale: user.getAvtaler()){
+					System.out.println("KlientTid:" + avtale.getStarttid() +" "+ avtale.getSluttid());
+				}
+				
 				kal kal = new kal(user);
 				kal.show();
 				dispose();

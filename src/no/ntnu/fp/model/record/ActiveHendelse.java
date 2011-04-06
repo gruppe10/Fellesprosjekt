@@ -79,6 +79,7 @@ public class ActiveHendelse extends ActiveModel{
 		int yyyy = 0000;
 		int starttid = 0;
 		int sluttid = 0;
+		Date dato = new Date();
 
 		try{
 			connect();
@@ -97,6 +98,7 @@ public class ActiveHendelse extends ActiveModel{
 						System.out.println(starttid);
 						sluttid = formatIntFrom(rs.getTime("sluttid"));
 						System.out.println(sluttid);
+						dato = rs.getDate("date");
 					}
 				}
 				connection.close();
@@ -109,7 +111,7 @@ public class ActiveHendelse extends ActiveModel{
 		hendelse.setAvtaleId(avtaleId);
 		hendelse.setNavn(navn);
 		hendelse.setBeskrivelse(beskrivelse);
-		hendelse.setDato(dd, mm, yyyy);
+		hendelse.setDato(dato.getDay(),dato.getMonth(), dato.getYear());
 		hendelse.setSluttid(sluttid);
 		hendelse.setStarttid(starttid);
 		return hendelse;
