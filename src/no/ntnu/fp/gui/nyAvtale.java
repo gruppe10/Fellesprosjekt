@@ -217,10 +217,6 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					avbrytButton.addActionListener(this);
 				}
 				{
-					//test test
-					Rom rom1 = new Rom("a1");
-					Rom rom2 = new Rom("a2");
-					Rom rom3 = new Rom("a3");
 
 					noRom = new Rom("None");
 					romComboBox1Model = 

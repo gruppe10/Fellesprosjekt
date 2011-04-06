@@ -85,12 +85,14 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JTextArea beskrivelseTextArea;
 	private JTextField datoField;
 	private Rom noRom;
+	private DefaultComboBoxModel moeteromModel;
 
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
 	private kal mainKal;
 
 	private ArrayList<Person> mDeltakere;
+	private ArrayList<Rom> romList;
 	
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -118,6 +120,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallpersons");
 		mDeltakere=(ArrayList<Person>)klient.sendObjectAndGetResponse(e);
+		KlientOS klient2 =KlientOS.getInstance();
+		Envelope e2 = new Envelope(Action.SELECT, "getallrooms");
+		romList = (ArrayList<Rom>)klient2.sendObjectAndGetResponse(e2);
+
 
 		initGUI();
 	}
@@ -221,17 +227,16 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				
 			{
 
-				//test test
-				Rom rom1 = new Rom("a1");
-				Rom rom2 = new Rom("a2");
-				Rom rom3 = new Rom("a3");
-
 				noRom = new Rom("None");
-				ComboBoxModel MoeteromModel = 
-					new DefaultComboBoxModel(
-							new Rom[] { noRom, rom1, rom2, rom3});
+				moeteromModel = new DefaultComboBoxModel();
+				moeteromModel.addElement(noRom);
+				
+				for(Rom rom : romList){
+					moeteromModel.addElement(rom);
+				}
+				
 				Moeterom = new JComboBox();
-				Moeterom.setModel(MoeteromModel);
+				Moeterom.setModel(moeteromModel);
 				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
 				Moeterom.setToolTipText("moeterom");
 				//liste over alle tilgjengelige moeterom i det gitte tidspunktet

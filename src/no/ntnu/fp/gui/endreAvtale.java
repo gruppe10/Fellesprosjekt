@@ -27,6 +27,8 @@ import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
 
+import Klient.Action;
+import Klient.Envelope;
 import Klient.KlientOS;
 
 
@@ -64,6 +66,8 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	private JTextArea beskrivelse;
 	private JTextField datoField;
 	private Rom noRom;
+	private ArrayList<Rom> romList;
+	private DefaultComboBoxModel romModel;
 	
 
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
@@ -104,6 +108,10 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 		defaultMonth = avtale.getDatoMnd();
 		defaultYear = avtale.getDatoAar();
 		
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.SELECT, "getallrooms");
+		romList=(ArrayList<Rom>)klient.sendObjectAndGetResponse(e);
+		
 		initGUI();
 	}
 	
@@ -140,19 +148,17 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 					}
 					{
 						
-						
-						//test test
-						Rom rom1 = new Rom("a1");
-						Rom rom2 = new Rom("a2");
-						Rom rom3 = new Rom("a3");
 
 						noRom = new Rom("None");
 						
-						ComboBoxModel romComboBox3Model = 
-							new DefaultComboBoxModel(
-									new Rom[] { noRom, rom1, rom2, rom3});
+						romModel = new DefaultComboBoxModel();
+						romModel.addElement(noRom);
+						for(Rom rom : romList){
+							romModel.addElement(rom);
+						}
+						
 						romComboBox3 = new JComboBox();
-						romComboBox3.setModel(romComboBox3Model);
+						romComboBox3.setModel(romModel);
 						romComboBox3.getSelectedItem();
 					}
 					{

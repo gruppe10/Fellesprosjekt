@@ -33,6 +33,10 @@ import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import Klient.Action;
+import Klient.Envelope;
+import Klient.KlientOS;
+
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
@@ -86,11 +90,15 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private Rom noRom;
 	private JLabel overlappingMessage;
 	private JLabel inValidDateMessage;
+	private DefaultComboBoxModel moeteromModel;
 	
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
 	private kal mainKal;
 	private Mote mote;
+	
+	private ArrayList<Person> mDeltakere;
+	private ArrayList<Rom> romList;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -107,6 +115,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 
 	public endreMoete() {
 		super();
+
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.SELECT, "getallpersons");
+		mDeltakere=(ArrayList<Person>)klient.sendObjectAndGetResponse(e);
+		KlientOS klient2 =KlientOS.getInstance();
+		Envelope e2 = new Envelope(Action.SELECT, "getallrooms");
+		romList = (ArrayList<Rom>)klient2.sendObjectAndGetResponse(e2);
+
 		initGUI();
 	}
 
@@ -138,19 +154,16 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				jLabel1.setFont(new java.awt.Font("Tahoma",2,12));
 			}
 			{
-//				Test
-				Person p2 = new Person();
-				p2.setName("Kåre");
-				Person p1 = new Person();
-				p1.setName("Ida");
-				
+
 				muligeDeltakereScroll = new JScrollPane();
 				{
 					deljList1Model = 
 						new DefaultListModel();
 					muligeDeltakereList = new JList();
-					deljList1Model.addElement(p1);
-					deljList1Model.addElement(p2);
+					for(Person p : mDeltakere){
+						if(p != mainKal.getConnectedPerson()) deljList1Model.addElement(p);
+					}
+
 					muligeDeltakereScroll.setViewportView(muligeDeltakereList);
 					muligeDeltakereList.setModel(deljList1Model);
 					muligeDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -181,16 +194,16 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				slutttidLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
-				//test test
-				Rom rom1 = new Rom("a1");
-				Rom rom2 = new Rom("a2");
-				Rom rom3 = new Rom("a3");
+
 
 				noRom = new Rom("None");
-
-				ComboBoxModel moeteromModel = 
-					new DefaultComboBoxModel(
-							new Rom[] { noRom,  });
+				moeteromModel = new DefaultComboBoxModel();
+				moeteromModel.addElement(noRom);
+				
+				for(Rom rom : romList){
+					moeteromModel.addElement(rom);
+				}
+				
 				Moeterom = new JComboBox();
 				Moeterom.setModel(moeteromModel);
 				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
