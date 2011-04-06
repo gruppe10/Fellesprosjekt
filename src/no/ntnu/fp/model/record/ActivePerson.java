@@ -29,7 +29,7 @@ import org.apache.derby.tools.sysinfo;
 
 public class ActivePerson extends ActiveModel{
 	
-	public static void createPerson(Person person){
+	public static Person createPerson(Person person){
 		if(person.getAnsattNummer() == null){
 			int nextAvailableId = nextAvailableIdFor("Person");
 			person.setAnsattNummer(nextAvailableId);
@@ -66,6 +66,7 @@ public class ActivePerson extends ActiveModel{
 			System.out.println("Kan ikke lage person. Feilmelding:");
 			System.out.println(e.getMessage());
 		}
+		return person;
 	}
 	
 	public static void updatePerson(Person person){

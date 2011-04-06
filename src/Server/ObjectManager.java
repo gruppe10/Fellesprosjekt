@@ -75,10 +75,12 @@ public class ObjectManager {
 			Person person = (Person)content;
 			switch(action){
 			case UPDATE:
-				if(ActivePerson.exists("Person", person.getAnsattNummer())){
-					ActivePerson.createPerson(person);
-				}else{
-					ActivePerson.updatePerson(person);
+				if(person.getAnsattNummer() != null){
+					if(ActiveModel.exists("Person", person.getAnsattNummer()))
+						ActivePerson.updatePerson(person);
+					}
+				else{
+					return ActivePerson.createPerson(person);
 				}
 				break;
 			case SELECT:
