@@ -108,7 +108,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	public kal(Person bruker){
 		super();
 		mainDate=Calendar.getInstance();
-		setConnectedPerson(bruker);
+		person=bruker;
 		
 		updateInbox();
 		

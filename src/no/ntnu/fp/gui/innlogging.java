@@ -91,13 +91,13 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 				jPanel1.setLayout(jPanel1Layout);
 				{
 					brukernavnField = new JTextField();
-					brukernavnField.setText("Skriv inn brukernavn");
+					brukernavnField.setText("");
 					brukernavnField.setFont(new java.awt.Font("Tahoma",2,11));
 					brukernavnField.getText();
 				}
 				{
 					passordField = new JPasswordField();
-					passordField.setText("Passord");
+					passordField.setText("");
 					passordField.getText();
 				}
 				{
@@ -189,7 +189,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 				
 				e = new Envelope(Action.SELECT, bruker);
 				Person user = (Person)klient.sendObjectAndGetResponse(e);
-				kal kal = new kal((Person)bruker);
+				kal kal = new kal((Person)user);
 				kal.show();
 				dispose();
 			}else{

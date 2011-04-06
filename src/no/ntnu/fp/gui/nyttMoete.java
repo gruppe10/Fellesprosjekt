@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -36,6 +38,7 @@ import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
+import no.ntnu.fp.model.Status;
 
 
 
@@ -307,7 +310,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 					.addComponent(nyttMoeteLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(thisLayout.createParallelGroup()
-						.addComponent(leggetildeltScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+						.addComponent(leggetildeltScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 							.addGap(17)
 							.addComponent(leggTilDeltakerLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
@@ -316,7 +319,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 						.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
 							.addComponent(deltakereLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addGap(17))
-						.addComponent(deltakereScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+						.addComponent(deltakereScroll, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 					.addComponent(fjernDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addComponent(leggtilDeltakerButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -427,15 +430,15 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 									.addComponent(datoField, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 75, Short.MAX_VALUE))
 								.addGroup(thisLayout.createSequentialGroup()
-									.addComponent(deltakereScroll, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
+									.addComponent(deltakereScroll, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 0, Short.MAX_VALUE))
 								.addGroup(thisLayout.createSequentialGroup()
-									.addComponent(leggetildeltScroll, GroupLayout.PREFERRED_SIZE, 145, GroupLayout.PREFERRED_SIZE)
+									.addComponent(leggetildeltScroll, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 									.addGap(0, 0, Short.MAX_VALUE)))
 							.addGap(196)))
 						.addContainerGap(28, 28));
 			pack();
-			this.setSize(504, 453);
+			this.setSize(500, 670);
 		} catch (Exception e) {
 			//add your error handling code here
 			e.printStackTrace();
@@ -553,9 +556,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		Person person = mainKal.getConnectedPerson();
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 
+		Map<Person, Status> deltakere = new HashMap<Person, Status>();
 
 		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, 
-				((Rom)Moeterom.getSelectedItem()==noRom)? null : (Rom)Moeterom.getSelectedItem(), null);
+				((Rom)Moeterom.getSelectedItem()==noRom)? null : (Rom)Moeterom.getSelectedItem(), deltakere);
 		
 		person.addAvtale(newAvtale);
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
