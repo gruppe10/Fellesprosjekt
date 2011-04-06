@@ -24,6 +24,7 @@ public class ObjectManager {
 		Object content = e.getContent();
 		Action action = e.getAction();
 		if( content instanceof Avtale){
+			System.out.println("Recieved Avtale");
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case UPDATE:
@@ -33,6 +34,7 @@ public class ObjectManager {
 					}
 				}else{
 					Avtale avtaleWithNewId = ActiveHendelse.createAvtale(avtale);
+					System.out.println("Handled Avtale");
 					return avtaleWithNewId;
 				}
 				break;
@@ -43,7 +45,7 @@ public class ObjectManager {
 				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
 				break;
 			}
-			System.out.println("Recieved and handled Avtale");
+			System.out.println("Handled Avtale");
 		}
 		else if(content instanceof Notis){
 			//TODO kode for håndtering av sending av notis til db-lagres ikke i databasen
@@ -52,6 +54,7 @@ public class ObjectManager {
 			return "notis mottatt";
 		}
 		else if(content instanceof Mote){
+			System.out.println("Recieved Mote");
 			Mote mote = (Mote)content;
 			switch(action){
 			case UPDATE:
@@ -68,10 +71,11 @@ public class ObjectManager {
 				mote = (Mote) ActiveHendelse.selectMote(mote.getAvtaleId());
 				break;
 			}
-			System.out.println("Recieved and handled Møte");
+			System.out.println("Handled Mote");
 			return mote;
 		}
 		else if( content instanceof Person){	
+			System.out.println("Recieved Person");
 			Person person = (Person)content;
 			switch(action){
 			case UPDATE:
@@ -93,7 +97,7 @@ public class ObjectManager {
 				ActivePerson.deletePerson(person.getAnsattNummer());
 				break;
 			}
-			System.out.println("Recieved and handled person");
+			System.out.println("Handled Person");
 			return person;
 		}
 		else if( content instanceof Rom){
@@ -101,10 +105,13 @@ public class ObjectManager {
 			return null;
 		}
 		else if( content instanceof String){
-			System.out.println("EG FIKK EN StREng : OMg!");
+			System.out.println("Recieved String");
 			String string = (String)content;
 			boolean approved = ActivePerson.checkPassord(string);
+			
+			System.out.println("Handled String");
 			return approved;
+			
 		}
 		return null;
 	}
