@@ -67,6 +67,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JList deltakerList;
 	private JLabel deltakereLabel1;
 	private JButton visDeltakereButton;
+	private DefaultListModel leggetilDeltModel;
 	
 
 	private Calendar mainDate;
@@ -150,13 +151,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			{
 				jScrollPane1 = new JScrollPane();
 				{
-					ListModel deltakerListModel = 
-						new DefaultComboBoxModel(
-								new String[] { "Item One", "Item Two" });
+					leggetilDeltModel = new DefaultListModel();
 					deltakerList = new JList();
 					jScrollPane1.setViewportView(deltakerList);
-					deltakerList.setModel(deltakerListModel);
-					deltakerList.setPreferredSize(new java.awt.Dimension(124, 73));
+					deltakerList.setModel(leggetilDeltModel);
+					deltakerList.setFont(new java.awt.Font("Tahoma",2,11));
 				}
 			}
 			{
@@ -164,18 +163,23 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				leggtilButton1.setText("Legg til deltaker");
 				leggtilButton1.setFont(new java.awt.Font("Tahoma",0,12));
 			}
-			
+//			Test
+			Person p2 = new Person();
+			p2.setName("Kåre");
+			Person p1 = new Person();
+			p1.setName("Ida");			
 			
 			
 			{
 				jScrollPane2 = new JScrollPane();
 				{
-					ListModel alleDeltakereListModel = 
-						new DefaultComboBoxModel(
-								new String[] { "Item One", "Item Two" });
+					leggetilDeltModel = new DefaultListModel();
 					alleDeltakereList = new JList();
+					leggetilDeltModel.addElement(p1);
+					leggetilDeltModel.addElement(p2);
 					jScrollPane2.setViewportView(alleDeltakereList);
-					alleDeltakereList.setModel(alleDeltakereListModel);
+					alleDeltakereList.setModel(leggetilDeltModel);
+					alleDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
 				}
 			}
 			{
