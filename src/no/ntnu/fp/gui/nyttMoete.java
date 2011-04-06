@@ -438,7 +438,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 							.addGap(196)))
 						.addContainerGap(28, 28));
 			pack();
-			this.setSize(500, 670);
+			this.setSize(500, 700);
 		} catch (Exception e) {
 			//add your error handling code here
 			e.printStackTrace();
