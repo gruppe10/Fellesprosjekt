@@ -195,7 +195,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 				
 				e = new Envelope(Action.SELECT, bruker);
 				Person user = (Person)klient.sendObjectAndGetResponse(e);
-				kal kal = new kal((Person)user);
+				kal kal = new kal(user);
 				kal.show();
 				dispose();
 			}else{

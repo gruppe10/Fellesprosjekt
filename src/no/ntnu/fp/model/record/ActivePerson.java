@@ -91,8 +91,14 @@ public class ActivePerson extends ActiveModel{
 	            connection.close();
 	            
 	            ArrayList<Avtale> avtaler = person.getAvtaler();
-				if(!avtaler.isEmpty()){
+	            
+				System.out.println(avtaler.size());
+	            if(!avtaler.isEmpty()){
 					for (Avtale avtale : avtaler) {
+						System.out.println("id:" + avtale.getAvtaleId());
+						System.out.println("navn:" + avtale.getNavn());
+						System.out.println("initiativtakerId:" + avtale.getInitiativtaker().getAnsattNummer());
+						
 						ActiveHendelse.updateAvtale(avtale);
 					}
 				}
@@ -147,7 +153,7 @@ public class ActivePerson extends ActiveModel{
 		Person person = new Person();
 		String navn  = "";
 		String passord = "";
-		int ansattId = nextAvailableIdFor("Person");
+		Integer ansattId = null;
 		
 		try{
 			connect();
@@ -240,43 +246,56 @@ public class ActivePerson extends ActiveModel{
 	
 	public static ArrayList<Avtale> selectAvtaler(int ansattId) {
 		ArrayList<Avtale> hendelser = new ArrayList<Avtale>();
-		ArrayList<Avtale> hendelserUtenDeltagere = new ArrayList<Avtale>();
+		ArrayList<Avtale> hendelserMedDeltakere = new ArrayList<Avtale>();
+		ArrayList<Avtale> hendelserUtenDeltakere = new ArrayList<Avtale>();
 		try{
 			connect();
 			if(connection != null){
+				//Finne alle hendelser
 				PreparedStatement ps = connection.prepareStatement(
 						"SELECT hendelseId FROM Hendelse WHERE lederId = ? "
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
-					int hendelseId = rs.getInt("avtaleId");
+					int hendelseId = rs.getInt("hendelseId");
 					Avtale nyHendelse = ActiveHendelse.selectAvtale(hendelseId);
 					hendelser.add(nyHendelse);
 				};
 				ps.close();
+				connection.close();
+				
+				//Finn alle møter
 				for (Avtale hendelse : hendelser){
-					PreparedStatement ps2 = connection.prepareStatement("" +
-							"Select Avtale.avtaleId from Avtale,Deltagere" +
-							"WHERE NOT Avtale.avtaleId = Deltagere.avtaleId" +
-							"AND Avtale.avtaleId = ?");
-					ps2.setInt(1,hendelse.getAvtaleId());
+					connect();
+					PreparedStatement ps2 = connection.prepareStatement(
+							"SELECT Hendelse.hendelseId FROM Hendelse,Deltakere " +
+							"WHERE Hendelse.hendelseId = Deltakere.hendelseId " +
+							"AND Hendelse.hendelseId = " + hendelse.getAvtaleId()
+					);
 					
 					ResultSet rs2 = ps2.executeQuery();
 					while(rs2.next()){
-						int avtaleId = rs2.getInt("avtaleId");
+						int avtaleId = rs2.getInt("hendelseId");
 						Avtale avtale = ActiveHendelse.selectAvtale(avtaleId);
-						hendelserUtenDeltagere.add(avtale);
+						hendelserMedDeltakere.add(avtale);
+					}
+					connection.close();	
+				}
+				//Lag ny liste medavtaler som ikke inneholder avtaler som egentlig er Møter
+				for(Avtale hendelse: hendelser){
+					if(!hendelserMedDeltakere.contains(hendelse)){
+						hendelserUtenDeltakere.add(hendelse);
 					}
 				}
-				connection.close();	
+				if(connection != null) connection.close();	
 			}	
 		}
 		catch(SQLException e){
-			System.out.println("Could not find any Meetings for Person with id:" + ansattId);
+			System.out.println("Could not find any Avtaler for Person with id:" + ansattId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		return hendelserUtenDeltagere;
+		return hendelserUtenDeltakere;
 	}
 	
 	public static boolean checkPassord(String innloggingsInfo){

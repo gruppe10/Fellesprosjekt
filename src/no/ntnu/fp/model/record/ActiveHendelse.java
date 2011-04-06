@@ -35,7 +35,7 @@ public class ActiveHendelse extends ActiveModel{
 	public static Avtale createAvtale(Avtale avtale){
 		if(avtale.getAvtaleId() == null){
 			int nextAvailableId = nextAvailableIdFor("Hendelse");
-			avtale.setAvtaleId((nextAvailableId));
+			avtale.setAvtaleId(nextAvailableId);
 		}
 		PreparedStatement ps = null;
 		try{
@@ -52,6 +52,11 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
 				ps.setInt(7, avtale.getInitiativtaker().getAnsattNummer());
+				
+				Person initiativtaker = avtale.getInitiativtaker();
+				initiativtaker.addAvtale(avtale);
+				ActivePerson.updatePerson(initiativtaker);
+				
 				ps.execute();
 
 				connection.close();

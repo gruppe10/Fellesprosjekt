@@ -7,14 +7,18 @@ import no.ntnu.fp.model.Person;
 
 public class TestPerson {
 	public static void main(String args[]){
-		Person person = mockPerson();
-		person.setBrukerNavn("jesus");
-		person.setPassord("dance");
-		ActivePerson.createPerson(person);
-		System.out.println("Mission accomplished!");
+		Person person = ActivePerson.selectPersonByUsername("navn");
 		
-		Person p = ActivePerson.selectPersonByUsername("jesus");
-		System.out.println(p.getBrukerNavn() + p.getPassord());
+		Avtale avtale = new Avtale();
+		avtale.setNavn("Avtale 1");
+		avtale.setInitiativtaker(person);
+		ActiveHendelse.createAvtale(avtale);
+		
+		Person sammePerson = ActivePerson.selectPerson(person.getAnsattNummer());
+		
+		
+		System.out.println(sammePerson.getAvtaler().isEmpty());
+		
 		
 		//Person person = mockPerson();
 		//person.setAnsattNummer(138);
