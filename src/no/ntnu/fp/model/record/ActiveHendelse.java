@@ -110,7 +110,8 @@ public class ActiveHendelse extends ActiveModel{
 		hendelse.setAvtaleId(avtaleId);
 		hendelse.setNavn(navn);
 		hendelse.setBeskrivelse(beskrivelse);
-		hendelse.setDato(dato.getDay(),dato.getMonth(), dato.getYear());
+		System.out.println("Ypiee::"+dato.getDay());
+		hendelse.setDato(dato.getDate(),dato.getMonth(), dato.getYear());
 		hendelse.setSluttid(sluttid);
 		hendelse.setStarttid(starttid);
 		return hendelse;
