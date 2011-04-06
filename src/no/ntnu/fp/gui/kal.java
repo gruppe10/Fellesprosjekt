@@ -27,6 +27,11 @@ import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Status;
+import no.ntnu.fp.model.Notis;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -70,6 +75,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private DefaultListModel leggetilDeltModel;
 	private JButton deltHendButton;
 	private DefaultListModel deltakereModel;
+	private DefaultListModel meldingerModel;
 	
 
 	private Calendar mainDate;
@@ -122,6 +128,10 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		mainDate=Calendar.getInstance();
 		person=bruker;
 		
+		for(Avtale avtale: bruker.getAvtaler()){
+			System.out.println(avtale.getNavn() + " "+ avtale.getDatoDag() +" "+ avtale.getDatoMnd()+" "+ avtale.getDatoAar());
+		}
+	
 		updateInbox();
 		
 		avtaler = bruker.getAvtaler();
@@ -286,12 +296,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			{
 				meldinger = new JScrollPane();
 				{
-					ListModel jList1Model = 
-						new DefaultComboBoxModel(
-								new String[] { "Item One", "Item Two" });
+					meldingerModel = new DefaultListModel();
+					notiser = new JList();
 					notiser = new JList();
 					meldinger.setViewportView(notiser);
-					notiser.setModel(jList1Model);
+					notiser.setModel(meldingerModel);
 					notiser.setPreferredSize(new java.awt.Dimension(155, 91));
 				}
 			}
@@ -460,17 +469,34 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 					Status cStatus=current.getDeltakere().get(person);
 					
 					if (cStatus==Status.IKKE_MOTTATT) {
-						//make new notis, add to notiser (Innboksen)
+						Notis notis=new Notis(person, current, "invitasjon");
+						meldingerModel.addElement(notis);
 						
 					}
 				}
 				else if (a.getInitiativtaker()==person) {
+					Mote current = (Mote)a;
+					
+					ArrayList<Person> deltakere = new ArrayList<Person>();
+
+					Map<Person, Status> deltakereMedStatus = current.getDeltakere();
+					Iterator itEntry = deltakereMedStatus.entrySet().iterator();
+					Iterator itKey = deltakereMedStatus.keySet().iterator();
+					
+					while (itEntry.hasNext()) {
+						Status cStatus=(Status)itKey.next();
+						Person deltaker = (Person)itEntry.next();
+						
+						if (cStatus==Status.AVSLATT) {
+							Notis notis=new Notis(person, current, "meldtavbud", deltaker);
+							meldingerModel.addElement(notis);
+						}
+					}
 					
 				}
 		
 			}
 		}
-		
 		
 	}
 	
