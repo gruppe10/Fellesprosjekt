@@ -352,7 +352,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 					.addComponent(jPanel2, 0, 280, Short.MAX_VALUE));
 			}
 			pack();
-			this.setSize(400, 326);
+			this.setSize(400, 330);
 		} catch (Exception e) {
 		    //add your error handling code here
 			e.printStackTrace();

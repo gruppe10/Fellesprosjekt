@@ -83,7 +83,7 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == endre){
 			if (a instanceof Mote) {
-				endreMoete endreMoete = new endreMoete();
+				endreMoete endreMoete = new endreMoete(kal, (Mote)a);
 				endreMoete.show();
 			}
 			else {

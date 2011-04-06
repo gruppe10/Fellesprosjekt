@@ -106,15 +106,29 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				endreMoete inst = new endreMoete();
+				endreMoete inst = new endreMoete(null, null);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 
-	public endreMoete() {
+	public endreMoete(kal kal, Mote m) {
 		super();
+		
+		mainKal=kal;
+		
+		if (m instanceof KalPanMoteFiller) {
+			mote=((KalPanMoteFiller)m).getAvtale();
+		}
+		else {
+		mote=m;
+		}
+		
+		
+		defaultDato = mote.getDatoDag();
+		defaultMonth = mote.getDatoMnd();
+		defaultYear = mote.getDatoAar();
 
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallpersons");
@@ -179,6 +193,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				starttidCombo = new JComboBox();
 				starttidCombo.setModel(stjComboBox1Model);
 				starttidCombo.getSelectedItem();
+				starttidCombo.setSelectedIndex(mote.getStarttid()-timeIndexDiff);
 			}
 			{
 				ComboBoxModel sutjComboBox1Model = 
@@ -187,6 +202,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				sluttidCombo = new JComboBox();
 				sluttidCombo.setModel(sutjComboBox1Model);
 				sluttidCombo.getSelectedItem();
+				sluttidCombo.setSelectedIndex(mote.getStarttid()-timeIndexDiff-1);
 			}
 			{
 				slutttidLabel = new JLabel();
@@ -223,7 +239,18 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			{
 				datoField = new JTextField();
-				datoField.setText("dd.mm.aaaa");
+				if (defaultDato<10 && defaultMonth<10) {
+					datoField.setText("0"+defaultDato+".0"+defaultMonth+"."+defaultYear);
+					}
+				else if (defaultDato<10) {
+					datoField.setText("0"+defaultDato+"."+defaultMonth+"."+defaultYear);
+					}
+				else if (defaultMonth<10) {
+				datoField.setText(defaultDato+".0"+defaultMonth+"."+defaultYear);
+				}
+				else {
+					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);	
+				}
 				datoField.setFont(new java.awt.Font("Tahoma",2,11));
 			}
 			{
@@ -247,19 +274,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				beskrivelseTextArea.getText();
 			}
 			{
-//				Test
-				Person p1 = new Person();
-				p1.setName("Bob");
-				Person p2 = new Person();
-				p2.setName("Liv");
+//				
 				
 				valgteDeltakere = new JScrollPane();
 				{
 					deltakereListModel = 
 						new DefaultListModel();
 					deltakereList = new JList();
-					deltakereListModel.addElement(p1);
-					deltakereListModel.addElement(p2);
+					
 					
 					valgteDeltakere.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereListModel);

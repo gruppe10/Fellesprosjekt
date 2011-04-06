@@ -18,8 +18,8 @@ public class KalPanMoteFiller extends Mote{
 		
 	}
 
-	public Avtale getAvtale() {
-		return avtale;
+	public Mote getAvtale() {
+		return (Mote)avtale;
 	}
 
 	public void setAvtale(Avtale avtale) {

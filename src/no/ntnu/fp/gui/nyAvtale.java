@@ -125,7 +125,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				}
 				{
 					overlappingMessage = new JLabel();
-					overlappingMessage.setText("b");
+					overlappingMessage.setText(" ");
 					overlappingMessage.setFont(new java.awt.Font("Tahoma",2,12));
 				}
 				{
@@ -155,7 +155,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 				}
 				{
 					inValidDateMessage = new JLabel();
-					inValidDateMessage.setText("a");
+					inValidDateMessage.setText(" ");
 					inValidDateMessage.setFont(new java.awt.Font("Tahoma",2,12));
 				}
 				{
@@ -269,7 +269,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 																																.addGap(0, 0, Short.MAX_VALUE))
 																																.addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 																																		.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-																																		.addComponent(overlappingMessage, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+																																		.addComponent(overlappingMessage, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
 																																		.addGap(0, 34, Short.MAX_VALUE))))
 																																		.addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 																																				.addGroup(jPanel1Layout.createParallelGroup()
@@ -277,7 +277,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 																																						.addComponent(romComboBox1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
 																																						.addComponent(headerTextField, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE))
 																																						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-																																						.addComponent(inValidDateMessage, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+																																						.addComponent(inValidDateMessage, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
 																																						.addGap(0, 8, Short.MAX_VALUE))
 																																						.addGroup(GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
 																																								.addComponent(jTextArea1, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)
@@ -336,7 +336,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 268, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(99, Short.MAX_VALUE));
 			pack();
-			setSize(400, 300);
+			setSize(400, 330);
 		} catch (Exception e) {
 			//add your error handling code here
 			e.printStackTrace();
@@ -354,7 +354,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 			}
 			else if (overlapping()){
 				inValidDateMessage.setText("");
-				overlappingMessage.setText("overlappende avtale");
+				overlappingMessage.setText("overlapping");
 			}
 			else {
 				addAvtale();
