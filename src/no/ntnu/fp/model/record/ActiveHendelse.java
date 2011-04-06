@@ -51,6 +51,7 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
+				System.out.println("jeg er "+avtale.getInitiativtaker() );
 				ps.setInt(7, avtale.getInitiativtaker().getAnsattNummer());
 				
 				Person initiativtaker = avtale.getInitiativtaker();
@@ -295,14 +296,15 @@ public class ActiveHendelse extends ActiveModel{
 		return status;
 	}
 
-	private static void setStatusFor(int ansattId, int avtaleId){
+	private static void setStatusFor(String status, int ansattId, int avtaleId){
 		try {
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT status FROM Deltakere WHERE hendelseId = ? and ansattId = ?"
+					"UPDATE Deltakere SET status = ? WHERE hendelseId = ? and ansattId = ?"
 			);
-			ps.setInt(1, avtaleId);
-			ps.setInt(2, ansattId);
+			ps.setString(1, status);
+			ps.setInt(2, avtaleId);
+			ps.setInt(3, ansattId);
 			ps.execute();
 
 		} catch (SQLException e) {

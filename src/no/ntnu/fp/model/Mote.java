@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Klient.Action;
+import Klient.Envelope;
 import Klient.KlientOS;
 
 public class Mote extends Avtale implements Serializable{
@@ -68,7 +70,8 @@ public class Mote extends Avtale implements Serializable{
 		this.deltakere = deltakere;
 		
 			KlientOS klient = KlientOS.getInstance();
-			klient.sendObjectAndGetResponse(this);
+			
+			klient.sendObjectAndGetResponse(new Envelope(Action.UPDATE,this));
 			
 		
 		
