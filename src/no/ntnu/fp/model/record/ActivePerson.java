@@ -97,7 +97,7 @@ public class ActivePerson extends ActiveModel{
 					for (Avtale avtale : avtaler) {
 						System.out.println("id:" + avtale.getAvtaleId());
 						System.out.println("navn:" + avtale.getNavn());
-						System.out.println("initiativtakerId:" + avtale.getInitiativtaker().getAnsattNummer());
+						System.out.println("initiativtakerId:" + avtale.getInitiativtaker());//.getAnsattNummer());
 						
 						ActiveHendelse.updateAvtale(avtale);
 					}
