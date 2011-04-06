@@ -59,13 +59,16 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		avtaleNavn.setText(a.getNavn()+":  ");
 		avtaleBeskrivelse.setText(a.getBeskrivelse());
 		endre.show();
+		slett.show();
 		
-		//if (kal.getConnectedPerson().getId()==a.getInitiativtaker().getId()) {
-			slett.show();
-		//}
-		//else {
-			avbud.show();
-		//}
+		if (a instanceof Mote) {
+			if (kal.getConnectedPerson()==a.getInitiativtaker()) {
+				}
+			else {
+				avbud.show();
+				slett.hide();
+			}
+		}
 	}
 	
 	public void clear() {

@@ -1,16 +1,12 @@
-/*
- *  @author = Martin  /flex
- */ 
+ ******************************************
+ * 				  HOW TO 				  *
+ ******************************************
+ 1.følg tutorial fra itslearning => Datamod...
+ 
+ 2.så gåtil kommandolinje og skriv: 
  
  $ java -jar db-derby/lib/derbyrun.jar ij
- > connect 'jdbc:derby:Kalender;create=true;';
+ > connect 'jdbc:derby:Kalender;create=true';
  > run 'db-derby/create_db.sql';
  > exit; 
  
- 
- " SELECT avtaleId FROM alleAktuelleHendelser, Deltakere  " +
-						" WHERE NOT alleAktuelleHendelser.avtaleId = Deltakere.avtaleId" + 
-						" WITH alleAktuelleHendelser AS(" +
-						"	SELECT avtaleID FROM Avtaler WHERE lederID = ? " +
-						")" 
-						

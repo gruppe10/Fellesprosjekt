@@ -53,6 +53,26 @@ class KalenderPanelModel extends AbstractTableModel {
         createAvtaleListe();
         
 	}
+	
+public KalenderPanelModel(kal kal, Calendar inDate, ArrayList<Person> persons) {
+		
+		this.kal=kal;
+		Calendar date = inDate;
+		
+		setDayNames();
+		
+		setWeek(date);
+        
+		
+        ukuttaAvtaleListe= kal.getConnectedPerson().getAvtaler();
+        
+        for (int i=0; i<persons.size(); i++) {
+        	ukuttaAvtaleListe.addAll(persons.get(i).getAvtaler());
+        }
+        
+        createAvtaleListe();
+        
+	}
 
     public int getColumnCount() {
         return dayNames.length;

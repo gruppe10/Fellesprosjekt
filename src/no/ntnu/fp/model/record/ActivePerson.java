@@ -48,7 +48,7 @@ public class ActivePerson extends ActiveModel{
 				ps.execute();
 				connection.close();
 			}
-			//Needs handeler for BOTH avtale and mote
+			//TODO Needs handeler for BOTH avtale and mote
 			ArrayList<Avtale> avtaler = person.getAvtaler();
 			if(avtaler != null){
 				for (Avtale avtale : avtaler) {
@@ -151,7 +151,7 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT Distinct FROM Person WHERE brukernavn = ? "
+						"SELECT * FROM Person WHERE brukernavn = ? "
 				);
 				ps.setString(1, brukernavn);
 				
@@ -223,7 +223,7 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int moteId = rs.getInt("avtaleId");
-					Avtale nyttMote = ActiveHendelse.selectHendelse(moteId);
+					Avtale nyttMote = ActiveHendelse.selectMote(moteId);
 					moter.add(nyttMote);
 				};
 			}
@@ -249,7 +249,7 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int hendelseId = rs.getInt("avtaleId");
-					Avtale nyHendelse = ActiveHendelse.selectHendelse(hendelseId);
+					Avtale nyHendelse = ActiveHendelse.selectAvtale(hendelseId);
 					hendelser.add(nyHendelse);
 				};
 				ps.close();
@@ -263,7 +263,7 @@ public class ActivePerson extends ActiveModel{
 					ResultSet rs2 = ps2.executeQuery();
 					while(rs2.next()){
 						int avtaleId = rs2.getInt("avtaleId");
-						Avtale avtale = ActiveHendelse.selectHendelse(avtaleId);
+						Avtale avtale = ActiveHendelse.selectAvtale(avtaleId);
 						hendelserUtenDeltagere.add(avtale);
 					}
 				}
@@ -278,23 +278,30 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static boolean checkPassord(String innloggingsInfo){
-		String[] info = innloggingsInfo.split("\\,");
-		String brukernavn = info[0];
-		String passord = info[1];
+		String[] info = innloggingsInfo.split(",");
+		String brukernavn = info[0].trim();
+		String passord = info[1].trim();
+		
 		boolean godkjent = false;
 
 		try{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT passord FROM Person WHERE brukernavn = ? "
+						"SELECT distinct passord FROM Person WHERE brukernavn = ? "
 						);
 				ps.setString(1, brukernavn);
 				ResultSet rs = ps.executeQuery(); 
+				
 				if (rs != null){
 					while(rs.next()){
-						if(passord == rs.getString("passord"))
+						System.out.println(passord);
+						System.out.println(rs.getString("passord"));
+						
+						if(passord.equals(rs.getString("passord"))){
 							godkjent = true;
+							System.out.println("Aids");
+						}
 					}
 				}
 				connection.close();
@@ -306,6 +313,4 @@ public class ActivePerson extends ActiveModel{
 		}
 		return godkjent;
 	}
-
-	
 }

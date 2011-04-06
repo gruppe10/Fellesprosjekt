@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.Status;
 
 
 /**
@@ -67,7 +68,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	 * Auto-generated main method to display this JFrame
 	 */
 	public static void main(String[] args) {
-
+		 
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -108,6 +109,9 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		super();
 		mainDate=Calendar.getInstance();
 		setConnectedPerson(bruker);
+		
+		updateInbox();
+		
 		avtaler = bruker.getAvtaler();
 		initGUI();
 	}
@@ -171,7 +175,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				jPanel1.setVisible(true);
 				{
 					nyttMoeteButton = new JButton();
-					nyttMoeteButton.setText("Nytt Møte");
+					nyttMoeteButton.setText("Nytt M\u00F8te");
 					nyttMoeteButton.setFont(new java.awt.Font("Tahoma",0,12));
 					nyttMoeteButton.addActionListener(this);
 				}
@@ -286,11 +290,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		if(evt.getSource() == nyAvtaleButton){
 			nyAvtale nyAvtale = new nyAvtale(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
 
-			nyAvtale.show();
+			nyAvtale.setVisible(true);
 		}
 		else if(evt.getSource() == nyttMoeteButton){
 			nyttMoete nyttMoete = new nyttMoete(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
-			nyttMoete.show();
+			nyttMoete.setVisible(true);
 		}
 
 
@@ -323,6 +327,34 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		}
 	}
 
+	
+	private void updateInbox() {
+		ArrayList<Avtale> moter=person.getAvtaler();
+		
+		
+		for (int i=0; i<moter.size(); i++) {
+			Avtale a=moter.get(i);
+			if (a instanceof Mote) {
+				if (a.getInitiativtaker()!=person) {
+					
+					Mote current = (Mote)a;
+					Status cStatus=current.getDeltakere().get(person);
+					
+					if (cStatus==Status.IKKE_MOTTATT) {
+						//make new notis, add to notiser (Innboksen)
+						
+					}
+				}
+				else if (a.getInitiativtaker()==person) {
+					
+				}
+		
+			}
+		}
+		
+		
+	}
+	
 	public Person getConnectedPerson() {
 		return person;
 	}

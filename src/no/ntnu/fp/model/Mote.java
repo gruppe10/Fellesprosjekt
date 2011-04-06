@@ -18,7 +18,7 @@ public class Mote extends Avtale implements Serializable{
 		super(navn, beskrivelse, initiativtaker, starttid, sluttid, datoDag, datoMnd, datoAar, rom);
 		this.deltakere = deltakere;
 		
-		KlientOS klient = new KlientOS(6789, "ip server");
+		KlientOS klient = KlientOS.getInstance();
 		klient.sendObjectAndGetResponse(this);
 		
 		for (Person deltaker : deltakere.keySet()){
@@ -60,5 +60,17 @@ public class Mote extends Avtale implements Serializable{
 	public void leggtilDeltakere(Map<Person, Status> deltakere) {
 		// TODO Auto-generated method stub
 		this.deltakere = deltakere;
+	}
+	
+	public void update(int starttid,int sluttid, int dag, int mnd, int aar, String navn, String beskrivelse, Rom moterom, Map<Person, Status> deltakere) {
+		super.update(starttid, sluttid, dag, mnd, aar, navn, beskrivelse, moterom);
+		
+		this.deltakere = deltakere;
+		
+			KlientOS klient = KlientOS.getInstance();
+			klient.sendObjectAndGetResponse(this);
+			
+		
+		
 	}
 }
