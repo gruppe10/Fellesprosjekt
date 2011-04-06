@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -59,6 +60,16 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JButton nyttMoeteButton;
 
 	private Person person;
+	private JScrollPane jScrollPane2;
+	private JScrollPane jScrollPane1;
+	private JList alleDeltakereList;
+	private JButton leggtilButton1;
+	private JList deltakerList;
+	private JLabel deltakereLabel1;
+	private JButton visDeltakereButton;
+	private DefaultListModel leggetilDeltModel;
+	private DefaultListModel deltakereModel;
+	
 
 	private Calendar mainDate;
 
@@ -120,12 +131,67 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private void initGUI() {
 		try {
 			GroupLayout thisLayout = new GroupLayout((JComponent)getContentPane());
-			getContentPane().setLayout(thisLayout);
+			GroupLayout thisLayout1 = new GroupLayout((JComponent)getContentPane());
+			getContentPane().setLayout(thisLayout1);
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			{
 				minKalenderLAbel = new JLabel();
 				minKalenderLAbel.setText("Min kalender");
 				minKalenderLAbel.setFont(new java.awt.Font("Tahoma",1,16));
+			}
+			{
+				visDeltakereButton = new JButton();
+				visDeltakereButton.setText("Vis deltakeres hendelser");
+				visDeltakereButton.setFont(new java.awt.Font("Tahoma",0,12));
+			}
+			{
+				deltakereLabel1 = new JLabel();
+				deltakereLabel1.setText("Deltakere:");
+				deltakereLabel1.setFont(new java.awt.Font("Tahoma",0,12));
+			}
+			
+//			Test
+			Person p3 = new Person();
+			p3.setName("Ole");
+			Person p4 = new Person();
+			p4.setName("Kari");
+			
+			{
+				jScrollPane1 = new JScrollPane();
+				{
+					deltakereModel = new DefaultListModel();
+					deltakerList = new JList();
+					deltakereModel.addElement(p4);
+					deltakereModel.addElement(p3);
+					jScrollPane1.setViewportView(deltakerList);
+					deltakerList.setModel(deltakereModel);
+					deltakerList.setFont(new java.awt.Font("Tahoma",2,11));
+				}
+			}
+			{
+				leggtilButton1 = new JButton();
+				leggtilButton1.setText("Legg til deltaker");
+				leggtilButton1.setFont(new java.awt.Font("Tahoma",0,12));
+				leggtilButton1.addActionListener(this);
+			}
+//			Test
+			Person p2 = new Person();
+			p2.setName("Kåre");
+			Person p1 = new Person();
+			p1.setName("Ida");			
+			
+			
+			{
+				jScrollPane2 = new JScrollPane();
+				{
+					leggetilDeltModel = new DefaultListModel();
+					alleDeltakereList = new JList();
+					leggetilDeltModel.addElement(p1);
+					leggetilDeltModel.addElement(p2);
+					jScrollPane2.setViewportView(alleDeltakereList);
+					alleDeltakereList.setModel(leggetilDeltModel);
+					alleDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+				}
 			}
 			{
 				mndLabel1 = new JLabel();
@@ -216,66 +282,80 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 					notiser.setPreferredSize(new java.awt.Dimension(155, 91));
 				}
 			}
-			thisLayout.setVerticalGroup(thisLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-					.addGroup(thisLayout.createParallelGroup()
-							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-									.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-											.addComponent(vensteButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addComponent(ukeLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addComponent(mndLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addComponent(aarLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addComponent(mndLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-											.addComponent(datoLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-											.addComponent(hoeyreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-											.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-											.addComponent(kalenderPanel1, 0, 333, Short.MAX_VALUE))
-											.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-													.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-													.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-													.addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-													.addGap(0, 83, Short.MAX_VALUE)
-													.addComponent(meldinger, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-													.addGap(37)))
-													.addContainerGap(32, 32));
-			thisLayout.setHorizontalGroup(thisLayout.createSequentialGroup()
-					.addGroup(thisLayout.createParallelGroup()
-							.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-									.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-									.addGap(56))
-									.addGroup(thisLayout.createSequentialGroup()
-											.addPreferredGap(jPanel1, ulestLAbel, LayoutStyle.ComponentPlacement.INDENT)
-											.addGroup(thisLayout.createParallelGroup()
-													.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-															.addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-															.addGap(65))
-															.addComponent(meldinger, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE))))
-															.addGap(22)
-															.addGroup(thisLayout.createParallelGroup()
-																	.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																			.addComponent(datoLabel1, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-																			.addGap(27)
-																			.addGroup(thisLayout.createParallelGroup()
-																					.addGroup(GroupLayout.Alignment.LEADING, thisLayout.createSequentialGroup()
-																							.addComponent(mndLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-																							.addGap(39)
-																							.addComponent(aarLabel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
-																							.addGap(78)
-																							.addComponent(vensteButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE))
-																							.addComponent(minKalenderLAbel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
-																							.addGap(30)
-																							.addComponent(ukeLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-																							.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-																							.addComponent(mndLabel1, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-																							.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-																							.addComponent(hoeyreButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-																							.addGap(0, 274, Short.MAX_VALUE))
-																							.addComponent(kalenderPanel1, GroupLayout.Alignment.LEADING, 0, 833, Short.MAX_VALUE))
-																							.addContainerGap());
+			thisLayout1.setHorizontalGroup(thisLayout1.createParallelGroup()
+				.addGroup(thisLayout1.createSequentialGroup()
+				    .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(visDeltakereButton, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
+				    .addGap(42)
+				    .addComponent(aarLabel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+				    .addContainerGap(613, 613))
+				.addGroup(thisLayout1.createSequentialGroup()
+				    .addPreferredGap(jPanel1, ulestLAbel, LayoutStyle.ComponentPlacement.INDENT)
+				    .addGroup(thisLayout1.createParallelGroup()
+				        .addComponent(ulestLAbel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+				        .addComponent(meldinger, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 179, GroupLayout.PREFERRED_SIZE))
+				    .addGap(18)
+				    .addGroup(thisLayout1.createParallelGroup()
+				        .addGroup(thisLayout1.createSequentialGroup()
+				            .addComponent(datoLabel1, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+				            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				            .addGroup(thisLayout1.createParallelGroup()
+				                .addGroup(thisLayout1.createSequentialGroup()
+				                    .addComponent(mndLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+				                    .addGap(34)
+				                    .addGroup(thisLayout1.createParallelGroup()
+				                        .addComponent(deltakereLabel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+				                        .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE))
+				                    .addComponent(vensteButton, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE))
+				                .addComponent(minKalenderLAbel, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 280, GroupLayout.PREFERRED_SIZE))
+				            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				            .addGroup(thisLayout1.createParallelGroup()
+				                .addComponent(leggtilButton1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
+				                .addComponent(jScrollPane2, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
+				                .addGroup(thisLayout1.createSequentialGroup()
+				                    .addGap(30)
+				                    .addComponent(ukeLabel, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
+				                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				                    .addComponent(mndLabel1, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)))
+				            .addComponent(hoeyreButton, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE))
+				        .addComponent(kalenderPanel1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 801, GroupLayout.PREFERRED_SIZE))
+				    .addContainerGap(12, 12)));
+			thisLayout1.setVerticalGroup(thisLayout1.createSequentialGroup()
+				.addContainerGap(12, 12)
+				.addComponent(minKalenderLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				.addGroup(thisLayout1.createParallelGroup()
+				    .addGroup(thisLayout1.createSequentialGroup()
+				        .addGroup(thisLayout1.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				            .addComponent(vensteButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(datoLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(mndLabel1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(aarLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(mndLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(ukeLabel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				            .addComponent(hoeyreButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				        .addComponent(kalenderPanel1, GroupLayout.PREFERRED_SIZE, 314, GroupLayout.PREFERRED_SIZE))
+				    .addGroup(thisLayout1.createSequentialGroup()
+				        .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				        .addComponent(ulestLAbel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				        .addComponent(meldinger, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)))
+				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+				.addComponent(deltakereLabel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+				.addGroup(thisLayout1.createParallelGroup()
+				    .addComponent(jScrollPane1, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(jScrollPane2, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+				    .addGroup(thisLayout1.createSequentialGroup()
+				        .addGap(54)
+				        .addComponent(visDeltakereButton, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+				.addGap(12)
+				.addComponent(leggtilButton1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap(13, 13));
 			pack();
-			this.setSize(1030, 475);
+			this.setSize(1030, 580);
 
 			vensteButton.addActionListener(new venstreButtonAction());
 			hoeyreButton.addActionListener(new hoeyreButtonAction());
@@ -295,6 +375,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		else if(evt.getSource() == nyttMoeteButton){
 			nyttMoete nyttMoete = new nyttMoete(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
 			nyttMoete.setVisible(true);
+		}
+		else if(evt.getSource() == leggtilButton1){
+			if(!deltakereModel.contains(alleDeltakereList.getSelectedValue())){
+				deltakereModel.addElement(alleDeltakereList.getSelectedValue());
+			}
 		}
 
 

@@ -110,6 +110,7 @@ public class ActivePerson extends ActiveModel{
 		String brukernavn = "";
 		String passord = "";
 		ArrayList<Avtale> avtaler = selectAvtaler(ansattId);
+
 		
 		try{
 			connect();
@@ -296,12 +297,8 @@ public class ActivePerson extends ActiveModel{
 				
 				if (rs != null){
 					while(rs.next()){
-						System.out.println(passord);
-						System.out.println(rs.getString("passord"));
-						
 						if(passord.equals(rs.getString("passord"))){
 							godkjent = true;
-							System.out.println("Aids");
 						}
 					}
 				}

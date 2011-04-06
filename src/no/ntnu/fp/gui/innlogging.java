@@ -78,12 +78,15 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 	public innlogging() {
 		super();
 		initGUI();
+		this.getRootPane().setDefaultButton(loggInnButton);
+		
 	}
 
 	private void initGUI() {
 		try {
 			GroupLayout thisLayout = new GroupLayout((JComponent)getContentPane());
 			getContentPane().setLayout(thisLayout);
+			
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			{
 				jPanel1 = new JPanel();
@@ -91,13 +94,13 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 				jPanel1.setLayout(jPanel1Layout);
 				{
 					brukernavnField = new JTextField();
-					brukernavnField.setText("");
+					brukernavnField.setText("navn");
 					brukernavnField.setFont(new java.awt.Font("Tahoma",2,11));
 					brukernavnField.getText();
 				}
 				{
 					passordField = new JPasswordField();
-					passordField.setText("");
+					passordField.setText("passord");
 					passordField.getText();
 				}
 				{
@@ -105,6 +108,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 					loggInnButton.setText("Logg inn");
 					loggInnButton.setFont(new java.awt.Font("Tahoma",0,12));
 					loggInnButton.addActionListener(this);
+					loggInnButton.setDefaultCapable(true);
 				}
 				{
 					brukernavnLabel = new JLabel();
@@ -163,6 +167,8 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 											.addContainerGap(132, 132));
 			pack();
 			setSize(400, 300);
+			
+			
 		} catch (Exception e) {
 			//add your error handling code here
 			e.printStackTrace();

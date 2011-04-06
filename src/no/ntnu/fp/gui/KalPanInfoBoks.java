@@ -58,15 +58,15 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		this.a=a;
 		avtaleNavn.setText(a.getNavn()+":  ");
 		avtaleBeskrivelse.setText(a.getBeskrivelse());
-		endre.show();
-		slett.show();
+		endre.setVisible(true);
+		slett.setVisible(true);
 		
 		if (a instanceof Mote) {
 			if (kal.getConnectedPerson()==a.getInitiativtaker()) {
 				}
 			else {
-				avbud.show();
-				slett.hide();
+				avbud.setVisible(true);
+				slett.setVisible(false);
 			}
 		}
 	}
@@ -74,9 +74,9 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 	public void clear() {
 		avtaleNavn.setText(" ");
 		avtaleBeskrivelse.setText(" ");
-		slett.hide();
-		endre.hide();
-		avbud.hide();
+		slett.setVisible(false);
+		endre.setVisible(false);
+		avbud.setVisible(false);
 		
 	}
 	

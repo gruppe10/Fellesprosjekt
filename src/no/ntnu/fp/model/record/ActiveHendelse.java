@@ -51,6 +51,7 @@ public class ActiveHendelse extends ActiveModel{
 				ps.setDate(4, formatDateFrom(avtale));
 				ps.setTime(5, formatTimeFrom(avtale.getStarttid()));
 				ps.setTime(6, formatTimeFrom(avtale.getSluttid()));
+				System.out.println("jeg er "+avtale.getInitiativtaker() );
 				ps.setInt(7, avtale.getInitiativtaker().getAnsattNummer());
 				ps.execute();
 
