@@ -11,7 +11,12 @@ public class TestHendelse {
 	public static void main(String args[]){
 		//testCeateDeltagereMedStatus();
 		//testCrudForAvtale();
-		testCrudForMote();
+		//testCrudForMote();
+		
+		Date dato = new Date(2003, 2, 1);
+		
+		System.out.println(dato.getMonth());
+		
 	}
 	
 	

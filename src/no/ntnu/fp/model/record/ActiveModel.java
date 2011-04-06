@@ -99,7 +99,7 @@ public class ActiveModel {
 		int mm = avtale.getDatoMnd();
 		int yyyy = avtale.getDatoAar();
 
-		Date date = new Date(dd, mm, yyyy);
+		Date date = new Date(yyyy, mm, dd);
 		return date;
 	}
 
