@@ -54,25 +54,7 @@ class KalenderPanelModel extends AbstractTableModel {
         
 	}
 	
-public KalenderPanelModel(kal kal, Calendar inDate, ArrayList<Person> persons) {
-		
-		this.kal=kal;
-		Calendar date = inDate;
-		
-		setDayNames();
-		
-		setWeek(date);
-        
-		
-        ukuttaAvtaleListe= kal.getConnectedPerson().getAvtaler();
-        
-        for (int i=0; i<persons.size(); i++) {
-        	ukuttaAvtaleListe.addAll(persons.get(i).getAvtaler());
-        }
-        
-        createAvtaleListe();
-        
-	}
+	
 
     public int getColumnCount() {
         return dayNames.length;
@@ -263,7 +245,7 @@ public KalenderPanelModel(kal kal, Calendar inDate, ArrayList<Person> persons) {
     	
     }
     
-    public void removeAvtaleFromPanel(Avtale a) { //Ikke testa, men den funker sikkert...
+    public void removeAvtaleFromPanel(Avtale a) {
     	
     	if (avtaleErIdenneUka(a)) {
     		
@@ -291,6 +273,20 @@ public KalenderPanelModel(kal kal, Calendar inDate, ArrayList<Person> persons) {
     public void newDate(Calendar nD) {
     	setDayNames();
     	setWeek(nD);
+    	createAvtaleListe();
+    	fireTableStructureChanged() ;
+    }
+    
+    public void morePersons(Calendar nD, ArrayList<Person> persons) {
+    	setDayNames();
+    	setWeek(nD);
+    	
+    	ukuttaAvtaleListe= kal.getConnectedPerson().getAvtaler();
+        
+        for (int i=0; i<persons.size(); i++) {
+        	ukuttaAvtaleListe.addAll(persons.get(i).getAvtaler());
+        }
+    	
     	createAvtaleListe();
     	fireTableStructureChanged() ;
     }
