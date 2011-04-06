@@ -104,7 +104,6 @@ public class Avtale implements Serializable{
 		datoDag=dag;
 		datoMnd=mnd;
 		datoAar=aar;
-		//Oppdater database!
 	}
 
 	public String getBeskrivelse() {
