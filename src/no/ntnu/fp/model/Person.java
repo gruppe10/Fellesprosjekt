@@ -340,10 +340,8 @@ public class Person implements Serializable{
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-		String s = "Name: " + getName() + "; ";
-		s += "Email: " + getEmail() + "; ";
-		s += "Date of birth: " + getDateOfBirth().toString();
-		return s;
+		
+		return getName();
 	}
 	
 	private ArrayList<Avtale> finnMoter(){

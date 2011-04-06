@@ -186,7 +186,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 			
 			
 			
-			Envelope e = new Envelope(Action.SELECT, loginInfo);
+			Envelope e = new Envelope(Action.LOGIN, loginInfo);
 			Boolean isApproved = (Boolean)klient.sendObjectAndGetResponse(e);
 			
 			if(isApproved){

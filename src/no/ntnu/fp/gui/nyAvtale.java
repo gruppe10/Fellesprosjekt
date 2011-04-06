@@ -67,6 +67,8 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 	private JLabel starttidLabel;
 	private JLabel headerLabel;
 	private Rom noRom;
+	private ArrayList<Rom> romList;
+	private DefaultComboBoxModel romComboBox1Model;
 
 
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
@@ -97,6 +99,10 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		defaultMonth = dMonth;
 		defaultYear = dYear;
 
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.SELECT, "getallrooms");
+		romList=(ArrayList<Rom>)klient.sendObjectAndGetResponse(e);
+		
 		initGUI();
 
 
@@ -217,9 +223,16 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					Rom rom3 = new Rom("a3");
 
 					noRom = new Rom("None");
-					ComboBoxModel romComboBox1Model = 
-						new DefaultComboBoxModel(
-								new Rom[] { noRom, rom1, rom2, rom3});
+					romComboBox1Model = 
+						new DefaultComboBoxModel();
+					
+					romComboBox1Model.addElement(noRom);
+					
+					for (Rom rom : romList) {
+												
+						romComboBox1Model.addElement(rom);
+					}
+					
 					romComboBox1 = new JComboBox();
 					romComboBox1.setModel(romComboBox1Model);
 					romComboBox1.getSelectedItem();

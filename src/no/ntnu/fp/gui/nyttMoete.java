@@ -90,6 +90,8 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private int timeIndexDiff=6;
 	private kal mainKal;
 
+	private ArrayList<Person> mDeltakere;
+	
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
@@ -111,6 +113,11 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		defaultDato = dDato;
 		defaultMonth = dMonth;
 		defaultYear = dYear;
+		
+		
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.SELECT, "getallpersons");
+		mDeltakere=(ArrayList<Person>)klient.sendObjectAndGetResponse(e);
 
 		initGUI();
 	}
@@ -161,18 +168,15 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			
 			{
-//				Test
-				Person p2 = new Person();
-				p2.setName("Kåre");
-				Person p1 = new Person();
-				p1.setName("Ida");
-				
+			
 				leggetildeltScroll = new JScrollPane();
 				{
 					leggetilDeltModel = new DefaultListModel();
 					leggetilDeltList = new JList();
-					leggetilDeltModel.addElement(p1);
-					leggetilDeltModel.addElement(p2);
+					for (Person p : mDeltakere) {
+						if(p != mainKal.getConnectedPerson()) leggetilDeltModel.addElement(p); 
+					}
+					
 					leggetildeltScroll.setViewportView(leggetilDeltList);
 					leggetilDeltList.setModel(leggetilDeltModel);
 					leggetilDeltList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -203,18 +207,11 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				sluttidLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
-//				Test
-				Person p2 = new Person();
-				p2.setName("Bob");
-				Person p1 = new Person();
-				p1.setName("Nora");
-				
+			
 				deltakereScroll = new JScrollPane();
 				{
 					deltakereModel = new DefaultListModel();
 					deltakereList = new JList();
-					deltakereModel.addElement(p1);
-					deltakereModel.addElement(p2);
 					deltakereScroll.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereModel);
 					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));

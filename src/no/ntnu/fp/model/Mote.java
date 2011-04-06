@@ -21,7 +21,8 @@ public class Mote extends Avtale implements Serializable{
 		this.deltakere = deltakere;
 		
 		KlientOS klient = KlientOS.getInstance();
-		klient.sendObjectAndGetResponse(this);
+		Envelope e = new Envelope(Action.UPDATE, this);
+		this.setAvtaleId(((Avtale)klient.sendObjectAndGetResponse(e)).getAvtaleId());
 		
 		for (Person deltaker : deltakere.keySet()){
 			sendInnkallelse(deltaker, this, "invitasjon");
@@ -69,11 +70,9 @@ public class Mote extends Avtale implements Serializable{
 		
 		this.deltakere = deltakere;
 		
-			KlientOS klient = KlientOS.getInstance();
-			
-			klient.sendObjectAndGetResponse(new Envelope(Action.UPDATE,this));
-			
-		
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.UPDATE, this);
+		klient.sendObjectAndGetResponse(e);
 		
 	}
 }
