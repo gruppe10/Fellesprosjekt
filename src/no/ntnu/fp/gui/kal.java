@@ -68,6 +68,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JLabel deltakereLabel1;
 	private JButton visDeltakereButton;
 	private DefaultListModel leggetilDeltModel;
+	private DefaultListModel deltakereModel;
 	
 
 	private Calendar mainDate;
@@ -148,13 +149,22 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				deltakereLabel1.setText("Deltakere:");
 				deltakereLabel1.setFont(new java.awt.Font("Tahoma",0,12));
 			}
+			
+//			Test
+			Person p3 = new Person();
+			p3.setName("Ole");
+			Person p4 = new Person();
+			p4.setName("Kari");
+			
 			{
 				jScrollPane1 = new JScrollPane();
 				{
-					leggetilDeltModel = new DefaultListModel();
+					deltakereModel = new DefaultListModel();
 					deltakerList = new JList();
+					deltakereModel.addElement(p4);
+					deltakereModel.addElement(p3);
 					jScrollPane1.setViewportView(deltakerList);
-					deltakerList.setModel(leggetilDeltModel);
+					deltakerList.setModel(deltakereModel);
 					deltakerList.setFont(new java.awt.Font("Tahoma",2,11));
 				}
 			}
@@ -162,6 +172,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				leggtilButton1 = new JButton();
 				leggtilButton1.setText("Legg til deltaker");
 				leggtilButton1.setFont(new java.awt.Font("Tahoma",0,12));
+				leggtilButton1.addActionListener(this);
 			}
 //			Test
 			Person p2 = new Person();
@@ -364,6 +375,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		else if(evt.getSource() == nyttMoeteButton){
 			nyttMoete nyttMoete = new nyttMoete(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
 			nyttMoete.setVisible(true);
+		}
+		else if(evt.getSource() == leggtilButton1){
+			if(!deltakereModel.contains(alleDeltakereList.getSelectedValue())){
+				deltakereModel.addElement(alleDeltakereList.getSelectedValue());
+			}
 		}
 
 
