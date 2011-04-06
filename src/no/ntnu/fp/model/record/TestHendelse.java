@@ -2,6 +2,8 @@ package no.ntnu.fp.model.record;
 
 import java.util.Date;
 
+import org.apache.derby.tools.sysinfo;
+
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
@@ -13,16 +15,19 @@ public class TestHendelse {
 		//testCrudForAvtale();
 		//testCrudForMote();
 		
-		Date dato = new Date(2003, 2, 1);
-		
-		System.out.println(dato.getMonth());
+		Avtale avtale = mockAvtale();
+		ActiveHendelse.createAvtale(avtale);
+		printDateFrom(avtale);
 		
 	}
 	
+	public static void printDateFrom(Avtale avtale){
+		System.out.println("Year:"+ avtale.getDatoAar());
+		System.out.println("Month:"+ avtale.getDatoMnd());
+		System.out.println("Date:"+ avtale.getDatoDag());
+	}
 	
-/******************************
-*  			Tester			  *
-******************************/
+	
 	
 //	private void testCreatePerson(){
 //		Avtale avtale = mockAvtaleWithId(10001);
@@ -50,7 +55,9 @@ public class TestHendelse {
 	}
 	
 	private static Avtale mockAvtale(){
-		Person sjef = new Person("Sjef", "sjef@mail.com", new Date(100, 15, 12)) ;
+		Person sjef = new Person() ;
+		sjef.setName("Sjef");
+		sjef.setEmail("sjef@mail.com");
 		sjef.setBrukerNavn("sjef");
 		sjef.setPassord("passord");
 		ActivePerson.createPerson(sjef);

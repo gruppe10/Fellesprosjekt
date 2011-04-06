@@ -330,4 +330,21 @@ public class ActivePerson extends ActiveModel{
 		}
 		return godkjent;
 	}
+	
+	public static ArrayList<Person> selectAllPersons(){
+		ArrayList<Person> allePersoner = new ArrayList<Person>();
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"Select Id from Person"
+				);
+				ResultSet rs = ps.executeQuery();
+				
+			}
+		}catch(SQLException e){
+			
+		}
+		return null;
+	}
 }
