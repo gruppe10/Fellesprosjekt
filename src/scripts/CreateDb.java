@@ -1,6 +1,8 @@
-package no.ntnu.fp.model.record;
+package scripts;
 
 import java.sql.Statement;
+
+import no.ntnu.fp.model.record.ActiveModel;
 
 public class CreateDb extends ActiveModel{
 	public static void main(String[] args){

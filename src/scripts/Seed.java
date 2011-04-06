@@ -1,11 +1,12 @@
-package no.ntnu.fp.model.record;
+package scripts;
 
 import no.ntnu.fp.model.Person;
+import no.ntnu.fp.model.record.ActivePerson;
 
 public class Seed {
 	
 	public static void populateDb(){
-		for(int i = 0; i<10; i++){
+		for(int i = 0; i < 10; i++){
 			Person person = new Person();
 			person.setBrukerNavn("navn");
 			person.setPassord("passord");
