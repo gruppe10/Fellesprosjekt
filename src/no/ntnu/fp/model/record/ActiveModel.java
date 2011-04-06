@@ -87,7 +87,7 @@ public class ActiveModel {
 			}
 		}
 		catch(SQLException e){
-			System.out.println("Could not find anything with id: " + id);
+			System.out.println("Could not find "+ tableName +"with id: " + id);
 			System.out.println("Details:" + e.getMessage());
 		}
 		return exists;

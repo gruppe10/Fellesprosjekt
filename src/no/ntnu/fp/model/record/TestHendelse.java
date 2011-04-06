@@ -12,13 +12,8 @@ import no.ntnu.fp.model.record.*;
 public class TestHendelse {
 	public static void main(String args[]){
 		//testCeateDeltagereMedStatus();
-		//testCrudForAvtale();
-		//testCrudForMote();
-		
-		Avtale avtale = mockAvtale();
-		ActiveHendelse.createAvtale(avtale);
-		printDateFrom(avtale);
-		
+		testCrudForAvtale();
+		//testCrudForMote();	
 	}
 	
 	public static void printDateFrom(Avtale avtale){

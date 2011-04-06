@@ -92,13 +92,8 @@ public class ActivePerson extends ActiveModel{
 	            
 	            ArrayList<Avtale> avtaler = person.getAvtaler();
 	            
-				System.out.println(avtaler.size());
 	            if(!avtaler.isEmpty()){
 					for (Avtale avtale : avtaler) {
-						System.out.println("id:" + avtale.getAvtaleId());
-						System.out.println("navn:" + avtale.getNavn());
-						System.out.println("initiativtakerId:" + avtale.getInitiativtaker());//.getAnsattNummer());
-						
 						ActiveHendelse.updateAvtale(avtale);
 					}
 				}
@@ -332,19 +327,27 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static ArrayList<Person> selectAllPersons(){
+		ArrayList<Integer> ansattIder = new ArrayList<Integer>();
 		ArrayList<Person> allePersoner = new ArrayList<Person>();
 		try{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"Select Id from Person"
+						"Select ansattId from Person"
 				);
 				ResultSet rs = ps.executeQuery();
-				
+				while(rs.next()){
+					ansattIder.add(rs.getInt("ansattId"));
+				}
+				connection.close();
+			}
+			for(Integer ansattId: ansattIder){
+				allePersoner.add(selectPerson(ansattId));
 			}
 		}catch(SQLException e){
-			
+			System.out.println("Feil oppstod under selectAllPersons");
+			System.out.println("ErrorMessage:" + e.getMessage());
 		}
-		return null;
+		return allePersoner;
 	}
 }

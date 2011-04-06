@@ -176,4 +176,29 @@ public class ActiveRom extends ActiveModel{
 			System.out.println("Detaljer:" + e.getMessage());
 		}
 	}
+	
+	public static ArrayList<Rom> selectAlleRom(){
+		ArrayList<Integer> romId = new ArrayList<Integer>();
+		ArrayList<Rom> alleRom = new ArrayList<Rom>();
+		try{
+			connect();
+			if(connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"Select romId from Rom"
+				);
+				ResultSet rs = ps.executeQuery();
+				while(rs.next()){
+					romId.add(rs.getInt("romId"));
+				}
+				connection.close();
+			}
+			for(Integer ansattId:romId){
+				alleRom.add(selectRom(ansattId));
+			}
+		}catch(SQLException e){
+			System.out.println("Feil oppstod under selectAllPersons");
+			System.out.println("ErrorMessage:" + e.getMessage());
+		}
+		return alleRom;
+	}
 }
