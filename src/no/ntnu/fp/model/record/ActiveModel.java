@@ -77,10 +77,8 @@ public class ActiveModel {
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM " + tableName +
-						"WHERE " + idName + " = ? "
+						"SELECT * FROM " + tableName + "WHERE " + idName + " = " + id
 				);
-				ps.setInt(1, id);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					exists = true;

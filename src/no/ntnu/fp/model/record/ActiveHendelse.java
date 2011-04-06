@@ -87,13 +87,16 @@ public class ActiveHendelse extends ActiveModel{
 						"SELECT * FROM Hendelse WHERE hendelseId = ? "
 				);
 				ps.setInt(1, avtaleId);
-				ResultSet rs = ps.executeQuery(); 
+				ResultSet rs = ps.executeQuery();
+				
 				if (rs != null){
 					while(rs.next()){
 						navn = rs.getString("navn");
 						beskrivelse = rs.getString("beskrivelse");
 						starttid = formatIntFrom(rs.getTime("starttid"));
+						System.out.println(starttid);
 						sluttid = formatIntFrom(rs.getTime("sluttid"));
+						System.out.println(sluttid);
 					}
 				}
 				connection.close();
