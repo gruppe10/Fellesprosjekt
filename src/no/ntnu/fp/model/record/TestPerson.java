@@ -7,11 +7,7 @@ import no.ntnu.fp.model.Person;
 
 public class TestPerson {
 	public static void main(String args[]){
-		testSelectNotiser();
-	}
-	
-	public static void testSelectNotiser(){
-		ActivePerson.selectNotiser(1);
+
 	}
 
 	public void testPersonAvtaleConsistency(){
