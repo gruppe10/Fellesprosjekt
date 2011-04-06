@@ -291,14 +291,15 @@ public class ActiveHendelse extends ActiveModel{
 		return status;
 	}
 
-	private static void setStatusFor(int ansattId, int avtaleId){
+	private static void setStatusFor(String status, int ansattId, int avtaleId){
 		try {
 			connect();
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT status FROM Deltakere WHERE hendelseId = ? and ansattId = ?"
+					"UPDATE Deltakere SET status = ? WHERE hendelseId = ? and ansattId = ?"
 			);
-			ps.setInt(1, avtaleId);
-			ps.setInt(2, ansattId);
+			ps.setString(1, status);
+			ps.setInt(2, avtaleId);
+			ps.setInt(3, ansattId);
 			ps.execute();
 
 		} catch (SQLException e) {
