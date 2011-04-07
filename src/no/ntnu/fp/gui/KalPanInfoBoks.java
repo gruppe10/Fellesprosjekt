@@ -132,7 +132,7 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 			}  
 			
 			
-			if (kal.getConnectedPerson().getBrukerNavn().equalsIgnoreCase(a.getInitiativtaker().getBrukerNavn())) {
+		if (kal.getConnectedPerson()==a.getInitiativtaker()) {
 				avbud.setVisible(false);
 				slett.setVisible(true);
 				}
