@@ -116,6 +116,9 @@ public class ActiveRom extends ActiveModel{
 	// rute nr 12 er true dersom den er ledig fra kl 12 til 13
 	public static boolean[] selectLedigeTider(int romId, Date date){
 		boolean[] ledigeTider = new boolean[23];
+		for (int i= 0 ; i<24 ; i++){
+			ledigeTider[i]=true;
+		}
 		try{
 			connect();
 			if(connection != null){
