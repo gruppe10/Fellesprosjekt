@@ -21,7 +21,7 @@ public class Mote extends Avtale implements Serializable{
 		this.deltakere = deltakere;
 		
 		KlientOS klient = KlientOS.getInstance();
-		Envelope e = new Envelope(Action.UPDATE, this);
+		Envelope e = new Envelope(Action.CREATE, this);
 		this.setAvtaleId(((Avtale)klient.sendObjectAndGetResponse(e)).getAvtaleId());
 		
 		for (Person deltaker : deltakere.keySet()){

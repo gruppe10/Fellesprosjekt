@@ -184,7 +184,12 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 					leggetilDeltModel = new DefaultListModel();
 					leggetilDeltList = new JList();
 					for (Person p : mDeltakere) {
-						if(p != bruker) leggetilDeltModel.addElement(p); 
+						
+						if(!p.getBrukerNavn().equalsIgnoreCase(bruker.getBrukerNavn())) {
+							leggetilDeltModel.addElement(p); 
+						}
+						
+						
 					}
 					
 					leggetildeltScroll.setViewportView(leggetilDeltList);
