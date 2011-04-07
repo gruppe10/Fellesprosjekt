@@ -486,8 +486,13 @@ private boolean overlapping() {
 	private boolean erLedig(Rom rom, boolean datoSatt){
 		int romID = rom.getRomId();
 		
-		startTime = starttid.getSelectedIndex()+timeIndexDiff;
-		sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		try{
+			startTime = starttid.getSelectedIndex()+timeIndexDiff;
+			sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 		String month, day;
 		
 		if(defaultDato < 10 && defaultMonth < 10){
