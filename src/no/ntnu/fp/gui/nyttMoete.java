@@ -2,6 +2,7 @@ package no.ntnu.fp.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
 import no.ntnu.fp.model.Status;
+import no.ntnu.fp.model.record.ActiveRom;
 
 
 
@@ -174,27 +176,15 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			
 			{
-
-//				Test
-				Person p3 = new Person();
-				p3.setName("Per");
-				Person p4 = new Person();
-				p4.setName("Ole");
-				
-
+			
 				leggetildeltScroll = new JScrollPane();
 				{
 					leggetilDeltModel = new DefaultListModel();
 					leggetilDeltList = new JList();
-
-					leggetilDeltModel.addElement(p3);
-					leggetilDeltModel.addElement(p4);
-
 					for (Person p : mDeltakere) {
 						if(p != mainKal.getConnectedPerson()) leggetilDeltModel.addElement(p); 
 					}
 					
-
 					leggetildeltScroll.setViewportView(leggetilDeltList);
 					leggetilDeltList.setModel(leggetilDeltModel);
 					leggetilDeltList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -246,7 +236,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				moeteromModel.addElement(noRom);
 				
 				for(Rom rom : romList){
-					moeteromModel.addElement(rom);
+					if(erLedig(rom))moeteromModel.addElement(rom);
 				}
 				
 				Moeterom = new JComboBox();
@@ -585,6 +575,30 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		person.addAvtale(newAvtale);
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale);
+	}
+	
+
+	
+	
+	private boolean erLedig(Rom rom){
+		int romID = rom.getRomId();
+		
+		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
+		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		int varighet = sluttTime - startTime;
+		
+		String[] a = datoField.getText().split("\\.");
+		String date = a[2]+"-"+a[1]+"-"+a[0];
+		java.sql.Date dato = java.sql.Date.valueOf(date);
+		
+		boolean[] ledigeTider = ActiveRom.selectLedigeTider(romID, dato);
+		boolean erLedig = true;
+		
+		for(int i=startTime; i<sluttTime; i++){
+			if (ledigeTider[i] != true) erLedig = false;
+		}
+		
+		return erLedig;
 	}
 
 }
