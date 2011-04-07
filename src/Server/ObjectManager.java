@@ -28,8 +28,7 @@ public class ObjectManager {
 			Mote mote = (Mote)content;
 			switch(action){
 			case CREATE:
-				mote = ActiveHendelse.createMote(mote);
-				break;
+				return ActiveHendelse.createMote(mote);
 			case UPDATE:
 				ActiveHendelse.updateMote(mote);
 				break;
@@ -37,8 +36,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				mote = (Mote) ActiveHendelse.selectMote(mote.getAvtaleId());
-				break;
+				return ActiveHendelse.selectMote(mote.getAvtaleId());
 			}
 			System.out.println("Handled Mote");
 			return mote;
@@ -48,8 +46,7 @@ public class ObjectManager {
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case CREATE:
-				Avtale avtaleWithNewId = ActiveHendelse.createAvtale(avtale);
-				return avtaleWithNewId;
+				return  ActiveHendelse.createAvtale(avtale);
 			case UPDATE:
 				ActiveHendelse.updateAvtale(avtale);
 				break;
@@ -57,8 +54,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
-				break;
+				return ActiveHendelse.selectAvtale(avtale.getAvtaleId());
 			}
 			System.out.println("Handled Avtale");
 		}
@@ -73,9 +69,9 @@ public class ObjectManager {
 				break;
 			case SELECT:
 				if(person.getAnsattNummer() != null)
-					person = ActivePerson.selectPerson(person.getAnsattNummer());
+					return person = ActivePerson.selectPerson(person.getAnsattNummer());
 				else if(person.getBrukerNavn() != null)
-					person = ActivePerson.selectPersonByUsername(person.getBrukerNavn());
+					return person = ActivePerson.selectPersonByUsername(person.getBrukerNavn());
 				break;
 			case DESTROY:
 				ActivePerson.deletePerson(person.getAnsattNummer());
