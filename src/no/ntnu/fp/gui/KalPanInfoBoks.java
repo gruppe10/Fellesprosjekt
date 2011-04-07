@@ -116,15 +116,16 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 
 			Map<Person, Status> deltakereMedStatus = ((Mote)a).getDeltakere();
 			
-			System.out.println(deltakereMedStatus);
+			Iterator it	= deltakereMedStatus.entrySet().iterator();
+			deltakerListModel.clear();
+			statusListModel.clear();
 			
-			for (Iterator it = deltakereMedStatus.keySet().iterator(); it.hasNext(); ) {   
+			while (it.hasNext()) {
 				statusPane.setVisible(true);
 				deltakerPane.setVisible(true);
-				deltakerListModel.clear();
-				statusListModel.clear();
 				
-				Person key =(Person) it.next();  
+				Map.Entry pairs = (Map.Entry)it.next();
+				Person key =(Person) pairs.getKey();  
 			    Status value = deltakereMedStatus.get(key); 
 			    
 			    deltakerListModel.addElement(key);
