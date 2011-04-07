@@ -24,7 +24,7 @@ import no.ntnu.fp.model.Status;
 
 public class KalPanInfoBoks extends JPanel implements ActionListener{
 	
-	private JLabel avtaleNavn, avtaleBeskrivelse;
+	private JLabel avtaleNavn, avtaleBeskrivelse, avtaleRom;
 	private JButton endre, slett, avbud;
 	private Avtale a;
 	private kal kal;
@@ -40,6 +40,10 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		
 		avtaleBeskrivelse=new JLabel(" ");
 		add(avtaleBeskrivelse);
+		
+		avtaleRom=new JLabel(" ");
+		add(avtaleRom);
+		
 		
 		endre=new JButton("Endre");
 		endre.addActionListener(this);
@@ -93,6 +97,10 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		}
 		
 		this.a=a;
+		
+		if (a.getMoterom()!=null) {
+			avtaleRom.setText("| Rom: "+a.getMoterom().toString());
+		}
 		avtaleNavn.setText(a.getNavn()+":  ");
 		avtaleBeskrivelse.setText(a.getBeskrivelse());
 		endre.setVisible(true);
@@ -132,6 +140,7 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 	public void clear() {
 		avtaleNavn.setText(" ");
 		avtaleBeskrivelse.setText(" ");
+		avtaleRom.setText(" ");
 		slett.setVisible(false);
 		endre.setVisible(false);
 		avbud.setVisible(false);

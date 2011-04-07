@@ -351,9 +351,10 @@ public class ActiveHendelse extends ActiveModel{
 
 
 	public static Map<Person, Status> selectDeltakereMedStatus(int avtaleId) {
+		ArrayList<Integer> deltakerIder = new ArrayList<Integer>();
 		ArrayList<Person> deltakere = new ArrayList<Person>();
-
 		Map<Person, Status> deltakereMedStatus = new HashMap<Person, Status>();
+		
 		Iterator it = deltakereMedStatus.entrySet().iterator();
 		try{
 			connect();
@@ -366,11 +367,12 @@ public class ActiveHendelse extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 
 				while(rs.next()){
-					int deltagerNr = rs.getInt("ansattId");
-					Person nyDeltager = ActivePerson.selectPerson(deltagerNr);
+					int deltakerNr = rs.getInt("ansattId");
+					Person nyDeltager = ActivePerson.selectPersonWithoutFukkingShitUp(deltakerNr);
 					deltakere.add(nyDeltager);
 				};
 				connection.close();	
+			
 
 				//Lage hashmap med person og status
 				for (Person person : deltakere) {
