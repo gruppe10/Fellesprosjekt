@@ -1,5 +1,9 @@
 package scripts;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
 import no.ntnu.fp.model.record.ActiveModel;
@@ -7,7 +11,7 @@ import no.ntnu.fp.model.record.ActivePerson;
 import no.ntnu.fp.model.record.ActiveRom;
 
 public class Seeds {
-	public static void populateDb(){
+	public static void populateDb(){	
 		try{
 			ActivePerson.selectPersonByUsername("bruker").getAnsattNummer();
 			System.out.println("Database er allerede populert");
