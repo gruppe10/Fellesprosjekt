@@ -137,8 +137,8 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 				slett.setVisible(true);
 				}
 			else {
-				avbud.setVisible(true);
-				slett.setVisible(false);
+				avbud.setVisible(false);
+				slett.setVisible(true);
 			}
 		}
 	}
