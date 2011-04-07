@@ -465,14 +465,28 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 			nyttMoete nyttMoete = new nyttMoete(this, kalenderPanel1.getSelectedTime(), kalenderPanel1.getSelectedDato(), kalenderPanel1.getSelectedMonth(), kalenderPanel1.getSelectedYear());
 			nyttMoete.setVisible(true);
 		}
-		else if(evt.getSource() == deltHendButton){
-			deltakereLabel1.setVisible(true);
-			visDeltakereButton.setVisible(true);
-			jScrollPane1.setVisible(true);
-			leggtilButton1.setVisible(true);
-			jScrollPane2.setVisible(true);
-			fjernButton.setVisible(true);
-
+		
+		
+		else if (evt.getSource() == deltHendButton){
+			if (deltHendButton.getText() == "Fjern"){
+				deltakereLabel1.setVisible(false);
+				visDeltakereButton.setVisible(false);
+				jScrollPane1.setVisible(false);
+				leggtilButton1.setVisible(false);
+				jScrollPane2.setVisible(false);
+				fjernButton.setVisible(false);
+				deltHendButton.setText("Andre deltakeres hendelser");
+		}
+			else {
+				deltakereLabel1.setVisible(true);
+				visDeltakereButton.setVisible(true);
+				jScrollPane1.setVisible(true);
+				leggtilButton1.setVisible(true);
+				jScrollPane2.setVisible(true);
+				fjernButton.setVisible(true);
+				deltHendButton.setText("Fjern");
+			}
+			
 		}
 		else if(evt.getSource() == leggtilButton1){
 			if(!deltakereModel.contains(alleDeltakereList.getSelectedValue())){
