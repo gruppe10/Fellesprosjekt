@@ -28,7 +28,7 @@ public class ObjectManager {
 			Mote mote = (Mote)content;
 			switch(action){
 			case CREATE:
-				return ActiveHendelse.createMote(mote);
+				return (Mote)ActiveHendelse.createMote(mote);
 			case UPDATE:
 				ActiveHendelse.updateMote(mote);
 				break;
@@ -36,7 +36,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				return ActiveHendelse.selectMote(mote.getAvtaleId());
+				return (Mote)ActiveHendelse.selectMote(mote.getAvtaleId());
 			}
 			System.out.println("Handled Mote");
 			return mote;
@@ -46,7 +46,7 @@ public class ObjectManager {
 			Avtale avtale =(Avtale)content;
 			switch(action){
 			case CREATE:
-				return  ActiveHendelse.createAvtale(avtale);
+				return (Avtale)ActiveHendelse.createAvtale(avtale);
 			case UPDATE:
 				ActiveHendelse.updateAvtale(avtale);
 				break;
@@ -54,7 +54,7 @@ public class ObjectManager {
 				ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				return ActiveHendelse.selectAvtale(avtale.getAvtaleId());
+				return (Avtale)ActiveHendelse.selectAvtale(avtale.getAvtaleId());
 			}
 			System.out.println("Handled Avtale");
 		}

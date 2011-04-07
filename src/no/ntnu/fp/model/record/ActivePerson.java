@@ -230,7 +230,7 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static ArrayList<Mote> selectMoter(int ansattId) {
-		ArrayList<Mote> hendelser = new ArrayList<Mote>();
+		ArrayList<Integer> alleIDer = new ArrayList<Integer>();
 		ArrayList<Mote> hendelserMedDeltakere = new ArrayList<Mote>();
 		try{
 			connect();
@@ -243,19 +243,20 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int hendelseId = rs.getInt("hendelseId");
-					Mote nyHendelse = ActiveHendelse.selectMote(hendelseId);
-					hendelser.add(nyHendelse);
+					if(!alleIDer.contains(hendelseId)){
+						alleIDer.add(hendelseId);
+					}
 				};
 				ps.close();
 				connection.close();
 				
 				//Finn alle møter
-				for (Avtale hendelse : hendelser){
+				for (Integer hendelseId : alleIDer){
 					connect();
 					PreparedStatement ps2 = connection.prepareStatement(
 							"SELECT Hendelse.hendelseId FROM Hendelse,Deltakere " +
 							"WHERE Hendelse.hendelseId = Deltakere.hendelseId " +
-							"AND Hendelse.hendelseId = " + hendelse.getAvtaleId()
+							"AND Hendelse.hendelseId = " + hendelseId
 					);
 					
 					ResultSet rs2 = ps2.executeQuery();
@@ -277,8 +278,8 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static ArrayList<Avtale> selectAvtaler(int ansattId) {
-		ArrayList<Avtale> hendelser = new ArrayList<Avtale>();
-		ArrayList<Avtale> hendelserMedDeltakere = new ArrayList<Avtale>();
+		ArrayList<Integer> alleIder = new ArrayList<Integer>();
+		ArrayList<Integer> moeteIder = new ArrayList<Integer>();
 		ArrayList<Avtale> hendelserUtenDeltakere = new ArrayList<Avtale>();
 		try{
 			connect();
@@ -291,33 +292,33 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int hendelseId = rs.getInt("hendelseId");
-					Avtale nyHendelse = ActiveHendelse.selectAvtale(hendelseId);
-					hendelser.add(nyHendelse);
+					if(!alleIder.contains(hendelseId)) 
+						alleIder.add(hendelseId);
 				};
 				ps.close();
 				connection.close();
 				
 				//Finn alle møter
-				for (Avtale hendelse : hendelser){
+				for (Integer hendelseId : alleIder){
 					connect();
 					PreparedStatement ps2 = connection.prepareStatement(
 							"SELECT Hendelse.hendelseId FROM Hendelse,Deltakere " +
 							"WHERE Hendelse.hendelseId = Deltakere.hendelseId " +
-							"AND Hendelse.hendelseId = " + hendelse.getAvtaleId()
+							"AND Hendelse.hendelseId = " + hendelseId
 					);
 					
 					ResultSet rs2 = ps2.executeQuery();
 					while(rs2.next()){
-						int avtaleId = rs2.getInt("hendelseId");
-						Avtale avtale = ActiveHendelse.selectAvtale(avtaleId);
-						hendelserMedDeltakere.add(avtale);
+						int moeteId = rs2.getInt("hendelseId");
+						moeteIder.add(moeteId);
 					}
 					connection.close();	
 				}
-				//Lag ny liste medavtaler som ikke inneholder avtaler som egentlig er Møter
-				for(Avtale hendelse: hendelser){
-					if(!hendelserMedDeltakere.contains(hendelse)){
-						hendelserUtenDeltakere.add(hendelse);
+				//Lag ny liste med avtaler som ikke inneholder avtaler som egentlig er Møter
+				for(Integer hendelseId: alleIder){
+					if(!moeteIder.contains(hendelseId)){
+						Avtale avtale = ActiveHendelse.selectAvtale(hendelseId);
+						hendelserUtenDeltakere.add(avtale);
 					}
 				}
 				if(connection != null) connection.close();	
