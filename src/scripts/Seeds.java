@@ -16,18 +16,18 @@ public class Seeds {
 
 
 			Person person2 = new  Person();
-			person.setBrukerNavn("Ole");
-			person.setPassord("passord");
+			person2.setBrukerNavn("Ole");
+			person2.setPassord("passord");
 			ActivePerson.createPerson(person2);
 
 			Person person3 = new  Person();
-			person.setBrukerNavn("Dole");
-			person.setPassord("passord");
+			person3.setBrukerNavn("Dole");
+			person3.setPassord("passord");
 			ActivePerson.createPerson(person3);
 
 			Person person4 = new  Person();
-			person.setBrukerNavn("Doffen");
-			person.setPassord("passord");
+			person4.setBrukerNavn("Doffen");
+			person4.setPassord("passord");
 			ActivePerson.createPerson(person4);
 
 			System.out.println("4 person er lagret i databasen");
