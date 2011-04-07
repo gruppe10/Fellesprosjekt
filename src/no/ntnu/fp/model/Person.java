@@ -341,7 +341,7 @@ public class Person implements Serializable{
 	 */
 	public String toString() {
 		
-		return getName();
+		return getBrukerNavn();
 	}
 	
 	private ArrayList<Avtale> finnAlleHendelder(){
