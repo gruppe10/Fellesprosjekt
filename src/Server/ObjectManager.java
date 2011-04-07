@@ -34,7 +34,6 @@ public class ObjectManager {
 				}catch (NullPointerException e2) {
 					mote = ActiveHendelse.createMote(mote);
 				}
-				
 				break;
 			case DESTROY:
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
