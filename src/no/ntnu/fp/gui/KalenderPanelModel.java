@@ -2,6 +2,7 @@ package no.ntnu.fp.gui;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Calendar;
+import java.util.Collections;
 
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Avtale;
@@ -50,7 +51,7 @@ class KalenderPanelModel extends AbstractTableModel {
         
         ukuttaAvtaleListe= kal.getConnectedPerson().finnAlleHendelder();
        
-        
+        //Collections.reverse(ukuttaAvtaleListe);
         
         createAvtaleListe();
         

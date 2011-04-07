@@ -135,7 +135,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		defaultYear = mote.getDatoAar();
 		startTime = mote.getStarttid()-timeIndexDiff;
 		sluttTime = mote.getSluttid()-timeIndexDiff-1;
-		bruker = mote.getInitiativtaker();
+		bruker = kal.getConnectedPerson();
 
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallpersons");
@@ -143,8 +143,17 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		KlientOS klient2 =KlientOS.getInstance();
 		Envelope e2 = new Envelope(Action.SELECT, "getallrooms");
 		romList = (ArrayList<Rom>)klient2.sendObjectAndGetResponse(e2);
+		
+		Map<Person, Status> deltakereMedStatus = mote.getDeltakere();
+		
 
 		initGUI();
+		
+		for (Map.Entry<Person,Status> s : deltakereMedStatus.entrySet()) {  
+			deltakereListModel.addElement(s.getKey());
+		}
+		
+		//Moeterom.setSelectedItem(mote.getMoterom());
 	}
 
 	private void initGUI() {
@@ -182,6 +191,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 						new DefaultListModel();
 					muligeDeltakereList = new JList();
 					for(Person p : mDeltakere){
+						System.out.println(bruker.getBrukerNavn());
 						if(!p.getBrukerNavn().equalsIgnoreCase(bruker.getBrukerNavn())) deljList1Model.addElement(p);
 					}
 

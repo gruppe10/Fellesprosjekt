@@ -137,9 +137,6 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		mainDate=Calendar.getInstance();
 		person=bruker;
 		
-		for(Avtale avtale: bruker.getAvtaler()){
-			System.out.println(avtale.getNavn() + " "+ avtale.getDatoDag() +" "+ avtale.getDatoMnd()+" "+ avtale.getDatoAar());
-		}
 	
 		updateInbox();
 		
