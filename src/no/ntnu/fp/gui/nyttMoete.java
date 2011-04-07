@@ -590,7 +590,24 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		
 		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
 		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
-		String date = defaultYear+"-"+defaultMonth+"-"+defaultDato;
+		String month, day;
+		
+		if(defaultDato < 10 && defaultMonth < 10){
+			month = "0"+defaultMonth;
+			day = "0"+defaultDato;
+		}else if(defaultDato<10){
+			month = Integer.toString(defaultMonth);
+			day = "0"+defaultDato;
+		}else if(defaultMonth<10){
+			month = "0"+defaultMonth;
+			day = Integer.toString(defaultDato);
+		}else{
+			month = Integer.toString(defaultMonth);
+			day = Integer.toString(defaultDato);
+		}
+	
+		
+		String date = defaultYear+"-"+month+"-"+day;
 		
 		if(datoSatt){
 			String[] a = datoField.getText().split("\\.");
