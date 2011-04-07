@@ -22,8 +22,6 @@ public class TestHendelse {
 		System.out.println("Date:"+ avtale.getDatoDag());
 	}
 	
-	
-	
 //	private void testCreatePerson(){
 //		Avtale avtale = mockAvtaleWithId(10001);
 //

@@ -23,7 +23,30 @@ public class ObjectManager {
 
 		Object content = e.getContent();
 		Action action = e.getAction();
-		if( content instanceof Avtale){
+		if(content instanceof Mote){
+			System.out.println("Recieved Mote");
+			Mote mote = (Mote)content;
+			switch(action){
+			case UPDATE:
+				try{
+					boolean test = ActiveHendelse.exists("Hendelse", mote.getAvtaleId());
+					ActiveHendelse.updateMote(mote);
+				}catch (NullPointerException e2) {
+					mote = ActiveHendelse.createMote(mote);
+				}
+				
+				break;
+			case DESTROY:
+				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
+				break;
+			case SELECT:
+				mote = (Mote) ActiveHendelse.selectMote(mote.getAvtaleId());
+				break;
+			}
+			System.out.println("Handled Mote");
+			return mote;
+		}
+		else if( content instanceof Avtale){
 			System.out.println("Recieved Avtale");
 			Avtale avtale =(Avtale)content;
 			switch(action){
@@ -46,33 +69,6 @@ public class ObjectManager {
 				break;
 			}
 			System.out.println("Handled Avtale");
-		}
-		else if(content instanceof Notis){
-			//TODO kode for håndtering av sending av notis til db-lagres ikke i databasen
-			//deltaker har status
-			System.out.println("notisok");
-			return "notis mottatt";
-		}
-		else if(content instanceof Mote){
-			System.out.println("Recieved Mote");
-			Mote mote = (Mote)content;
-			switch(action){
-			case UPDATE:
-				if(ActiveHendelse.exists("Hendelse", mote.getAvtaleId())){
-					ActiveHendelse.updateMote(mote);
-				}else{
-					mote = ActiveHendelse.createMote(mote);
-				}
-				break;
-			case DESTROY:
-				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
-				break;
-			case SELECT:
-				mote = (Mote) ActiveHendelse.selectMote(mote.getAvtaleId());
-				break;
-			}
-			System.out.println("Handled Mote");
-			return mote;
 		}
 		else if( content instanceof Person){	
 			System.out.println("Recieved Person");
@@ -106,20 +102,14 @@ public class ObjectManager {
 		}
 		else if( content instanceof String){
 			System.out.println("Recieved String");
-			
 			switch(action){
 				case SELECT:
 					if (((String)content).equals("getallpersons")) {
-						
-							
 							return ActivePerson.selectAllPersons();
-							
 					}
 					else if (((String)content).equals("getallrooms")) {
-						System.out.println("Pr¿ver Œ hente ut alle personer");
-							
+						System.out.println("Prover aa hente ut alle personer");
 							return ActiveRom.selectAlleRom();
-							
 					}
 					break;
 				case LOGIN:
@@ -127,8 +117,7 @@ public class ObjectManager {
 					boolean approved = ActivePerson.checkPassord(string);
 					
 					System.out.println("Handled String");
-					return approved;
-					
+					return approved;			
 			}
 		}
 		return null;
