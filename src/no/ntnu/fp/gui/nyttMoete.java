@@ -201,6 +201,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				starttid.setModel(stComboBox1Model);
 				starttid.getSelectedItem();
 				starttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
+				starttid.addActionListener(this);
 			}
 			{
 				ComboBoxModel sutComboBox1Model = 
@@ -210,6 +211,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				sluttid.setModel(sutComboBox1Model);
 				sluttid.getSelectedItem();
 				sluttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
+				sluttid.addActionListener(this);
 			}
 			{
 				sluttidLabel = new JLabel();
@@ -233,11 +235,8 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 
 				noRom = new Rom("None");
 				moeteromModel = new DefaultComboBoxModel();
-				moeteromModel.addElement(noRom);
 				
-				for(Rom rom : romList){
-					if(erLedig(rom))moeteromModel.addElement(rom);
-				}
+				fyllRomListe(false);
 				
 				Moeterom = new JComboBox();
 				Moeterom.setModel(moeteromModel);
@@ -307,6 +306,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);
 				}
 				datoField.setFont(new java.awt.Font("Tahoma",2,11));
+				datoField.addActionListener(this);
 			}
 			{
 				headerTextField = new JTextField();
@@ -463,6 +463,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				deltakereModel.addElement(leggetilDeltList.getSelectedValue());
 			}
 		}
+		else if(evt.getSource() == starttid || evt.getSource() == sluttid || evt.getSource() == datoField){
+			fyllRomListe(true);
+		}
+		
 		else if(evt.getSource() == lagreButton){
 
 			if (!isValidDate(datoField.getText())) {
@@ -513,6 +517,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 
 		return true;
 	}
+	
 	private boolean overlapping() {
 
 		String[] a = datoField.getText().split("\\.");
@@ -580,15 +585,18 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 
 	
 	
-	private boolean erLedig(Rom rom){
+	private boolean erLedig(Rom rom, boolean datoSatt){
 		int romID = rom.getRomId();
 		
 		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
 		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
-		int varighet = sluttTime - startTime;
+		String date = defaultYear+"-"+defaultMonth+"-"+defaultDato;
 		
-		String[] a = datoField.getText().split("\\.");
-		String date = a[2]+"-"+a[1]+"-"+a[0];
+		if(datoSatt){
+			String[] a = datoField.getText().split("\\.");
+			date = a[2]+"-"+a[1]+"-"+a[0];
+		}
+		
 		java.sql.Date dato = java.sql.Date.valueOf(date);
 		
 		boolean[] ledigeTider = ActiveRom.selectLedigeTider(romID, dato);
@@ -600,5 +608,17 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		
 		return erLedig;
 	}
+	
+	
+	
+	private void fyllRomListe(boolean datoSatt){
+		moeteromModel.removeAllElements();
+		moeteromModel.addElement(noRom);
+		for(Rom rom: romList){
+			if(erLedig(rom, datoSatt)) moeteromModel.addElement(rom);
+		}
+	}
+	
+	
 
 }
