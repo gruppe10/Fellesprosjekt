@@ -28,11 +28,13 @@ public class ObjectManager {
 			Mote mote = (Mote)content;
 			switch(action){
 			case UPDATE:
-				if(ActiveHendelse.exists("Hendelse", mote.getAvtaleId())){
+				try{
+					boolean test = ActiveHendelse.exists("Hendelse", mote.getAvtaleId());
 					ActiveHendelse.updateMote(mote);
-				}else{
+				}catch (NullPointerException e2) {
 					mote = ActiveHendelse.createMote(mote);
 				}
+				
 				break;
 			case DESTROY:
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
