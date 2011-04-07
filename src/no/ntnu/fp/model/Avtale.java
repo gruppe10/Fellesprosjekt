@@ -36,7 +36,7 @@ public class Avtale implements Serializable{
 		this.rom = rom;
 		if (!(this instanceof Mote)) {
 			KlientOS klient = KlientOS.getInstance();
-			Envelope e = new Envelope(Action.UPDATE, this);
+			Envelope e = new Envelope(Action.CREATE, this);
 			this.avtaleId = ((Avtale)klient.sendObjectAndGetResponse(e)).getAvtaleId();
 		}
 		

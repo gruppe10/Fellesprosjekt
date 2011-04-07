@@ -108,8 +108,7 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		avtaleBeskrivelse.setText(a.getBeskrivelse());
 		endre.setVisible(true);
 		slett.setVisible(true);
-		statusPane.setVisible(false);
-		deltakerPane.setVisible(false);
+		
 		
 		
 		if (a instanceof Mote) {
@@ -153,6 +152,8 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 		avbud.setVisible(false);
 		statusPane.setVisible(false);
 		deltakerPane.setVisible(false);
+		deltakerListModel.clear();
+		statusListModel.clear();
 		
 	}
 	
