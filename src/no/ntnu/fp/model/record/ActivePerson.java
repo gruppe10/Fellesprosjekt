@@ -48,13 +48,14 @@ public class ActivePerson extends ActiveModel{
 				ps.execute();
 				connection.close();
 			}
-			//TODO Needs handeler for BOTH avtale and mote
+			
 			ArrayList<Avtale> avtaler = person.getAvtaler();
 			if(avtaler != null){
 				for (Avtale avtale : avtaler) {
 					ActiveHendelse.createAvtale(avtale);
 				}
 			}
+			
 			ArrayList<Mote> moter = person.getMoter();
 			if(moter != null){
 				for (Mote mote : moter) {
@@ -91,10 +92,16 @@ public class ActivePerson extends ActiveModel{
 	            connection.close();
 	            
 	            ArrayList<Avtale> avtaler = person.getAvtaler();
-	            
 	            if(!avtaler.isEmpty()){
 					for (Avtale avtale : avtaler) {
 						ActiveHendelse.updateAvtale(avtale);
+					}
+				}
+	            
+	            ArrayList<Mote> moter = person.getMoter();
+	            if(!moter.isEmpty()){
+					for (Mote mote : moter) {
+						ActiveHendelse.updateMote(mote);
 					}
 				}
         	}  
@@ -111,6 +118,7 @@ public class ActivePerson extends ActiveModel{
 		String brukernavn = "";
 		String passord = "";
 		ArrayList<Avtale> avtaler = selectAvtaler(ansattId);
+		ArrayList<Mote> moter = selectMoter(ansattId);
 
 		
 		try{
@@ -141,6 +149,7 @@ public class ActivePerson extends ActiveModel{
 		person.setBrukerNavn(brukernavn);
 		person.setPassord(passord);
 		person.setAvtaler(avtaler);
+		person.setMoter(moter);
 		
 		return person;
 	}
@@ -214,8 +223,8 @@ public class ActivePerson extends ActiveModel{
 		}
 	}
 	
-	public static ArrayList<Avtale> selectMoter(int ansattId) {
-		ArrayList<Avtale> moter = new ArrayList<Avtale>();
+	public static ArrayList<Mote> selectMoter(int ansattId) {
+		ArrayList<Mote> moter = new ArrayList<Mote>();
 		try{
 			connect();
 			if(connection != null){
@@ -226,7 +235,7 @@ public class ActivePerson extends ActiveModel{
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int moteId = rs.getInt("avtaleId");
-					Avtale nyttMote = ActiveHendelse.selectMote(moteId);
+					Mote nyttMote = ActiveHendelse.selectMote(moteId);
 					moter.add(nyttMote);
 				};
 			}
