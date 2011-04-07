@@ -92,6 +92,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
 	private kal mainKal;
+	private Person bruker;
 
 	private ArrayList<Person> mDeltakere;
 	private ArrayList<Rom> romList;
@@ -117,6 +118,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		defaultDato = dDato;
 		defaultMonth = dMonth;
 		defaultYear = dYear;
+		bruker = mainKal.getConnectedPerson();
 		
 		
 		KlientOS klient = KlientOS.getInstance();
@@ -182,7 +184,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 					leggetilDeltModel = new DefaultListModel();
 					leggetilDeltList = new JList();
 					for (Person p : mDeltakere) {
-						if(p != mainKal.getConnectedPerson()) leggetilDeltModel.addElement(p); 
+						if(p != bruker) leggetilDeltModel.addElement(p); 
 					}
 					
 					leggetildeltScroll.setViewportView(leggetilDeltList);
@@ -530,8 +532,8 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
 
 
-		Person person= mainKal.getConnectedPerson();
-		ArrayList<Avtale> avtaler = person.getAvtaler();
+		
+		ArrayList<Avtale> avtaler = bruker.getAvtaler();
 
 		for (int i = 0; i<avtaler.size(); i++) {
 
@@ -563,9 +565,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
 		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
 
-
-		Person person = mainKal.getConnectedPerson();
-		ArrayList<Avtale> avtaler = person.getAvtaler();
+		ArrayList<Avtale> avtaler = bruker.getAvtaler();
 
 		Map<Person, Status> deltakere = new HashMap<Person, Status>();
 		
@@ -574,10 +574,10 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		}
 	
 
-		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, 
+		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), bruker, startTime, sluttTime, inDato, inMnd, inAar, 
 				((Rom)Moeterom.getSelectedItem()==noRom)? null : (Rom)Moeterom.getSelectedItem(), deltakere);
 		
-		person.addAvtale(newAvtale);
+		bruker.addAvtale(newAvtale);
 		mainKal.getKalenderPanelModel().addAvtaleToPanel(newAvtale);
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale);
 	}
