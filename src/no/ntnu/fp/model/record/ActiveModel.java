@@ -77,7 +77,7 @@ public class ActiveModel {
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM " + tableName + "WHERE " + idName + " = " + id
+						"SELECT * FROM " + tableName + " WHERE " + idName + " = " + id
 				);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
@@ -87,7 +87,7 @@ public class ActiveModel {
 			}
 		}
 		catch(SQLException e){
-			System.out.println("Could not find "+ tableName +"with id: " + id);
+			System.out.println("Exists could not find "+ tableName + "with id: " + id);
 			System.out.println("Details:" + e.getMessage());
 		}
 		return exists;
