@@ -75,6 +75,8 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	private int timeIndexDiff=6;
 	private kal mainKal;
 	private Avtale avtale;
+	private int startTime = avtale.getStarttid();
+	private int sluttTime = avtale.getSluttid();
 	
 	/**
 	* Auto-generated main method to display this JFrame
@@ -482,8 +484,8 @@ private boolean overlapping() {
 	private boolean erLedig(Rom rom, boolean datoSatt){
 		int romID = rom.getRomId();
 		
-		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
-		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		startTime = starttid.getSelectedIndex()+timeIndexDiff;
+		sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
 		String month, day;
 		
 		if(defaultDato < 10 && defaultMonth < 10){
