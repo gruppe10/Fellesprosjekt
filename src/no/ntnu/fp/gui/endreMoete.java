@@ -97,6 +97,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private int timeIndexDiff=6;
 	private kal mainKal;
 	private Mote mote;
+	int startTime;
+	int sluttTime;
 	
 	private ArrayList<Person> mDeltakere;
 	private ArrayList<Rom> romList;
@@ -130,6 +132,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		defaultDato = mote.getDatoDag();
 		defaultMonth = mote.getDatoMnd();
 		defaultYear = mote.getDatoAar();
+		startTime = mote.getStarttid()-timeIndexDiff;
+		sluttTime = mote.getSluttid()-timeIndexDiff-1;
 
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallpersons");
@@ -625,8 +629,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private boolean erLedig(Rom rom, boolean datoSatt){
 		int romID = rom.getRomId();
 		
-		int startTime = starttidCombo.getSelectedIndex()+timeIndexDiff;
-		int sluttTime = sluttidCombo.getSelectedIndex()+timeIndexDiff+1;
+		try{
+			startTime = starttidCombo.getSelectedIndex()+timeIndexDiff;
+			sluttTime = sluttidCombo.getSelectedIndex()+timeIndexDiff+1;
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+		
 		String month, day;
 		
 		if(defaultDato < 10 && defaultMonth < 10){
