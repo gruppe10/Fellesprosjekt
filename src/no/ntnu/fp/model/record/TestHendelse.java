@@ -13,7 +13,7 @@ public class TestHendelse {
 	public static void main(String args[]){
 		testCreateDeltagereMedStatus();
 		testCrudForAvtale();
-//		testCrudForMote();	
+		testCrudForMote();	
 	}
 	
 	public static void printDateFrom(Avtale avtale){
