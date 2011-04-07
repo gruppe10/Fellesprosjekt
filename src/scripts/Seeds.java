@@ -8,7 +8,10 @@ import no.ntnu.fp.model.record.ActiveRom;
 
 public class Seeds {
 	public static void populateDb(){
-		if (!(ActivePerson.selectPersonByUsername("bruker").getAnsattNummer() == null)){
+		try{
+			ActivePerson.selectPersonByUsername("bruker").getAnsattNummer();
+			System.out.println("Database er allerede populert");
+		}catch (Exception e) {
 			Person person = new Person();
 			person.setBrukerNavn("bruker");
 			person.setPassord("passord");
@@ -41,9 +44,6 @@ public class Seeds {
 			Rom rom4 = new Rom("P15");
 			ActiveRom.createRom(rom4);
 			System.out.println("4 rom er lagret i databasen");
-		}
-		else {
-			System.out.println("Database er allerede populert");
 		}
 	}
 
