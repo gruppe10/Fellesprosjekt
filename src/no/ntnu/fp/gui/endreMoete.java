@@ -97,8 +97,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private int timeIndexDiff=6;
 	private kal mainKal;
 	private Mote mote;
-	int startTime = mote.getStarttid()-timeIndexDiff;
-	int sluttTime = mote.getStarttid()-timeIndexDiff+1;
+	int startTime;
+	int sluttTime;
 	
 	private ArrayList<Person> mDeltakere;
 	private ArrayList<Rom> romList;
@@ -132,6 +132,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		defaultDato = mote.getDatoDag();
 		defaultMonth = mote.getDatoMnd();
 		defaultYear = mote.getDatoAar();
+		startTime = mote.getStarttid()-timeIndexDiff;
+		sluttTime = mote.getSluttid()-timeIndexDiff-1;
 
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallpersons");

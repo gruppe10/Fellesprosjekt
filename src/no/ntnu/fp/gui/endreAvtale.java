@@ -75,8 +75,8 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	private int timeIndexDiff=6;
 	private kal mainKal;
 	private Avtale avtale;
-	private int startTime = avtale.getStarttid();
-	private int sluttTime = avtale.getSluttid();
+	private int startTime;
+	private int sluttTime; 
 	
 	/**
 	* Auto-generated main method to display this JFrame
@@ -110,6 +110,8 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 		defaultDato = avtale.getDatoDag();
 		defaultMonth = avtale.getDatoMnd();
 		defaultYear = avtale.getDatoAar();
+		startTime = avtale.getStarttid();
+		sluttTime = avtale.getSluttid();
 		
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallrooms");
