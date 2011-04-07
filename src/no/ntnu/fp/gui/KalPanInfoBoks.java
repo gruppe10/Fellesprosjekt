@@ -89,6 +89,9 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 	}
 	
 	public void displayAvtale(Avtale a) {
+		
+		this.clear();
+		
 		if (a instanceof KalPanMoteFiller) {
 			this.a=((KalPanMoteFiller)a).getAvtale();
 		}
@@ -113,15 +116,17 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 
 			Map<Person, Status> deltakereMedStatus = ((Mote)a).getDeltakere();
 			
-			for (Map.Entry<Person,Status> e : deltakereMedStatus.entrySet()) {  
+			Iterator it	= deltakereMedStatus.entrySet().iterator();
+			deltakerListModel.clear();
+			statusListModel.clear();
+			
+			while (it.hasNext()) {
 				statusPane.setVisible(true);
 				deltakerPane.setVisible(true);
-				deltakerListModel.clear();
-				statusListModel.clear();
 				
-				
-				Person key = e.getKey();  
-			    Status value = e.getValue(); 
+				Map.Entry pairs = (Map.Entry)it.next();
+				Person key =(Person) pairs.getKey();  
+			    Status value = deltakereMedStatus.get(key); 
 			    
 			    deltakerListModel.addElement(key);
 			    statusListModel.addElement(value);
@@ -129,6 +134,8 @@ public class KalPanInfoBoks extends JPanel implements ActionListener{
 			
 			
 			if (kal.getConnectedPerson()==a.getInitiativtaker()) {
+				avbud.setVisible(false);
+				slett.setVisible(true);
 				}
 			else {
 				avbud.setVisible(true);

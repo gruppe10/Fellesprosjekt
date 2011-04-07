@@ -13,7 +13,7 @@ public class TestHendelse {
 	public static void main(String args[]){
 		testCreateDeltagereMedStatus();
 		testCrudForAvtale();
-//		testCrudForMote();	
+		testCrudForMote();	
 	}
 	
 	public static void printDateFrom(Avtale avtale){
@@ -21,8 +21,6 @@ public class TestHendelse {
 		System.out.println("Month:"+ avtale.getDatoMnd());
 		System.out.println("Date:"+ avtale.getDatoDag());
 	}
-	
-	
 	
 //	private void testCreatePerson(){
 //		Avtale avtale = mockAvtaleWithId(10001);
