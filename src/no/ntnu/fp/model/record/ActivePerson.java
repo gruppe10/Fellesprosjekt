@@ -190,6 +190,7 @@ public class ActivePerson extends ActiveModel{
 		person.setBrukerNavn(brukernavn);
 		person.setPassord(passord);
 		person.setAvtaler(selectAvtaler(ansattId));
+		person.setMoter(selectMoter(ansattId));
 		
 		return person;
 	}
@@ -225,28 +226,52 @@ public class ActivePerson extends ActiveModel{
 	}
 	
 	public static ArrayList<Mote> selectMoter(int ansattId) {
-		ArrayList<Mote> moter = new ArrayList<Mote>();
+		ArrayList<Mote> hendelser = new ArrayList<Mote>();
+		ArrayList<Mote> hendelserMedDeltakere = new ArrayList<Mote>();
+		System.out.println("Henter Møter!");
 		try{
 			connect();
 			if(connection != null){
+				//Finne alle hendelser
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT hendelseId FROM Deltakere WHERE ansattId = ?"
+						"SELECT hendelseId FROM Hendelse WHERE lederId = ? "
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
-					int moteId = rs.getInt("hendelseId");
-					Mote nyttMote = ActiveHendelse.selectMote(moteId);
-					moter.add(nyttMote);
+					int hendelseId = rs.getInt("hendelseId");
+					Mote nyHendelse = ActiveHendelse.selectMote(hendelseId);
+					hendelser.add(nyHendelse);
 				};
-			}
-			connection.close();	
+				ps.close();
+				connection.close();
+				
+				//Finn alle møter
+				for (Avtale hendelse : hendelser){
+					connect();
+					PreparedStatement ps2 = connection.prepareStatement(
+							"SELECT Hendelse.hendelseId FROM Hendelse,Deltakere " +
+							"WHERE Hendelse.hendelseId = Deltakere.hendelseId " +
+							"AND Hendelse.hendelseId = " + hendelse.getAvtaleId()
+					);
+					
+					ResultSet rs2 = ps2.executeQuery();
+					while(rs2.next()){
+						int avtaleId = rs2.getInt("hendelseId");
+						Mote mote = ActiveHendelse.selectMote(avtaleId);
+						hendelserMedDeltakere.add(mote);
+						System.out.println("Fant ett møte");
+					}
+					connection.close();	
+				}
+				if(connection != null) connection.close();	
+			}	
 		}
 		catch(SQLException e){
 			System.out.println("Could not find any Meetings for Person with id:" + ansattId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		return moter;
+		return hendelserMedDeltakere;
 	}
 	
 	public static ArrayList<Avtale> selectAvtaler(int ansattId) {
