@@ -17,7 +17,7 @@ public class Seeds {
 			System.out.println("Database er allerede populert");
 		}catch (Exception e) {
 			Person person = new Person();
-			person.setBrukerNavn("bruker");
+			person.setBrukerNavn("navn");
 			person.setPassord("passord");
 			ActivePerson.createPerson(person);
 

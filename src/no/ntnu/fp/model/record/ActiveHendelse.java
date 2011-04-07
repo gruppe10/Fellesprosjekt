@@ -176,9 +176,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null ){
 				PreparedStatement ps = connection.prepareStatement(
-						"UPDATE Hendelse " + 
-						"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-						"WHERE hendelseId = ? "
+						"UPDATE Hendelse SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? WHERE hendelseId = ? "
 				);
 				ps.setString(1, mote.getNavn());
 				ps.setString(2, mote.getBeskrivelse());
