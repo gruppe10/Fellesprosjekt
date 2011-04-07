@@ -106,12 +106,30 @@ public class ObjectManager {
 		}
 		else if( content instanceof String){
 			System.out.println("Recieved String");
-			String string = (String)content;
-			boolean approved = ActivePerson.checkPassord(string);
 			
-			System.out.println("Handled String");
-			return approved;
-			
+			switch(action){
+				case SELECT:
+					if (((String)content).equals("getallpersons")) {
+						
+							
+							return ActivePerson.selectAllPersons();
+							
+					}
+					else if (((String)content).equals("getallrooms")) {
+						System.out.println("Pr¿ver Œ hente ut alle personer");
+							
+							return ActiveRom.selectAlleRom();
+							
+					}
+					break;
+				case LOGIN:
+					String string = (String)content;
+					boolean approved = ActivePerson.checkPassord(string);
+					
+					System.out.println("Handled String");
+					return approved;
+					
+			}
 		}
 		return null;
 	}
