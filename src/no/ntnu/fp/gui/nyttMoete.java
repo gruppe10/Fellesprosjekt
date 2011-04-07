@@ -162,17 +162,17 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			
 			{
 //				Test
-				Person p2 = new Person();
-				p2.setName("Kåre");
-				Person p1 = new Person();
-				p1.setName("Ida");
+				Person p3 = new Person();
+				p3.setName("Per");
+				Person p4 = new Person();
+				p4.setName("Ole");
 				
 				leggetildeltScroll = new JScrollPane();
 				{
 					leggetilDeltModel = new DefaultListModel();
 					leggetilDeltList = new JList();
-					leggetilDeltModel.addElement(p1);
-					leggetilDeltModel.addElement(p2);
+					leggetilDeltModel.addElement(p3);
+					leggetilDeltModel.addElement(p4);
 					leggetildeltScroll.setViewportView(leggetilDeltList);
 					leggetilDeltList.setModel(leggetilDeltModel);
 					leggetilDeltList.setFont(new java.awt.Font("Tahoma",2,11));
