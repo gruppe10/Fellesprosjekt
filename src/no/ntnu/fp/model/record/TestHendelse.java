@@ -11,9 +11,9 @@ import no.ntnu.fp.model.record.*;
 
 public class TestHendelse {
 	public static void main(String args[]){
-//		testCeateDeltagereMedStatus();
-//		testCrudForAvtale();
-		testCrudForMote();	
+		testCreateDeltagereMedStatus();
+		testCrudForAvtale();
+//		testCrudForMote();	
 	}
 	
 	public static void printDateFrom(Avtale avtale){
@@ -154,7 +154,7 @@ public class TestHendelse {
 		System.out.println("Hentet ut mote med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
 	}
 	
-	private static void testCeateDeltagereMedStatus(){
+	private static void testCreateDeltagereMedStatus(){
 		Mote mote = mockMote();		
 		ActiveHendelse.createMote(mote);
 		System.out.println("testUtført");
