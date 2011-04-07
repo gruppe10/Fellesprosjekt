@@ -30,6 +30,7 @@ import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
+import no.ntnu.fp.model.record.ActiveRom;
 
 
 import java.text.SimpleDateFormat;
@@ -167,6 +168,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					starttid.setModel(jComboBox1Model);
 					starttid.getSelectedItem();
 					starttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
+					starttid.addActionListener(this);
 				}
 				{
 					ComboBoxModel jComboBox2Model = 
@@ -176,6 +178,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					sluttid.setModel(jComboBox2Model);
 					sluttid.getSelectedItem();
 					sluttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
+					sluttid.addActionListener(this);
 				}
 				{
 					jTextArea1 = new JTextArea();
@@ -202,6 +205,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 						datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);	
 					}
 					datoField.setFont(new java.awt.Font("Tahoma",2,11));
+					datoField.addActionListener(this);
 					//do something
 				}
 				{
@@ -222,12 +226,7 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 					romComboBox1Model = 
 						new DefaultComboBoxModel();
 					
-					romComboBox1Model.addElement(noRom);
-					
-					for (Rom rom : romList) {
-												
-						romComboBox1Model.addElement(rom);
-					}
+					fyllRomListe(false);
 					
 					romComboBox1 = new JComboBox();
 					romComboBox1.setModel(romComboBox1Model);
@@ -358,15 +357,16 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 			}
 			else {
 				addAvtale();
-				hide();
+				dispose();
 			}
 
 
 		}
 		else if(evt.getSource() == avbrytButton){
-			//kal kal = new kal();
-			//kal.show();
-			hide();
+			dispose();
+		}
+		else if(evt.getSource() == starttid || evt.getSource() == sluttid || evt.getSource() == datoField){
+			fyllRomListe(true);
 		}
 
 	}
@@ -458,5 +458,57 @@ public class nyAvtale extends javax.swing.JFrame implements ActionListener{
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(newAvtale); //Anders <3
 
 	}
+	
+	private boolean erLedig(Rom rom, boolean datoSatt){
+		int romID = rom.getRomId();
+		
+		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
+		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		String month, day;
+		
+		if(defaultDato < 10 && defaultMonth < 10){
+			month = "0"+defaultMonth;
+			day = "0"+defaultDato;
+		}else if(defaultDato<10){
+			month = Integer.toString(defaultMonth);
+			day = "0"+defaultDato;
+		}else if(defaultMonth<10){
+			month = "0"+defaultMonth;
+			day = Integer.toString(defaultDato);
+		}else{
+			month = Integer.toString(defaultMonth);
+			day = Integer.toString(defaultDato);
+		}
+	
+		
+		String date = defaultYear+"-"+month+"-"+day;
+		
+		if(datoSatt){
+			String[] a = datoField.getText().split("\\.");
+			date = a[2]+"-"+a[1]+"-"+a[0];
+		}
+		
+		java.sql.Date dato = java.sql.Date.valueOf(date);
+		
+		boolean[] ledigeTider = ActiveRom.selectLedigeTider(romID, dato);
+		boolean erLedig = true;
+		
+		for(int i=startTime; i<sluttTime; i++){
+			if (ledigeTider[i] != true) erLedig = false;
+		}
+		
+		return erLedig;
+	}
+	
+	
+	
+	private void fyllRomListe(boolean datoSatt){
+		romComboBox1Model.removeAllElements();
+		romComboBox1Model.addElement(noRom);
+		for(Rom rom: romList){
+			if(erLedig(rom, datoSatt)) romComboBox1Model.addElement(rom);
+		}
+	}
+	
 
 }
