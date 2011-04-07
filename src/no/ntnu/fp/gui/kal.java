@@ -23,6 +23,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.SwingUtilities;
 
+import Klient.Action;
+import Klient.Envelope;
+import Klient.KlientOS;
+
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
@@ -76,6 +80,8 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 	private JButton deltHendButton;
 	private DefaultListModel deltakereModel;
 	private DefaultListModel meldingerModel;
+	
+	private ArrayList<Person> mDeltakere;
 	
 
 	private Calendar mainDate;
@@ -135,6 +141,11 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 		updateInbox();
 		
 		avtaler = bruker.getAvtaler();
+		
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.SELECT, "getallpersons");
+		mDeltakere=(ArrayList<Person>)klient.sendObjectAndGetResponse(e);
+		
 		initGUI();
 	}
 
@@ -155,6 +166,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				visDeltakereButton.setText("Vis deltakeres hendelser");
 				visDeltakereButton.setFont(new java.awt.Font("Tahoma",0,12));
 				visDeltakereButton.setVisible(false);
+				visDeltakereButton.addActionListener(this);
 			}
 			{
 				deltakereLabel1 = new JLabel();
@@ -162,20 +174,12 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				deltakereLabel1.setFont(new java.awt.Font("Tahoma",0,12));
 				deltakereLabel1.setVisible(false);
 			}
-			
-//			Test
-			Person p3 = new Person();
-			p3.setName("Ole");
-			Person p4 = new Person();
-			p4.setName("Kari");
-			
+		
 			{
 				jScrollPane1 = new JScrollPane();
 				{
 					deltakereModel = new DefaultListModel();
 					deltakerList = new JList();
-					deltakereModel.addElement(p4);
-					deltakereModel.addElement(p3);
 					jScrollPane1.setViewportView(deltakerList);
 					deltakerList.setModel(deltakereModel);
 					deltakerList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -201,11 +205,14 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				{
 					leggetilDeltModel = new DefaultListModel();
 					alleDeltakereList = new JList();
-					leggetilDeltModel.addElement(p1);
-					leggetilDeltModel.addElement(p2);
+					for (Person p : mDeltakere) {
+						if(p != person) leggetilDeltModel.addElement(p); 
+					}
+					
 					jScrollPane2.setViewportView(alleDeltakereList);
 					alleDeltakereList.setModel(leggetilDeltModel);
 					alleDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
+		
 				}
 				jScrollPane2.setVisible(false);
 			}
@@ -424,6 +431,14 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				deltakereModel.addElement(alleDeltakereList.getSelectedValue());
 			}
 		}
+		else if(evt.getSource() == visDeltakereButton){
+			ArrayList<Person> fPersons = new ArrayList<Person>();
+			for (int i = 0; i<deltakereModel.size(); i++) {
+				fPersons.add((Person)deltakereModel.get(i));
+				kalPanModel.morePersons(fPersons);
+			}
+		}
+		
 
 
 	}

@@ -33,6 +33,10 @@ import javax.swing.ListModel;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import Klient.Action;
+import Klient.Envelope;
+import Klient.KlientOS;
+
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
@@ -86,11 +90,15 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private Rom noRom;
 	private JLabel overlappingMessage;
 	private JLabel inValidDateMessage;
+	private DefaultComboBoxModel moeteromModel;
 	
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
 	private kal mainKal;
 	private Mote mote;
+	
+	private ArrayList<Person> mDeltakere;
+	private ArrayList<Rom> romList;
 
 	/**
 	 * Auto-generated main method to display this JFrame
@@ -98,15 +106,37 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				endreMoete inst = new endreMoete();
+				endreMoete inst = new endreMoete(null, null);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
 		});
 	}
 
-	public endreMoete() {
+	public endreMoete(kal kal, Mote m) {
 		super();
+		
+		mainKal=kal;
+		
+		if (m instanceof KalPanMoteFiller) {
+			mote=((KalPanMoteFiller)m).getAvtale();
+		}
+		else {
+		mote=m;
+		}
+		
+		
+		defaultDato = mote.getDatoDag();
+		defaultMonth = mote.getDatoMnd();
+		defaultYear = mote.getDatoAar();
+
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.SELECT, "getallpersons");
+		mDeltakere=(ArrayList<Person>)klient.sendObjectAndGetResponse(e);
+		KlientOS klient2 =KlientOS.getInstance();
+		Envelope e2 = new Envelope(Action.SELECT, "getallrooms");
+		romList = (ArrayList<Rom>)klient2.sendObjectAndGetResponse(e2);
+
 		initGUI();
 	}
 
@@ -138,19 +168,16 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				jLabel1.setFont(new java.awt.Font("Tahoma",2,12));
 			}
 			{
-//				Test
-				Person p2 = new Person();
-				p2.setName("Kåre");
-				Person p1 = new Person();
-				p1.setName("Ida");
-				
+
 				muligeDeltakereScroll = new JScrollPane();
 				{
 					deljList1Model = 
 						new DefaultListModel();
 					muligeDeltakereList = new JList();
-					deljList1Model.addElement(p1);
-					deljList1Model.addElement(p2);
+					for(Person p : mDeltakere){
+						if(p != mainKal.getConnectedPerson()) deljList1Model.addElement(p);
+					}
+
 					muligeDeltakereScroll.setViewportView(muligeDeltakereList);
 					muligeDeltakereList.setModel(deljList1Model);
 					muligeDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -166,6 +193,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				starttidCombo = new JComboBox();
 				starttidCombo.setModel(stjComboBox1Model);
 				starttidCombo.getSelectedItem();
+				starttidCombo.setSelectedIndex(mote.getStarttid()-timeIndexDiff);
 			}
 			{
 				ComboBoxModel sutjComboBox1Model = 
@@ -174,6 +202,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				sluttidCombo = new JComboBox();
 				sluttidCombo.setModel(sutjComboBox1Model);
 				sluttidCombo.getSelectedItem();
+				sluttidCombo.setSelectedIndex(mote.getStarttid()-timeIndexDiff-1);
 			}
 			{
 				slutttidLabel = new JLabel();
@@ -181,16 +210,16 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				slutttidLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
-				//test test
-				Rom rom1 = new Rom("a1");
-				Rom rom2 = new Rom("a2");
-				Rom rom3 = new Rom("a3");
+
 
 				noRom = new Rom("None");
-
-				ComboBoxModel moeteromModel = 
-					new DefaultComboBoxModel(
-							new Rom[] { noRom,  });
+				moeteromModel = new DefaultComboBoxModel();
+				moeteromModel.addElement(noRom);
+				
+				for(Rom rom : romList){
+					moeteromModel.addElement(rom);
+				}
+				
 				Moeterom = new JComboBox();
 				Moeterom.setModel(moeteromModel);
 				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
@@ -210,7 +239,18 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			{
 				datoField = new JTextField();
-				datoField.setText("dd.mm.aaaa");
+				if (defaultDato<10 && defaultMonth<10) {
+					datoField.setText("0"+defaultDato+".0"+defaultMonth+"."+defaultYear);
+					}
+				else if (defaultDato<10) {
+					datoField.setText("0"+defaultDato+"."+defaultMonth+"."+defaultYear);
+					}
+				else if (defaultMonth<10) {
+				datoField.setText(defaultDato+".0"+defaultMonth+"."+defaultYear);
+				}
+				else {
+					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);	
+				}
 				datoField.setFont(new java.awt.Font("Tahoma",2,11));
 			}
 			{
@@ -234,19 +274,14 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				beskrivelseTextArea.getText();
 			}
 			{
-//				Test
-				Person p1 = new Person();
-				p1.setName("Bob");
-				Person p2 = new Person();
-				p2.setName("Liv");
+//				
 				
 				valgteDeltakere = new JScrollPane();
 				{
 					deltakereListModel = 
 						new DefaultListModel();
 					deltakereList = new JList();
-					deltakereListModel.addElement(p1);
-					deltakereListModel.addElement(p2);
+					
 					
 					valgteDeltakere.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereListModel);
@@ -569,6 +604,11 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 		
 		Map<Person, Status> deltakere = new HashMap<Person, Status>();
+		
+		for (int i=0; i<deltakereListModel.size(); i++) {
+			deltakere.put((Person)deltakereListModel.get(i), Status.IKKE_MOTTATT);
+			
+		}
 
 	mote.update(startTime, sluttTime, inDato, inMnd, inAar, headerTextField.getText(), beskrivelseTextArea.getText(), 
 			Moeterom.getSelectedItem()==noRom? null: (Rom)Moeterom.getSelectedItem(), deltakere);

@@ -85,11 +85,15 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 	private JTextArea beskrivelseTextArea;
 	private JTextField datoField;
 	private Rom noRom;
+	private DefaultComboBoxModel moeteromModel;
 
 	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
 	private kal mainKal;
 
+	private ArrayList<Person> mDeltakere;
+	private ArrayList<Rom> romList;
+	
 	/**
 	 * Auto-generated main method to display this JFrame
 	 */
@@ -111,6 +115,15 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		defaultDato = dDato;
 		defaultMonth = dMonth;
 		defaultYear = dYear;
+		
+		
+		KlientOS klient = KlientOS.getInstance();
+		Envelope e = new Envelope(Action.SELECT, "getallpersons");
+		mDeltakere=(ArrayList<Person>)klient.sendObjectAndGetResponse(e);
+		KlientOS klient2 =KlientOS.getInstance();
+		Envelope e2 = new Envelope(Action.SELECT, "getallrooms");
+		romList = (ArrayList<Rom>)klient2.sendObjectAndGetResponse(e2);
+
 
 		initGUI();
 	}
@@ -161,18 +174,27 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 			}
 			
 			{
+
 //				Test
 				Person p3 = new Person();
 				p3.setName("Per");
 				Person p4 = new Person();
 				p4.setName("Ole");
 				
+
 				leggetildeltScroll = new JScrollPane();
 				{
 					leggetilDeltModel = new DefaultListModel();
 					leggetilDeltList = new JList();
+
 					leggetilDeltModel.addElement(p3);
 					leggetilDeltModel.addElement(p4);
+
+					for (Person p : mDeltakere) {
+						if(p != mainKal.getConnectedPerson()) leggetilDeltModel.addElement(p); 
+					}
+					
+
 					leggetildeltScroll.setViewportView(leggetilDeltList);
 					leggetilDeltList.setModel(leggetilDeltModel);
 					leggetilDeltList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -188,6 +210,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				starttid = new JComboBox();
 				starttid.setModel(stComboBox1Model);
 				starttid.getSelectedItem();
+				starttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 			}
 			{
 				ComboBoxModel sutComboBox1Model = 
@@ -196,6 +219,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				sluttid = new JComboBox();
 				sluttid.setModel(sutComboBox1Model);
 				sluttid.getSelectedItem();
+				sluttid.setSelectedIndex((defaultStartTime-timeIndexDiff));
 			}
 			{
 				sluttidLabel = new JLabel();
@@ -203,18 +227,11 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				sluttidLabel.setFont(new java.awt.Font("Tahoma",0,12));
 			}
 			{
-//				Test
-				Person p2 = new Person();
-				p2.setName("Bob");
-				Person p1 = new Person();
-				p1.setName("Nora");
-				
+			
 				deltakereScroll = new JScrollPane();
 				{
 					deltakereModel = new DefaultListModel();
 					deltakereList = new JList();
-					deltakereModel.addElement(p1);
-					deltakereModel.addElement(p2);
 					deltakereScroll.setViewportView(deltakereList);
 					deltakereList.setModel(deltakereModel);
 					deltakereList.setFont(new java.awt.Font("Tahoma",2,11));
@@ -224,17 +241,16 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 				
 			{
 
-				//test test
-				Rom rom1 = new Rom("a1");
-				Rom rom2 = new Rom("a2");
-				Rom rom3 = new Rom("a3");
-
 				noRom = new Rom("None");
-				ComboBoxModel MoeteromModel = 
-					new DefaultComboBoxModel(
-							new Rom[] { noRom, rom1, rom2, rom3});
+				moeteromModel = new DefaultComboBoxModel();
+				moeteromModel.addElement(noRom);
+				
+				for(Rom rom : romList){
+					moeteromModel.addElement(rom);
+				}
+				
 				Moeterom = new JComboBox();
-				Moeterom.setModel(MoeteromModel);
+				Moeterom.setModel(moeteromModel);
 				Moeterom.setFont(new java.awt.Font("Tahoma",2,11));
 				Moeterom.setToolTipText("moeterom");
 				//liste over alle tilgjengelige moeterom i det gitte tidspunktet
@@ -557,6 +573,11 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		ArrayList<Avtale> avtaler = person.getAvtaler();
 
 		Map<Person, Status> deltakere = new HashMap<Person, Status>();
+		
+		for (int i=0; i<deltakereModel.size(); i++) {
+			deltakere.put((Person)deltakereModel.get(i), Status.IKKE_MOTTATT);
+		}
+	
 
 		Mote newAvtale= new Mote(headerTextField.getText(),beskrivelseTextArea.getText(), person, startTime, sluttTime, inDato, inMnd, inAar, 
 				((Rom)Moeterom.getSelectedItem()==noRom)? null : (Rom)Moeterom.getSelectedItem(), deltakere);

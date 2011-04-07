@@ -14,6 +14,10 @@ import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import Klient.Action;
+import Klient.Envelope;
+import Klient.KlientOS;
+
 import no.ntnu.fp.gui.kal;
 
 import no.ntnu.fp.model.Avtale;
@@ -140,8 +144,12 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 			mainKal.getConnectedPerson().getAvtaler().remove(avtale);
 			mainKal.getKalenderPanelModel().removeAvtaleFromPanel(avtale);
 			mainKal.getKalenderPanel().getInfoBoks().clear();
+			
+			KlientOS klient = KlientOS.getInstance();
+			Envelope e = new Envelope(Action.DESTROY, avtale);
+			klient.sendObjectAndGetResponse(e);
+			
 			hide();
-		// fjerne fra kalenderen
 		}
 		else if(evt.getSource() == avbrytButton){
 			hide();

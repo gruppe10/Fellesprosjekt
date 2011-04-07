@@ -94,9 +94,7 @@ public class ActiveHendelse extends ActiveModel{
 						navn = rs.getString("navn");
 						beskrivelse = rs.getString("beskrivelse");
 						starttid = formatIntFrom(rs.getTime("starttid"));
-						System.out.println(starttid);
 						sluttid = formatIntFrom(rs.getTime("sluttid"));
-						System.out.println(sluttid);
 						dato = rs.getDate("dato");
 					}
 				}
@@ -110,7 +108,7 @@ public class ActiveHendelse extends ActiveModel{
 		hendelse.setAvtaleId(avtaleId);
 		hendelse.setNavn(navn);
 		hendelse.setBeskrivelse(beskrivelse);
-		hendelse.setDato(dato.getDay(),dato.getMonth(), dato.getYear());
+		hendelse.setDato(dato.getDate(),dato.getMonth(), dato.getYear());
 		hendelse.setSluttid(sluttid);
 		hendelse.setStarttid(starttid);
 		return hendelse;
@@ -121,9 +119,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if( connection != null ){
 				PreparedStatement ps = connection.prepareStatement(
-						"UPDATE Hendelse " + 
-						"SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? " +
-						"WHERE hendelseId = ? "
+						"UPDATE Hendelse SET navn = ?, beskrivelse = ?, dato = ?, starttid = ?, sluttid = ? WHERE hendelseId = ? "
 				);
 				ps.setString(1, avtale.getNavn());
 				ps.setString(2, avtale.getBeskrivelse());
@@ -146,7 +142,6 @@ public class ActiveHendelse extends ActiveModel{
 		if(mote.getAvtaleId() == null){
 			int nyId = nextAvailableIdFor("Hendelse");
 			mote.setAvtaleId(nyId);
-			System.out.println("nyId =" + nyId);
 		}
 		try{
 			connect();

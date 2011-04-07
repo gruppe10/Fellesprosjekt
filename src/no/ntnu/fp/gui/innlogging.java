@@ -186,7 +186,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 			
 			
 			
-			Envelope e = new Envelope(Action.SELECT, loginInfo);
+			Envelope e = new Envelope(Action.LOGIN, loginInfo);
 			Boolean isApproved = (Boolean)klient.sendObjectAndGetResponse(e);
 			
 			if(isApproved){
@@ -196,9 +196,7 @@ public class innlogging extends javax.swing.JFrame implements ActionListener{
 				
 				e = new Envelope(Action.SELECT, bruker);
 				Person user = (Person)klient.sendObjectAndGetResponse(e);
-				for(Avtale avtale: user.getAvtaler()){
-					System.out.println("KlientTid:" + avtale.getStarttid() +" "+ avtale.getSluttid());
-				}
+				
 				
 				kal kal = new kal(user);
 				kal.show();

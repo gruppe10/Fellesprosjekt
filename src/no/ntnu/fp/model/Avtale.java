@@ -104,7 +104,6 @@ public class Avtale implements Serializable{
 		datoDag=dag;
 		datoMnd=mnd;
 		datoAar=aar;
-		//Oppdater database!
 	}
 
 	public String getBeskrivelse() {
@@ -167,7 +166,8 @@ public class Avtale implements Serializable{
 		this.rom = moterom;
 		if (!(this instanceof Mote)) {
 			KlientOS klient = KlientOS.getInstance();
-			klient.sendObjectAndGetResponse(new Envelope(Action.UPDATE, this));
+			Envelope e = new Envelope(Action.UPDATE, this);
+			klient.sendObjectAndGetResponse(e);
 		}
 		
 	}
