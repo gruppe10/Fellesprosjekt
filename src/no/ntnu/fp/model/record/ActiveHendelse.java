@@ -243,6 +243,15 @@ public class ActiveHendelse extends ActiveModel{
 		
 		return hendelse;
 	}
+	
+	public static boolean isMote(int avtaleId){
+		Map<Person,Status> deltakere = selectDeltakereMedStatus(avtaleId);
+		boolean isMote = false;
+		if(!deltakere.isEmpty()){
+			isMote = true;
+		}
+		return isMote;
+	}
 
 	public static void deleteHendelse(int avtaleId) {
 		try {
