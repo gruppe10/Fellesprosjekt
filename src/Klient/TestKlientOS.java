@@ -4,7 +4,6 @@ import no.ntnu.fp.model.Notis;
 
 public class TestKlientOS {
 	public static void main(String[] args){
-		KlientOS c = new KlientOS(6789 ,"78.91.58.84");
 		KlientOS c = KlientOS.getInstance();
 		Notis n = new Notis(null, null, "ldfh");
 		Envelope toSend = new Envelope(Action.SELECT, n);

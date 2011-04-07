@@ -14,7 +14,13 @@ public class CreateDb extends ActiveModel{
 		try{
 			connect();
 			Statement s = connection.createStatement();
-
+//			s.execute("Drop table Deltakere");
+//			s.execute("Drop table ReserverteRom");
+//
+//			s.execute("Drop table Hendelse");
+//			s.execute("Drop table Rom");
+//			s.execute("Drop table Person");
+			
 			s.execute(
 					"CREATE TABLE Person( " +
 					"ansattId INT PRIMARY KEY NOT NULL," +
