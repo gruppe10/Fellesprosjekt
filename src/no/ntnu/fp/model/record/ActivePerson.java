@@ -228,7 +228,6 @@ public class ActivePerson extends ActiveModel{
 	public static ArrayList<Mote> selectMoter(int ansattId) {
 		ArrayList<Mote> hendelser = new ArrayList<Mote>();
 		ArrayList<Mote> hendelserMedDeltakere = new ArrayList<Mote>();
-		System.out.println("Henter Møter!");
 		try{
 			connect();
 			if(connection != null){
@@ -260,7 +259,6 @@ public class ActivePerson extends ActiveModel{
 						int avtaleId = rs2.getInt("hendelseId");
 						Mote mote = ActiveHendelse.selectMote(avtaleId);
 						hendelserMedDeltakere.add(mote);
-						System.out.println("Fant ett møte");
 					}
 					connection.close();	
 				}
