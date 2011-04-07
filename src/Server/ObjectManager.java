@@ -27,20 +27,16 @@ public class ObjectManager {
 			System.out.println("Recieved Mote");
 			Mote mote = (Mote)content;
 			switch(action){
+			case CREATE:
+				return (Mote)ActiveHendelse.createMote(mote);
 			case UPDATE:
-				try{
-					boolean test = ActiveHendelse.exists("Hendelse", mote.getAvtaleId());
-					ActiveHendelse.updateMote(mote);
-				}catch (NullPointerException e2) {
-					mote = ActiveHendelse.createMote(mote);
-				}
+				ActiveHendelse.updateMote(mote);
 				break;
 			case DESTROY:
 				ActiveHendelse.deleteHendelse(mote.getAvtaleId());
 				break;
 			case SELECT:
-				mote = (Mote) ActiveHendelse.selectMote(mote.getAvtaleId());
-				break;
+				return (Mote)ActiveHendelse.selectMote(mote.getAvtaleId());
 			}
 			System.out.println("Handled Mote");
 			return mote;
@@ -49,23 +45,16 @@ public class ObjectManager {
 			System.out.println("Recieved Avtale");
 			Avtale avtale =(Avtale)content;
 			switch(action){
+			case CREATE:
+				return (Avtale)ActiveHendelse.createAvtale(avtale);
 			case UPDATE:
-				if(avtale.getAvtaleId() != null){
-					if(ActiveHendelse.exists("Hendelse",avtale.getAvtaleId())){
-						ActiveHendelse.updateAvtale(avtale);
-					}
-				}else{
-					Avtale avtaleWithNewId = ActiveHendelse.createAvtale(avtale);
-					System.out.println("Handled Avtale");
-					return avtaleWithNewId;
-				}
+				ActiveHendelse.updateAvtale(avtale);
 				break;
 			case DESTROY:
 				ActiveHendelse.deleteHendelse(avtale.getAvtaleId());
 				break;
 			case SELECT:
-				ActiveHendelse.selectAvtale(avtale.getAvtaleId());
-				break;
+				return (Avtale)ActiveHendelse.selectAvtale(avtale.getAvtaleId());
 			}
 			System.out.println("Handled Avtale");
 		}
@@ -73,20 +62,16 @@ public class ObjectManager {
 			System.out.println("Recieved Person");
 			Person person = (Person)content;
 			switch(action){
+			case CREATE:
+				return ActivePerson.createPerson(person);
 			case UPDATE:
-				if(person.getAnsattNummer() != null){
-					if(ActiveModel.exists("Person", person.getAnsattNummer()))
-						ActivePerson.updatePerson(person);
-					}
-				else{
-					return ActivePerson.createPerson(person);
-				}
+				ActivePerson.updatePerson(person);
 				break;
 			case SELECT:
 				if(person.getAnsattNummer() != null)
-					person = ActivePerson.selectPerson(person.getAnsattNummer());
+					return person = ActivePerson.selectPerson(person.getAnsattNummer());
 				else if(person.getBrukerNavn() != null)
-					person = ActivePerson.selectPersonByUsername(person.getBrukerNavn());
+					return person = ActivePerson.selectPersonByUsername(person.getBrukerNavn());
 				break;
 			case DESTROY:
 				ActivePerson.deletePerson(person.getAnsattNummer());
@@ -102,21 +87,21 @@ public class ObjectManager {
 		else if( content instanceof String){
 			System.out.println("Recieved String");
 			switch(action){
-				case SELECT:
-					if (((String)content).equals("getallpersons")) {
-							return ActivePerson.selectAllPersons();
-					}
-					else if (((String)content).equals("getallrooms")) {
-						System.out.println("Prover aa hente ut alle personer");
-							return ActiveRom.selectAlleRom();
-					}
-					break;
-				case LOGIN:
-					String string = (String)content;
-					boolean approved = ActivePerson.checkPassord(string);
-					
-					System.out.println("Handled String");
-					return approved;			
+			case SELECT:
+				if (((String)content).equals("getallpersons")) {
+					return ActivePerson.selectAllPersons();
+				}
+				else if (((String)content).equals("getallrooms")) {
+					System.out.println("Prover aa hente ut alle personer");
+					return ActiveRom.selectAlleRom();
+				}
+				break;
+			case LOGIN:
+				String string = (String)content;
+				boolean approved = ActivePerson.checkPassord(string);
+
+				System.out.println("Handled String");
+				return approved;			
 			}
 		}
 		return null;

@@ -197,6 +197,7 @@ public class ActiveHendelse extends ActiveModel{
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public static Mote selectMote(int avtaleId){
 		Mote hendelse = new Mote();
 		String navn = "";
@@ -206,6 +207,7 @@ public class ActiveHendelse extends ActiveModel{
 		int yyyy = 0000;
 		int starttid = 0;
 		int sluttid = 0;
+		Date dato = new Date();
 
 		Map<Person,Status> deltakere = selectDeltakereMedStatus(avtaleId);
 		try{
@@ -222,6 +224,7 @@ public class ActiveHendelse extends ActiveModel{
 						beskrivelse = rs.getString("beskrivelse");
 						starttid = formatIntFrom(rs.getTime("starttid"));
 						sluttid = formatIntFrom(rs.getTime("sluttid"));
+						dato = rs.getDate("dato"); 
 					}
 				}
 				connection.close();
@@ -234,7 +237,7 @@ public class ActiveHendelse extends ActiveModel{
 		hendelse.setAvtaleId(avtaleId);
 		hendelse.setNavn(navn);
 		hendelse.setBeskrivelse(beskrivelse);
-		hendelse.setDato(dd, mm, yyyy);
+		hendelse.setDato(dato.getDate(),dato.getMonth(), dato.getYear());
 		hendelse.setSluttid(sluttid);
 		hendelse.setStarttid(starttid);
 		hendelse.leggtilDeltakere(deltakere);

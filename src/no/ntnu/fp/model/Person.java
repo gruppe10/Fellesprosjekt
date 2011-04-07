@@ -359,9 +359,11 @@ public class Person implements Serializable{
 			System.out.println(counter);
 			if(avtale instanceof Mote){
 				System.out.println("Hentet ut møte");
+				System.out.println("DatoDag: "+avtale.getDatoDag());
 			}
 			else if (avtale instanceof Avtale){
 				System.out.println("Hentet ut avtale");
+				System.out.println("DatoDag: "+avtale.getDatoDag());
 			}
 			counter ++;
 		}

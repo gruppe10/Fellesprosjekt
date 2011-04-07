@@ -49,6 +49,8 @@ class KalenderPanelModel extends AbstractTableModel {
 		setWeek(date);
         
         ukuttaAvtaleListe= kal.getConnectedPerson().finnAlleHendelder();
+       
+        
         
         createAvtaleListe();
         
