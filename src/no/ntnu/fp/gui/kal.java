@@ -168,14 +168,14 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 				visDeltakereButton = new JButton();
 				visDeltakereButton.setText("Vis deltakeres hendelser");
 				visDeltakereButton.setFont(new java.awt.Font("Tahoma",0,12));
-				visDeltakereButton.setVisible(true);
+				visDeltakereButton.setVisible(false);
 				visDeltakereButton.addActionListener(this);
 			}
 			{
 				deltakereLabel1 = new JLabel();
 				deltakereLabel1.setText("Deltakere:");
 				deltakereLabel1.setFont(new java.awt.Font("Tahoma",0,12));
-				deltakereLabel1.setVisible(true);
+				deltakereLabel1.setVisible(false);
 			}
 			{
 				ukLabel1 = new JLabel();
@@ -195,20 +195,20 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 					deltakerList.setModel(deltakereModel);
 					deltakerList.setFont(new java.awt.Font("Tahoma",2,11));
 				}
-				jScrollPane1.setVisible(true);
+				jScrollPane1.setVisible(false);
 			}
 			{
 				leggtilButton1 = new JButton();
 				leggtilButton1.setText("Legg til deltaker");
 				leggtilButton1.setFont(new java.awt.Font("Tahoma",0,12));
 				leggtilButton1.addActionListener(this);
-				leggtilButton1.setVisible(true);
+				leggtilButton1.setVisible(false);
 			}
 			{
 				fjernButton = new JButton();
 				fjernButton.setText("Fjern deltaker");
 				fjernButton.setFont(new java.awt.Font("Tahoma",0,12));
-				fjernButton.setVisible(true);
+				fjernButton.setVisible(false);
 				fjernButton.addActionListener(this);
 			}
 		
@@ -228,7 +228,7 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 					alleDeltakereList.setFont(new java.awt.Font("Tahoma",2,11));
 		
 				}
-				jScrollPane2.setVisible(true);
+				jScrollPane2.setVisible(false);
 			}
 			{
 				mndLabel1 = new JLabel();
