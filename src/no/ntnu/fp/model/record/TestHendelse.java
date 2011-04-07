@@ -11,9 +11,9 @@ import no.ntnu.fp.model.record.*;
 
 public class TestHendelse {
 	public static void main(String args[]){
-		//testCeateDeltagereMedStatus();
+		testCeateDeltagereMedStatus();
 		testCrudForAvtale();
-		//testCrudForMote();	
+		testCrudForMote();	
 	}
 	
 	public static void printDateFrom(Avtale avtale){
@@ -135,23 +135,23 @@ public class TestHendelse {
 	private static void testCrudForMote(){
 		Mote mote = mockMote();
 		ActiveHendelse.createMote(mote);
-		System.out.println("Lagret avtale med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() + "og id:" + mote.getAvtaleId());
+		System.out.println("Lagret Mote med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() + "og id:" + mote.getAvtaleId());
 		
-//		ActiveHendelse.deleteHendelse(mote.getAvtaleId());
-//		System.out.println("Slette avtale med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
-//		
-//		ActiveHendelse.createMote(mote);
-//		System.out.println("Lagret på nytt avtale med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
+		ActiveHendelse.deleteHendelse(mote.getAvtaleId());
+		System.out.println("Slette mote med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
+		
+		ActiveHendelse.createMote(mote);
+		System.out.println("Lagret på nytt mote med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
 		
 		mote = ActiveHendelse.selectMote(mote.getAvtaleId());
-		System.out.println("Hentet ut avtale med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
+		System.out.println("Hentet ut mote med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
 		
-//		mote.setNavn("Avtale 2");
-//		ActiveHendelse.updateMote(mote);
-//		System.out.println("Oppdaterte avtale med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
-//		
-//		mote = ActiveHendelse.selectMote(mote.getAvtaleId());
-//		System.out.println("Hentet ut avtale med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
+		mote.setNavn("Avtale 2");
+		ActiveHendelse.updateMote(mote);
+		System.out.println("Oppdaterte mote med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
+		
+		mote = ActiveHendelse.selectMote(mote.getAvtaleId());
+		System.out.println("Hentet ut mote med navn: " + mote.getNavn() + ", beskrivelse lik: " + mote.getBeskrivelse() +  "og id:" + mote.getAvtaleId());
 	}
 	
 	private static void testCeateDeltagereMedStatus(){
