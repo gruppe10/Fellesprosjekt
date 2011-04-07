@@ -48,7 +48,7 @@ class KalenderPanelModel extends AbstractTableModel {
 		
 		setWeek(date);
         
-        ukuttaAvtaleListe= kal.getConnectedPerson().getAvtaler();
+        ukuttaAvtaleListe= kal.getConnectedPerson().finnAlleHendelder();
         
         createAvtaleListe();
         
@@ -280,10 +280,10 @@ class KalenderPanelModel extends AbstractTableModel {
     public void morePersons(ArrayList<Person> persons) {
     	
     	
-    	ukuttaAvtaleListe= kal.getConnectedPerson().getAvtaler();
+    	ukuttaAvtaleListe= kal.getConnectedPerson().finnAlleHendelder();
         
         for (int i=0; i<persons.size(); i++) {
-        	ukuttaAvtaleListe.addAll(persons.get(i).getAvtaler());
+        	ukuttaAvtaleListe.addAll(persons.get(i).finnAlleHendelder());
         }
     	
     	createAvtaleListe();

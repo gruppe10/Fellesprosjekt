@@ -344,7 +344,7 @@ public class Person implements Serializable{
 		return getBrukerNavn();
 	}
 	
-	private ArrayList<Avtale> finnAlleHendelder(){
+	public ArrayList<Avtale> finnAlleHendelder(){
 		ArrayList<Avtale> hendelser = new ArrayList<Avtale>();
 		
 		for (int i = 0; i < moter.size(); i++){

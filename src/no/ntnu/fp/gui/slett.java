@@ -141,7 +141,7 @@ public class slett extends javax.swing.JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource() == SlettButton){
-			mainKal.getConnectedPerson().getAvtaler().remove(avtale);
+			mainKal.getConnectedPerson().finnAlleHendelder().remove(avtale);
 			mainKal.getKalenderPanelModel().removeAvtaleFromPanel(avtale);
 			mainKal.getKalenderPanel().getInfoBoks().clear();
 			
