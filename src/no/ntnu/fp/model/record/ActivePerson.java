@@ -234,7 +234,7 @@ public class ActivePerson extends ActiveModel{
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
-					int moteId = rs.getInt("avtaleId");
+					int moteId = rs.getInt("hendelseId");
 					Mote nyttMote = ActiveHendelse.selectMote(moteId);
 					moter.add(nyttMote);
 				};

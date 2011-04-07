@@ -281,7 +281,7 @@ public class ActiveHendelse extends ActiveModel{
 			connect();
 			if(connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT status FROM Deltakere Where avtaleId = ? and ansattId = ?"
+						"SELECT status FROM Deltakere Where hendelseId = ? and ansattId = ?"
 				);
 				ps.setInt(1, avtaleId);
 				ps.setInt(2, ansattId);

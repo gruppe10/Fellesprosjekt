@@ -11,8 +11,8 @@ import no.ntnu.fp.model.record.*;
 
 public class TestHendelse {
 	public static void main(String args[]){
-		testCeateDeltagereMedStatus();
-		testCrudForAvtale();
+//		testCeateDeltagereMedStatus();
+//		testCrudForAvtale();
 		testCrudForMote();	
 	}
 	
