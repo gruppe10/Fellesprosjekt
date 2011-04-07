@@ -548,12 +548,12 @@ public class kal extends javax.swing.JFrame implements ActionListener {
 					ArrayList<Person> deltakere = new ArrayList<Person>();
 
 					Map<Person, Status> deltakereMedStatus = current.getDeltakere();
-					Iterator itEntry = deltakereMedStatus.entrySet().iterator();
-					Iterator itKey = deltakereMedStatus.keySet().iterator();
-					
-					while (itEntry.hasNext()) {
-						Status cStatus=(Status)itKey.next();
-						Person deltaker = (Person)itEntry.next();
+					for (Map.Entry<Person,Status> e : deltakereMedStatus.entrySet()) {  
+						
+						
+						
+						Person deltaker = e.getKey();  
+					    Status cStatus = e.getValue(); 
 						
 						if (cStatus==Status.AVSLATT) {
 							Notis notis=new Notis(person, current, "meldtavbud", deltaker);
