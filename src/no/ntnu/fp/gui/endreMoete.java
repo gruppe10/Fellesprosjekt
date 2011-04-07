@@ -42,6 +42,7 @@ import no.ntnu.fp.model.Mote;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
 import no.ntnu.fp.model.Status;
+import no.ntnu.fp.model.record.ActiveRom;
 
 
 /**
@@ -194,6 +195,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				starttidCombo.setModel(stjComboBox1Model);
 				starttidCombo.getSelectedItem();
 				starttidCombo.setSelectedIndex(mote.getStarttid()-timeIndexDiff);
+				starttidCombo.addActionListener(this);
 			}
 			{
 				ComboBoxModel sutjComboBox1Model = 
@@ -203,6 +205,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 				sluttidCombo.setModel(sutjComboBox1Model);
 				sluttidCombo.getSelectedItem();
 				sluttidCombo.setSelectedIndex(mote.getStarttid()-timeIndexDiff-1);
+				sluttidCombo.addActionListener(this);
 			}
 			{
 				slutttidLabel = new JLabel();
@@ -214,11 +217,8 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 
 				noRom = new Rom("None");
 				moeteromModel = new DefaultComboBoxModel();
-				moeteromModel.addElement(noRom);
 				
-				for(Rom rom : romList){
-					moeteromModel.addElement(rom);
-				}
+				fyllRomListe(false);
 				
 				Moeterom = new JComboBox();
 				Moeterom.setModel(moeteromModel);
@@ -252,6 +252,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 					datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);	
 				}
 				datoField.setFont(new java.awt.Font("Tahoma",2,11));
+				datoField.addActionListener(this);
 			}
 			{
 				inValidDateMessage = new JLabel();
@@ -521,6 +522,9 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 			slett slett = new slett(mainKal, mote);
 			slett.setVisible(true);
 		}
+		else if(evt.getSource() == starttidCombo || evt.getSource() == sluttidCombo || evt.getSource() == datoField){
+			fyllRomListe(true);
+		}
 	}
 
 	public boolean isValidDate(String inDate) {
@@ -617,5 +621,57 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(mote); 
 
 	}
+	
+	private boolean erLedig(Rom rom, boolean datoSatt){
+		int romID = rom.getRomId();
+		
+		int startTime = starttidCombo.getSelectedIndex()+timeIndexDiff;
+		int sluttTime = sluttidCombo.getSelectedIndex()+timeIndexDiff+1;
+		String month, day;
+		
+		if(defaultDato < 10 && defaultMonth < 10){
+			month = "0"+defaultMonth;
+			day = "0"+defaultDato;
+		}else if(defaultDato<10){
+			month = Integer.toString(defaultMonth);
+			day = "0"+defaultDato;
+		}else if(defaultMonth<10){
+			month = "0"+defaultMonth;
+			day = Integer.toString(defaultDato);
+		}else{
+			month = Integer.toString(defaultMonth);
+			day = Integer.toString(defaultDato);
+		}
+	
+		
+		String date = defaultYear+"-"+month+"-"+day;
+		
+		if(datoSatt){
+			String[] a = datoField.getText().split("\\.");
+			date = a[2]+"-"+a[1]+"-"+a[0];
+		}
+		
+		java.sql.Date dato = java.sql.Date.valueOf(date);
+		
+		boolean[] ledigeTider = ActiveRom.selectLedigeTider(romID, dato);
+		boolean erLedig = true;
+		
+		for(int i=startTime; i<sluttTime; i++){
+			if (ledigeTider[i] != true) erLedig = false;
+		}
+		
+		return erLedig;
+	}
+	
+	
+	
+	private void fyllRomListe(boolean datoSatt){
+		moeteromModel.removeAllElements();
+		moeteromModel.addElement(noRom);
+		for(Rom rom: romList){
+			if(erLedig(rom, datoSatt)) moeteromModel.addElement(rom);
+		}
+	}
+	
 
 }

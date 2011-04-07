@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import no.ntnu.fp.model.Avtale;
 import no.ntnu.fp.model.Person;
 import no.ntnu.fp.model.Rom;
+import no.ntnu.fp.model.record.ActiveRom;
 
 import Klient.Action;
 import Klient.Envelope;
@@ -152,10 +153,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						noRom = new Rom("None");
 						
 						romModel = new DefaultComboBoxModel();
-						romModel.addElement(noRom);
-						for(Rom rom : romList){
-							romModel.addElement(rom);
-						}
+						fyllRomListe(false);
 						
 						romComboBox3 = new JComboBox();
 						romComboBox3.setModel(romModel);
@@ -186,6 +184,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 							datoField.setText(defaultDato+"."+defaultMonth+"."+defaultYear);	
 						}
 						datoField.setFont(new java.awt.Font("Tahoma",2,11));
+						datoField.addActionListener(this);
 					}
 					{
 						headerTextField = new JTextField();
@@ -238,6 +237,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						starttid.setModel(jComboBox1Model);
 						starttid.getSelectedItem();
 						starttid.setSelectedIndex(avtale.getStarttid()-timeIndexDiff);
+						starttid.addActionListener(this);
 					}
 					{
 						ComboBoxModel jComboBox2Model = 
@@ -247,6 +247,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 						sluttid.setModel(jComboBox2Model);
 						sluttid.getSelectedItem();
 						sluttid.setSelectedIndex(avtale.getSluttid()-timeIndexDiff-1);
+						sluttid.addActionListener(this);
 					}
 					{
 						slettButton = new JButton();
@@ -380,9 +381,12 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 		else if(evt.getSource() == avbrytButton){
 			dispose();
 		}
-		if(evt.getSource() == slettButton){
+		else if(evt.getSource() == slettButton){
 			slett slett = new slett(mainKal, avtale);
 			slett.show();
+		}
+		else if(evt.getSource() == starttid || evt.getSource() == sluttid || evt.getSource() == datoField){
+			fyllRomListe(true);
 		}
 	}
 
@@ -474,5 +478,57 @@ private boolean overlapping() {
 		mainKal.getKalenderPanel().getInfoBoks().displayAvtale(avtale); 
 		
 	}
+	
+	private boolean erLedig(Rom rom, boolean datoSatt){
+		int romID = rom.getRomId();
+		
+		int startTime = starttid.getSelectedIndex()+timeIndexDiff;
+		int sluttTime = sluttid.getSelectedIndex()+timeIndexDiff+1;
+		String month, day;
+		
+		if(defaultDato < 10 && defaultMonth < 10){
+			month = "0"+defaultMonth;
+			day = "0"+defaultDato;
+		}else if(defaultDato<10){
+			month = Integer.toString(defaultMonth);
+			day = "0"+defaultDato;
+		}else if(defaultMonth<10){
+			month = "0"+defaultMonth;
+			day = Integer.toString(defaultDato);
+		}else{
+			month = Integer.toString(defaultMonth);
+			day = Integer.toString(defaultDato);
+		}
+	
+		
+		String date = defaultYear+"-"+month+"-"+day;
+		
+		if(datoSatt){
+			String[] a = datoField.getText().split("\\.");
+			date = a[2]+"-"+a[1]+"-"+a[0];
+		}
+		
+		java.sql.Date dato = java.sql.Date.valueOf(date);
+		
+		boolean[] ledigeTider = ActiveRom.selectLedigeTider(romID, dato);
+		boolean erLedig = true;
+		
+		for(int i=startTime; i<sluttTime; i++){
+			if (ledigeTider[i] != true) erLedig = false;
+		}
+		
+		return erLedig;
+	}
+	
+	
+	
+	private void fyllRomListe(boolean datoSatt){
+		romModel.removeAllElements();
+		romModel.addElement(noRom);
+		for(Rom rom: romList){
+			if(erLedig(rom, datoSatt)) romModel.addElement(rom);
+		}
+	}
+	
 
 }
