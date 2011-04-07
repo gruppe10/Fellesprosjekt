@@ -153,6 +153,7 @@ public class ActivePerson extends ActiveModel{
 		
 		return person;
 	}
+	
 	public static Person selectPersonByUsername(String brukernavn){
 		Person person = new Person();
 		String navn  = "";
@@ -359,4 +360,47 @@ public class ActivePerson extends ActiveModel{
 		}
 		return allePersoner;
 	}
+	
+	public static Person selectPersonWithoutFukkingShitUp(int ansattId){
+		Person person = new Person();
+		String navn  = "";
+		String brukernavn = "";
+		String passord = "";
+		ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
+		ArrayList<Mote> moter = new ArrayList<Mote>();
+
+		
+		try{
+			connect();
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"SELECT * FROM Person WHERE ansattId = ? "
+				);
+				ps.setInt(1, ansattId);
+				
+				ResultSet rs = ps.executeQuery(); 
+				if (rs != null){
+					while(rs.next()){
+						navn = rs.getString("navn");
+						brukernavn = rs.getString("brukernavn");
+						passord = rs.getString("passord");
+					}
+				}
+				connection.close();
+			}
+		}
+		catch( SQLException e){
+			System.out.println("Kan ikke finner person med id = " + ansattId);
+			System.out.println("ErrorMessage:" + e.getMessage());
+		}
+		person.setAnsattNummer(ansattId);
+		person.setName(navn);
+		person.setBrukerNavn(brukernavn);
+		person.setPassord(passord);
+		person.setAvtaler(avtaler);
+		person.setMoter(moter);
+		
+		return person;
+	}
+	
 }
