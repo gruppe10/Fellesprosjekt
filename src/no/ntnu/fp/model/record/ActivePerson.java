@@ -28,7 +28,7 @@ import org.apache.derby.impl.sql.compile.CreateAliasNode;
 import org.apache.derby.tools.sysinfo;
 
 public class ActivePerson extends ActiveModel{
-	
+
 	public static Person createPerson(Person person){
 		if(person.getAnsattNummer() == null){
 			int nextAvailableId = nextAvailableIdFor("Person");
@@ -38,8 +38,8 @@ public class ActivePerson extends ActiveModel{
 			connect();
 			if( connection != null){
 				PreparedStatement ps = connection.prepareStatement(
-					"INSERT INTO Person(ansattId, navn, brukernavn, passord)" +
-					"VALUES ( ?, ?, ? ,? )" 
+						"INSERT INTO Person(ansattId, navn, brukernavn, passord)" +
+						"VALUES ( ?, ?, ? ,? )" 
 				);
 				ps.setInt(1, person.getAnsattNummer());
 				ps.setString(2, person.getName());
@@ -48,14 +48,14 @@ public class ActivePerson extends ActiveModel{
 				ps.execute();
 				connection.close();
 			}
-			
+
 			ArrayList<Avtale> avtaler = person.getAvtaler();
 			if(avtaler != null){
 				for (Avtale avtale : avtaler) {
 					ActiveHendelse.createAvtale(avtale);
 				}
 			}
-			
+
 			ArrayList<Mote> moter = person.getMoter();
 			if(moter != null){
 				for (Mote mote : moter) {
@@ -69,49 +69,49 @@ public class ActivePerson extends ActiveModel{
 		}
 		return person;
 	}
-	
+
 	public static void updatePerson(Person person){
 		String navn = person.getName();
 		String brukernavn = person.getBrukerNavn();
 		String passord = person.getPassord();
 		int ansattId = person.getAnsattNummer();
-		
+
 		try {
-        	connect();
-        	if( connection != null){
-        		PreparedStatement ps = connection.prepareStatement(
-	            		"UPDATE Person " + 
-	            		"SET navn= ? , brukernavn = ?, passord = ?" +
-	                    "WHERE ansattId = ? "
-	            );
-	            ps.setString(1, navn);
-	            ps.setString(2, brukernavn);
-	            ps.setString(3, passord);
-	            ps.setInt(4, ansattId);
-	            ps.executeUpdate();
-	            connection.close();
-	            
-	            ArrayList<Avtale> avtaler = person.getAvtaler();
-	            if(!avtaler.isEmpty()){
+			connect();
+			if( connection != null){
+				PreparedStatement ps = connection.prepareStatement(
+						"UPDATE Person " + 
+						"SET navn= ? , brukernavn = ?, passord = ?" +
+						"WHERE ansattId = ? "
+				);
+				ps.setString(1, navn);
+				ps.setString(2, brukernavn);
+				ps.setString(3, passord);
+				ps.setInt(4, ansattId);
+				ps.executeUpdate();
+				connection.close();
+
+				ArrayList<Avtale> avtaler = person.getAvtaler();
+				if(!avtaler.isEmpty()){
 					for (Avtale avtale : avtaler) {
 						ActiveHendelse.updateAvtale(avtale);
 					}
 				}
-	            
-	            ArrayList<Mote> moter = person.getMoter();
-	            if(!moter.isEmpty()){
+
+				ArrayList<Mote> moter = person.getMoter();
+				if(!moter.isEmpty()){
 					for (Mote mote : moter) {
 						ActiveHendelse.updateMote(mote);
 					}
 				}
-        	}  
-        }
+			}  
+		}
 		catch (SQLException e){
-        	System.out.println("Kan ikke oppdatere!");
-        	System.out.println("Detaljer:" + e.getMessage());
-        }
+			System.out.println("Kan ikke oppdatere!");
+			System.out.println("Detaljer:" + e.getMessage());
+		}
 	}
-	
+
 	public static Person selectPerson(int ansattId){
 		Person person = new Person();
 		String navn  = "";
@@ -120,7 +120,7 @@ public class ActivePerson extends ActiveModel{
 		ArrayList<Avtale> avtaler = selectAvtaler(ansattId);
 		ArrayList<Mote> moter = selectMoter(ansattId);
 
-		
+
 		try{
 			connect();
 			if( connection != null){
@@ -128,7 +128,7 @@ public class ActivePerson extends ActiveModel{
 						"SELECT * FROM Person WHERE ansattId = ? "
 				);
 				ps.setInt(1, ansattId);
-				
+
 				ResultSet rs = ps.executeQuery(); 
 				if (rs != null){
 					while(rs.next()){
@@ -150,16 +150,16 @@ public class ActivePerson extends ActiveModel{
 		person.setPassord(passord);
 		person.setAvtaler(avtaler);
 		person.setMoter(moter);
-		
+
 		return person;
 	}
-	
+
 	public static Person selectPersonByUsername(String brukernavn){
 		Person person = new Person();
 		String navn  = "";
 		String passord = "";
 		Integer ansattId = null;
-		
+
 		try{
 			connect();
 			if( connection != null){
@@ -167,7 +167,7 @@ public class ActivePerson extends ActiveModel{
 						"SELECT * FROM Person WHERE brukernavn = ? "
 				);
 				ps.setString(1, brukernavn);
-				
+
 				ResultSet rs = ps.executeQuery(); 
 				if (rs != null){
 					while(rs.next()){
@@ -184,21 +184,21 @@ public class ActivePerson extends ActiveModel{
 			System.out.println("Kan ikke finner person med id = " + ansattId);
 			System.out.println("ErrorMessage:" + e.getMessage());
 		}
-		
+
 		person.setAnsattNummer(ansattId);
 		person.setName(navn);
 		person.setBrukerNavn(brukernavn);
 		person.setPassord(passord);
 		person.setAvtaler(selectAvtaler(ansattId));
 		person.setMoter(selectMoter(ansattId));
-		
+
 		System.out.println("Avtaler fra db:" + person.getAvtaler().size());
 		System.out.println("Moter fra db:" + person.getMoter().size());
 
-		
+
 		return person;
 	}
-		
+
 	public static void deletePerson(int ansattId) {
 		// Slette alle avtaler som bare hører til denne personen
 		// Dersom personen ikkje finnes eller ikke har avtaler, skjer det ingenting. 
@@ -228,7 +228,7 @@ public class ActivePerson extends ActiveModel{
 			System.out.println("Detaljer:" + e.getMessage());
 		}
 	}
-	
+
 	public static ArrayList<Mote> selectMoter(int ansattId) {
 		ArrayList<Integer> alleIDer = new ArrayList<Integer>();
 		ArrayList<Mote> hendelserMedDeltakere = new ArrayList<Mote>();
@@ -250,6 +250,22 @@ public class ActivePerson extends ActiveModel{
 				ps.close();
 				connection.close();
 				
+				connect();
+				//Finne alle Møter der enn er deltaker
+				ps = connection.prepareStatement(
+						"SELECT hendelseId FROM Deltakere WHERE ansattId = ? "
+				);
+				ps.setInt(1, ansattId);
+				rs = ps.executeQuery();
+				while(rs.next()){
+					int hendelseId = rs.getInt("hendelseId");
+					if(!alleIDer.contains(hendelseId)){
+						alleIDer.add(hendelseId);
+					}
+				};
+				ps.close();
+				connection.close();
+
 				//Finn alle møter
 				for (Integer hendelseId : alleIDer){
 					connect();
@@ -258,7 +274,7 @@ public class ActivePerson extends ActiveModel{
 							"WHERE Hendelse.hendelseId = Deltakere.hendelseId " +
 							"AND Hendelse.hendelseId = " + hendelseId
 					);
-					
+
 					ResultSet rs2 = ps2.executeQuery();
 					while(rs2.next()){
 						int avtaleId = rs2.getInt("hendelseId");
@@ -274,161 +290,182 @@ public class ActivePerson extends ActiveModel{
 			System.out.println("Could not find any Meetings for Person with id:" + ansattId);
 			System.out.println("Details:" + e.getMessage());
 		}
-		return hendelserMedDeltakere;
-	}
-	
-	public static ArrayList<Avtale> selectAvtaler(int ansattId) {
-		ArrayList<Integer> alleIder = new ArrayList<Integer>();
-		ArrayList<Integer> moeteIder = new ArrayList<Integer>();
-		ArrayList<Avtale> hendelserUtenDeltakere = new ArrayList<Avtale>();
 		try{
 			connect();
 			if(connection != null){
 				//Finne alle hendelser
 				PreparedStatement ps = connection.prepareStatement(
-						"SELECT hendelseId FROM Hendelse WHERE lederId = ? "
+						"SELECT hendelseId FROM Deltaker WHERE ansattId = ? "
 				);
 				ps.setInt(1, ansattId);
 				ResultSet rs = ps.executeQuery();
 				while(rs.next()){
 					int hendelseId = rs.getInt("hendelseId");
-					if(!alleIder.contains(hendelseId)) 
-						alleIder.add(hendelseId);
+					if(!alleIDer.contains(hendelseId)){
+						alleIDer.add(hendelseId);
+					}
 				};
 				ps.close();
 				connection.close();
-				
-				//Finn alle møter
-				for (Integer hendelseId : alleIder){
-					connect();
-					PreparedStatement ps2 = connection.prepareStatement(
-							"SELECT Hendelse.hendelseId FROM Hendelse,Deltakere " +
-							"WHERE Hendelse.hendelseId = Deltakere.hendelseId " +
-							"AND Hendelse.hendelseId = " + hendelseId
-					);
-					
-					ResultSet rs2 = ps2.executeQuery();
-					while(rs2.next()){
-						int moeteId = rs2.getInt("hendelseId");
-						moeteIder.add(moeteId);
-					}
-					connection.close();	
-				}
-				//Lag ny liste med avtaler som ikke inneholder avtaler som egentlig er Møter
-				for(Integer hendelseId: alleIder){
-					if(!moeteIder.contains(hendelseId)){
-						Avtale avtale = ActiveHendelse.selectAvtale(hendelseId);
-						hendelserUtenDeltakere.add(avtale);
-					}
-				}
-				if(connection != null) connection.close();	
-			}	
+			}
+		}catch(Exception e){
+			
 		}
-		catch(SQLException e){
-			System.out.println("Could not find any Avtaler for Person with id:" + ansattId);
-			System.out.println("Details:" + e.getMessage());
-		}
-		return hendelserUtenDeltakere;
+		return hendelserMedDeltakere;
 	}
-	
-	public static boolean checkPassord(String innloggingsInfo){
-		String[] info = innloggingsInfo.split(",");
-		String brukernavn = info[0].trim();
-		String passord = info[1].trim();
-		
-		boolean godkjent = false;
 
-		try{
-			connect();
-			if( connection != null){
-				PreparedStatement ps = connection.prepareStatement(
-						"SELECT distinct passord FROM Person WHERE brukernavn = ? "
-						);
-				ps.setString(1, brukernavn);
-				ResultSet rs = ps.executeQuery(); 
-				
-				if (rs != null){
+		public static ArrayList<Avtale> selectAvtaler(int ansattId) {
+			ArrayList<Integer> alleIder = new ArrayList<Integer>();
+			ArrayList<Integer> moeteIder = new ArrayList<Integer>();
+			ArrayList<Avtale> hendelserUtenDeltakere = new ArrayList<Avtale>();
+			try{
+				connect();
+				if(connection != null){
+					//Finne alle hendelser
+					PreparedStatement ps = connection.prepareStatement(
+							"SELECT hendelseId FROM Hendelse WHERE lederId = ? "
+					);
+					ps.setInt(1, ansattId);
+					ResultSet rs = ps.executeQuery();
 					while(rs.next()){
-						if(passord.equals(rs.getString("passord"))){
-							godkjent = true;
+						int hendelseId = rs.getInt("hendelseId");
+						if(!alleIder.contains(hendelseId)) 
+							alleIder.add(hendelseId);
+					};
+					ps.close();
+					connection.close();
+
+					//Finn alle møter
+					for (Integer hendelseId : alleIder){
+						connect();
+						PreparedStatement ps2 = connection.prepareStatement(
+								"SELECT Hendelse.hendelseId FROM Hendelse,Deltakere " +
+								"WHERE Hendelse.hendelseId = Deltakere.hendelseId " +
+								"AND Hendelse.hendelseId = " + hendelseId
+						);
+
+						ResultSet rs2 = ps2.executeQuery();
+						while(rs2.next()){
+							int moeteId = rs2.getInt("hendelseId");
+							moeteIder.add(moeteId);
+						}
+						connection.close();	
+					}
+					//Lag ny liste med avtaler som ikke inneholder avtaler som egentlig er Møter
+					for(Integer hendelseId: alleIder){
+						if(!moeteIder.contains(hendelseId)){
+							Avtale avtale = ActiveHendelse.selectAvtale(hendelseId);
+							hendelserUtenDeltakere.add(avtale);
 						}
 					}
-				}
-				connection.close();
+					if(connection != null) connection.close();	
+				}	
 			}
-		}
-		catch( SQLException e){
-			System.out.println("Kan ikke finne person med id = " );
-			System.out.println("ErrorMessage:" + e.getMessage());
-		}
-		return godkjent;
-	}
-	
-	public static ArrayList<Person> selectAllPersons(){
-		ArrayList<Integer> ansattIder = new ArrayList<Integer>();
-		ArrayList<Person> allePersoner = new ArrayList<Person>();
-		try{
-			connect();
-			if(connection != null){
-				PreparedStatement ps = connection.prepareStatement(
-						"Select ansattId from Person"
-				);
-				ResultSet rs = ps.executeQuery();
-				while(rs.next()){
-					ansattIder.add(rs.getInt("ansattId"));
-				}
-				connection.close();
+			catch(SQLException e){
+				System.out.println("Could not find any Avtaler for Person with id:" + ansattId);
+				System.out.println("Details:" + e.getMessage());
 			}
-			for(Integer ansattId: ansattIder){
-				allePersoner.add(selectPerson(ansattId));
-			}
-		}catch(SQLException e){
-			System.out.println("Feil oppstod under selectAllPersons");
-			System.out.println("ErrorMessage:" + e.getMessage());
+			return hendelserUtenDeltakere;
 		}
-		return allePersoner;
-	}
-	
-	public static Person selectPersonWithoutFukkingShitUp(int ansattId){
-		Person person = new Person();
-		String navn  = "";
-		String brukernavn = "";
-		String passord = "";
-		ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
-		ArrayList<Mote> moter = new ArrayList<Mote>();
 
-		
-		try{
-			connect();
-			if( connection != null){
-				PreparedStatement ps = connection.prepareStatement(
-						"SELECT * FROM Person WHERE ansattId = ? "
-				);
-				ps.setInt(1, ansattId);
-				
-				ResultSet rs = ps.executeQuery(); 
-				if (rs != null){
-					while(rs.next()){
-						navn = rs.getString("navn");
-						brukernavn = rs.getString("brukernavn");
-						passord = rs.getString("passord");
+		public static boolean checkPassord(String innloggingsInfo){
+			String[] info = innloggingsInfo.split(",");
+			String brukernavn = info[0].trim();
+			String passord = info[1].trim();
+
+			boolean godkjent = false;
+
+			try{
+				connect();
+				if( connection != null){
+					PreparedStatement ps = connection.prepareStatement(
+							"SELECT distinct passord FROM Person WHERE brukernavn = ? "
+					);
+					ps.setString(1, brukernavn);
+					ResultSet rs = ps.executeQuery(); 
+
+					if (rs != null){
+						while(rs.next()){
+							if(passord.equals(rs.getString("passord"))){
+								godkjent = true;
+							}
+						}
 					}
+					connection.close();
 				}
-				connection.close();
 			}
+			catch( SQLException e){
+				System.out.println("Kan ikke finne person med id = " );
+				System.out.println("ErrorMessage:" + e.getMessage());
+			}
+			return godkjent;
 		}
-		catch( SQLException e){
-			System.out.println("Kan ikke finner person med id = " + ansattId);
-			System.out.println("ErrorMessage:" + e.getMessage());
+
+		public static ArrayList<Person> selectAllPersons(){
+			ArrayList<Integer> ansattIder = new ArrayList<Integer>();
+			ArrayList<Person> allePersoner = new ArrayList<Person>();
+			try{
+				connect();
+				if(connection != null){
+					PreparedStatement ps = connection.prepareStatement(
+							"Select ansattId from Person"
+					);
+					ResultSet rs = ps.executeQuery();
+					while(rs.next()){
+						ansattIder.add(rs.getInt("ansattId"));
+					}
+					connection.close();
+				}
+				for(Integer ansattId: ansattIder){
+					allePersoner.add(selectPerson(ansattId));
+				}
+			}catch(SQLException e){
+				System.out.println("Feil oppstod under selectAllPersons");
+				System.out.println("ErrorMessage:" + e.getMessage());
+			}
+			return allePersoner;
 		}
-		person.setAnsattNummer(ansattId);
-		person.setName(navn);
-		person.setBrukerNavn(brukernavn);
-		person.setPassord(passord);
-		person.setAvtaler(avtaler);
-		person.setMoter(moter);
-		
-		return person;
+
+		public static Person selectPersonWithoutFukkingShitUp(int ansattId){
+			Person person = new Person();
+			String navn  = "";
+			String brukernavn = "";
+			String passord = "";
+			ArrayList<Avtale> avtaler = new ArrayList<Avtale>();
+			ArrayList<Mote> moter = new ArrayList<Mote>();
+
+
+			try{
+				connect();
+				if( connection != null){
+					PreparedStatement ps = connection.prepareStatement(
+							"SELECT * FROM Person WHERE ansattId = ? "
+					);
+					ps.setInt(1, ansattId);
+
+					ResultSet rs = ps.executeQuery(); 
+					if (rs != null){
+						while(rs.next()){
+							navn = rs.getString("navn");
+							brukernavn = rs.getString("brukernavn");
+							passord = rs.getString("passord");
+						}
+					}
+					connection.close();
+				}
+			}
+			catch( SQLException e){
+				System.out.println("Kan ikke finner person med id = " + ansattId);
+				System.out.println("ErrorMessage:" + e.getMessage());
+			}
+			person.setAnsattNummer(ansattId);
+			person.setName(navn);
+			person.setBrukerNavn(brukernavn);
+			person.setPassord(passord);
+			person.setAvtaler(avtaler);
+			person.setMoter(moter);
+
+			return person;
+		}
+
 	}
-	
-}

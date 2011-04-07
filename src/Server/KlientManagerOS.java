@@ -11,7 +11,6 @@ public class KlientManagerOS implements Runnable {
 	private ObjectManager objektManager;
 
 	public KlientManagerOS(Socket klient) {
-		//db connection her spør Eirik ;)
 		this.klient = klient;
 		objektManager = new ObjectManager();
 	}

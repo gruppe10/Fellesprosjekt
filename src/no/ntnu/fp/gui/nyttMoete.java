@@ -124,6 +124,7 @@ public class nyttMoete extends javax.swing.JFrame implements ActionListener{
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallpersons");
 		mDeltakere=(ArrayList<Person>)klient.sendObjectAndGetResponse(e);
+		
 		KlientOS klient2 =KlientOS.getInstance();
 		Envelope e2 = new Envelope(Action.SELECT, "getallrooms");
 		romList = (ArrayList<Rom>)klient2.sendObjectAndGetResponse(e2);
