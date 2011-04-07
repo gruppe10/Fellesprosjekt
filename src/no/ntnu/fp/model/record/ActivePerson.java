@@ -192,6 +192,10 @@ public class ActivePerson extends ActiveModel{
 		person.setAvtaler(selectAvtaler(ansattId));
 		person.setMoter(selectMoter(ansattId));
 		
+		System.out.println(person.getAvtaler().size());
+		System.out.println(person.getMoter().size());
+
+		
 		return person;
 	}
 		
