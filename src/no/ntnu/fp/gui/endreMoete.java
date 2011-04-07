@@ -99,6 +99,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 	private Mote mote;
 	int startTime;
 	int sluttTime;
+	private Person bruker;
 	
 	private ArrayList<Person> mDeltakere;
 	private ArrayList<Rom> romList;
@@ -134,6 +135,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		defaultYear = mote.getDatoAar();
 		startTime = mote.getStarttid()-timeIndexDiff;
 		sluttTime = mote.getSluttid()-timeIndexDiff-1;
+		bruker = mote.getInitiativtaker();
 
 		KlientOS klient = KlientOS.getInstance();
 		Envelope e = new Envelope(Action.SELECT, "getallpersons");
@@ -180,7 +182,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 						new DefaultListModel();
 					muligeDeltakereList = new JList();
 					for(Person p : mDeltakere){
-						if(p != mainKal.getConnectedPerson()) deljList1Model.addElement(p);
+						if(!p.getBrukerNavn().equalsIgnoreCase(bruker.getBrukerNavn())) deljList1Model.addElement(p);
 					}
 
 					muligeDeltakereScroll.setViewportView(muligeDeltakereList);
@@ -569,8 +571,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		int sluttTime = sluttidCombo.getSelectedIndex()+timeIndexDiff+1;
 
 
-		Person person= mainKal.getConnectedPerson();
-		ArrayList<Avtale> avtaler = person.getAvtaler();
+		ArrayList<Avtale> avtaler = bruker.getAvtaler();
 
 		for (int i = 0; i<avtaler.size(); i++) {
 
@@ -608,8 +609,7 @@ public class endreMoete extends javax.swing.JFrame implements ActionListener{
 		int startTime = starttidCombo.getSelectedIndex()+timeIndexDiff;
 		int sluttTime = sluttidCombo.getSelectedIndex()+timeIndexDiff+1;
 
-		Person person= mainKal.getConnectedPerson();
-		ArrayList<Avtale> avtaler = person.getAvtaler();
+		ArrayList<Avtale> avtaler = bruker.getAvtaler();
 		
 		Map<Person, Status> deltakere = new HashMap<Person, Status>();
 		

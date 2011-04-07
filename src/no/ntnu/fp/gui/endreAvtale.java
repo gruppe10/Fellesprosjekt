@@ -71,7 +71,7 @@ public class endreAvtale extends javax.swing.JFrame implements ActionListener{
 	private DefaultComboBoxModel romModel;
 	
 
-	private int defaultStartTime, defaultDato, defaultMonth, defaultYear;
+	private int defaultDato, defaultMonth, defaultYear;
 	private int timeIndexDiff=6;
 	private kal mainKal;
 	private Avtale avtale;
