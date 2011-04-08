@@ -354,19 +354,7 @@ public class Person implements Serializable{
 		for (int i = 0; i < avtaler.size(); i++){
 			hendelser.add(avtaler.get(i));
 		}
-		int counter = 0;
-		for (Avtale avtale : hendelser) {
-			System.out.println(counter);
-			if(avtale instanceof Mote){
-				//System.out.println("Hentet ut møte");
-				//System.out.println("DatoDag: "+avtale.getDatoDag());
-			}
-			else if (avtale instanceof Avtale){
-				//System.out.println("Hentet ut avtale");
-				//System.out.println("DatoDag: "+avtale.getDatoDag());
-			}
-			counter ++;
-		}
+		
 		return hendelser;
 	}
 	
